@@ -139,6 +139,7 @@
 (use-package eglot
   ;; :ensure nil
   :commands (eglot-ensure my/rust-expand-macro)
+  :hook (rust-mode . eglot-ensure)
   :config
   (progn
     (setq eldoc-echo-area-use-multiline-p 3

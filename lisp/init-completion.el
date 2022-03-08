@@ -137,7 +137,7 @@
               ("M-i" . company-complete-selection)))
 
 (use-package eglot
-  :ensure nil
+  ;; :ensure nil
   :commands (eglot-ensure my/rust-expand-macro)
   :config
   (progn

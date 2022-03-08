@@ -15,8 +15,8 @@
 (global-display-line-numbers-mode t)
 (global-hl-line-mode t)
 
-(set-face-attribute 'default nil :height 150 :family "JetBrainsMono Nerd Font Mono")
-(let ((emacs-font-size 14)
+(set-face-attribute 'default nil :height 160 :family "JetBrainsMono Nerd Font Mono")
+(let ((emacs-font-size 15)
       emacs-font-name)
          (cond
           ((featurep 'cocoa)

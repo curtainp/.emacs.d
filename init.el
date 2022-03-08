@@ -34,5 +34,5 @@
 (require 'init-ui)
 (require 'init-treesitter)
 (require 'init-org)
-;; (require 'init-ctags)
+(require 'init-ctags)
 (require 'init-language)

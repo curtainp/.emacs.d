@@ -11,9 +11,24 @@
     ('dark (load-theme 'dracula t))))
 (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 
-(setq  initial-frame-alist (quote ((fullscreen . maximized))))
-(global-display-line-numbers-mode t)
-(global-hl-line-mode t)
+;; (global-display-line-numbers-mode t)
+(use-package display-line-numbers
+  :defer t
+  :hook ((prog-mode text-mode conf-mode) . display-line-numbers-mode))
+
+(use-package time
+  :defer 5
+  :custom ((display-time-format "[%H:%M, %a]")
+           (display-time-use-mail-icon t)
+           (display-time-default-load-average nil))
+  :config
+  ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html
+  (display-time-mode 1))
+
+;; (global-hl-line-mode t)
+(use-package hl-line
+  :config
+  (global-hl-line-mode 1))
 
 (set-face-attribute 'default nil :height 160 :family "JetBrainsMono Nerd Font Mono")
 (let ((emacs-font-size 15)

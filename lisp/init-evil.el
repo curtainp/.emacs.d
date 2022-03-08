@@ -5,6 +5,17 @@
   :init
   (setq evil-want-C-u-scroll t)
   (evil-mode)
+  (progn
+    (defun ada/fix-evil-company ()
+      (when (memq 'company-emulation-alist emulation-mode-map-alists)
+        (company-ensure-emulation-alist)))
+    (defun ada/evil-insert-hook ()
+      (global-company-mode 1)
+      ;; (yas-global-mode 1)
+      ))
+
+  :hook ((evil-local-mode . ada/fix-evil-company)
+         (evil-insert-state-entry . ada/evil-insert-hook))
 
   :config
   (progn
@@ -41,8 +52,6 @@
       (add-to-list 'evil-normal-state-modes m))
 
     (setq evil-move-cursor-back nil)
-    (define-key evil-emacs-state-map (kbd "C-w") 'evil-delete-backward-word)
-    (evil-define-key 'emacs term-raw-map (kbd "C-w") 'evil-delete-backward-word)
     (setq evil-normal-state-tag   (propertize "[N]" 'face '((:background "DarkGoldenrod2" :foreground "black")))
           evil-emacs-state-tag    (propertize "[E]" 'face '((:background "SkyBlue2" :foreground "black")))
           evil-insert-state-tag   (propertize "[I]" 'face '((:background "chartreuse3") :foreground "white"))
@@ -73,6 +82,7 @@
                   (kbd "C-u") 'evil-scroll-up)))
 
     ))
+
 
 
 (use-package evil-leader

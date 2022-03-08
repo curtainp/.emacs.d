@@ -111,12 +111,12 @@
 
 ;; enable in evil insert mode
 (use-package company
-  :ensure nil
+  ;; :ensure nil
   :commands (global-company-mode)
   :config
   (setq company-tooltip-align-annotations t
         company-minimum-prefix-length 2
-        company-idle-delay .1
+        company-idle-delay 0
         company-begin-commands '(self-insert-command org-self-insert-command)
         company-dabbrev-downcase nil
         company-dabbrev-ignore-case nil

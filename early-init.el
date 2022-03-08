@@ -1,24 +1,20 @@
 ;;; early-initel -*- lexical-binding: t -*-
 
+(setq default-frame-alist '((undecorated . t)
+                            (font . "JetBrainsMono Nerd Font Mono"))
+      gc-cons-threshold most-positive-fixnum
+      read-process-output-max (* 1024 1024)
+      frame-inhibit-implied-resize t
+      load-prefer-newer nil
+      inhibit-startup-screen t
+      create-lockfiles nil
+      ;; since v28
+      use-short-answers t
+      word-wrap-by-category t
+      ;; end
+      image-use-external-converter t
+      package-enable-at-startup nil
+      ;; GnuPG
+      epa-pinentry-mode 'loopback)
 
-(add-to-list 'default-frame-alist '(undecorated . t))
-
-;; Defer garbage collection further back in the startup process
-(setq gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 0.5)
-
-;; Package initialize occurs automatically, before `user-init-file' is
-;; loaded, but after `early-init-file'. We handle package
-;; initialization, so we must prevent Emacs from doing it early!
-(setq package-enable-at-startup nil)
-
-;; Inhibit resizing frame
-(setq frame-inhibit-implied-resize t)
-
-;; Faster to disable these here (before they've been initialized)
-(push '(menu-bar-lines . 0) default-frame-alist)
-(push '(tool-bar-lines . 0) default-frame-alist)
-(push '(vertical-scroll-bars) default-frame-alist)
-(push '(scroll-bar-mode . nil) default-frame-alist)
-(when (featurep 'ns)
-  (push '(ns-transparent-titlebar . t) default-frame-alist))
+;; (add-to-list 'default-frame-alist '(undecorated . t))

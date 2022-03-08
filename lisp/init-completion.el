@@ -82,13 +82,13 @@
 (use-package consult
   :defer t
   :init
+  (global-set-key (kbd "s-v") 'consult-yank-pop)
+  (global-set-key (kbd "C-s") 'consult-line)
   (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
   (advice-add #'multi-occur :override #'consult-multi-occur)
   ;;(advice-add #'consult-line :override #'consult-line)
               
   :config
-  (global-set-key (kbd "s-y") 'consult-yank-pop)
-  (global-set-key (kbd "C-s") 'consult-line)
   (setq ;; consult-project-root-function #'doom-project-root
         consult-narrow-key "<"
         consult-line-numbers-widen t
@@ -108,5 +108,64 @@
    consult-theme
    :preview-key (list (kbd "s-.") :debounce 0.5 'any))
   )
+
+;; enable in evil insert mode
+(use-package company
+  :ensure nil
+  :commands (global-company-mode)
+  :config
+  (setq company-tooltip-align-annotations t
+        company-minimum-prefix-length 2
+        company-idle-delay .1
+        company-begin-commands '(self-insert-command org-self-insert-command)
+        company-dabbrev-downcase nil
+        company-dabbrev-ignore-case nil
+        ;; company-echo-delay 0
+        ;; Easy navigation to candidates with M-<n>
+        company-show-numbers t
+        company-cmake-executable-arguments '("--help-command-list"
+                                             "--help-module-list"
+                                             "--help-property-list"
+                                             "--help-variable-list")
+        company-backends '((company-capf company-dabbrev-code company-dabbrev
+                                         company-keywords)
+                           (company-files)))
+
+  :bind (:map company-active-map
+              ("C-n" . company-select-next)
+              ("C-p" . company-select-previous)
+              ("M-i" . company-complete-selection)))
+
+(use-package eglot
+  :ensure nil
+  :commands (eglot-ensure my/rust-expand-macro)
+  :config
+  (progn
+    (setq eldoc-echo-area-use-multiline-p 3
+          eldoc-echo-area-display-truncation-message nil)
+    (set-face-attribute 'eglot-highlight-symbol-face nil
+                        :background "#b3d7ff")
+
+    (defun my/rust-expand-macro ()
+      "Expand macro at point, same as `lsp-rust-analyzer-expand-macro'.
+        https://rust-analyzer.github.io/manual.html#expand-macro-recursively"
+      (interactive)
+      (jsonrpc-async-request
+       (eglot--current-server-or-lose)
+       :rust-analyzer/expandMacro (eglot--TextDocumentPositionParams)
+       :error-fn (lambda (msg) (error "Macro expand failed, msg:%s." msg))
+       :success-fn
+       (lambda (expanded-macro)
+	     (cl-destructuring-bind (name format expansion result) expanded-macro
+	       (let* ((pr (eglot--current-project))
+			      (buf (get-buffer-create (format "*rust macro expansion %s*" (cdr pr)))))
+		     (with-current-buffer buf
+		       (let ((inhibit-read-only t))
+			     (erase-buffer)
+			     (insert result)
+			     (rust-mode)))
+		     (switch-to-buffer-other-window buf))))))
+    ))
+
 
 (provide 'init-completion)

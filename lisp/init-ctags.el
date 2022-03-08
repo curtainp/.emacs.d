@@ -1,5 +1,10 @@
 ;;; init-ctags.el -*- lexical-binding: t -*-
 
+;; (use-package xcscope
+;;   :load-path "site-lisp/xcscope"
+;;   :config
+;;   (cscope-setup))
+
 (use-package citre
   :ensure nil
   :hook (citre-mode . ada/citre-hook)

@@ -1,13 +1,5 @@
 ;;; init.el  -*- lexical-binding: t -*-
 
-(defun my/apply-theme (appearance)
-  "Load theme, taking current system APPEARANCE into consideration."
-  (mapc #'disable-theme custom-enabled-themes)
-  (pcase appearance
-    ('light (load-theme 'tango t))
-    ('dark (load-theme 'tango-dark t))))
-
-(add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 
 (setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.5)
@@ -40,6 +32,7 @@
 (require 'init-completion)
 (require 'init-evil)
 (require 'init-ui)
+(require 'init-treesitter)
 (require 'init-org)
-(require 'init-ctags)
+;; (require 'init-ctags)
 (require 'init-language)

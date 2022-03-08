@@ -1,5 +1,15 @@
 ;;; init-ui.el -*- lexical-binding: t -*-
 
+(use-package dracula-theme
+  :ensure t)
+
+(defun my/apply-theme (appearance)
+  "Load theme, taking current system APPEARANCE into consideration."
+  (mapc #'disable-theme custom-enabled-themes)
+  (pcase appearance
+    ('light (load-theme 'tango t))
+    ('dark (load-theme 'dracula t))))
+(add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
 
 (setq  initial-frame-alist (quote ((fullscreen . maximized))))
 (global-display-line-numbers-mode t)

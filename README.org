@@ -1,1 +1,1 @@
-# Curtain Emacs Config
+* Curtain Emacs Config

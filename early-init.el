@@ -2,6 +2,7 @@
 
 (setq default-frame-alist '((undecorated . t)
                             (font . "JetBrainsMono Nerd Font Mono"))
+      ;; defer GC util startup
       gc-cons-threshold most-positive-fixnum
       read-process-output-max (* 1024 1024)
       frame-inhibit-implied-resize t

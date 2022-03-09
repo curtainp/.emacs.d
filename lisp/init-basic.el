@@ -1,7 +1,13 @@
 ;;; init-basic.el  -*- lexical-binding: t no-byte-compile: t -*-
 
 (with-no-warnings
-  (setq read-process-output-max #x10000))
+  (setq read-process-output-max #x10000)
+  (use-package gcmh
+    :diminish
+    :init
+    (setq gcmh-idle-delay 5
+          gcmh-high-cons-threshold #x1000000)
+    (gcmh-mode 1)))
 
 
 ;; UTF-8 as the default coding system

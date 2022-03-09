@@ -1,8 +1,5 @@
 ;;; init.el  -*- lexical-binding: t -*-
 
-
-(setq gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 0.5)
 (add-hook 'emacs-startup-hook
           (lambda ()
             "Recover GC values after startup."

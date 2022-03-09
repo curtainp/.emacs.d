@@ -1,15 +1,32 @@
 ;;; init-ui.el -*- lexical-binding: t -*-
 
-(use-package dracula-theme
-  :ensure t)
+(setq frame-title-format '("Curtain Emacs - %b")
+      icon-title-format frame-title-format)
 
-(defun my/apply-theme (appearance)
-  "Load theme, taking current system APPEARANCE into consideration."
-  (mapc #'disable-theme custom-enabled-themes)
-  (pcase appearance
-    ('light (load-theme 'tango t))
-    ('dark (load-theme 'dracula t))))
-(add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
+(when (and (display-graphic-p) (eq system-type 'darwin))
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
+  (add-hook 'after-load-theme-hook
+            (lambda ()
+              (let ((bg (frame-parameter nil 'background-mode)))
+                (set-frame-parameter nil 'ns-appearance bg)
+                (setcdr (assq 'ns-appearance default-frame-alist) bg)))))
+
+;; Optimization
+(setq idle-update-delay 1.0)
+
+(use-package doom-themes
+  :custom-face
+  (doom-modeline-buffer-file ((t (:inherit (mode-line bold)))))
+  :init
+  (load-theme 'doom-one t))
+
+(use-package doom-modeline
+  :hook (after-init . doom-modeline-mode)
+  :init
+  (setq doom-modeline-minor-mode t)
+  (unless after-init-time
+    (setq-default mode-line-format nil)))
 
 ;; (global-display-line-numbers-mode t)
 (use-package display-line-numbers
@@ -25,9 +42,10 @@
   ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Time-Parsing.html
   (display-time-mode 1))
 
+
 ;; (global-hl-line-mode t)
 (use-package hl-line
-  :config
+  :init
   (global-hl-line-mode 1))
 
 (set-face-attribute 'default nil :height 160 :family "JetBrainsMono Nerd Font Mono")

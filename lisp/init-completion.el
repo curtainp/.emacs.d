@@ -141,7 +141,16 @@
              lsp-deferred)
   :hook ((prog-mode . (lambda ()
                         (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode 'makefile-mode)
-                          (lsp-deferred)))))
+                          (lsp-deferred))))
+         (lsp-mode . (lambda ()
+                       (evil-define-key 'normal lsp-mode-map
+                                            "gd" 'lsp-find-definition
+                                            "gD" 'lsp-find-declaration
+                                            "K"  'lsp-hover
+                                            "gi" 'lsp-find-implementation
+                                            "gc" 'lsp-execute-code-action
+                                            "gn" 'lsp-rename
+                                            "gr" 'lsp-find-references))))
   :init
   ;; https://emacs-lsp.github.io/lsp-mode/page/settings/
   (setq

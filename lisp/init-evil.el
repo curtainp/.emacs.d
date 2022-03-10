@@ -45,33 +45,13 @@
                  git-rebase-mode))
       (add-to-list 'evil-emacs-state-modes m))
 
-    (dolist (m '(wdired-mode
-                 occur-edit-mode
-                 xref--xref-buffer-mode
-                 ))
-      (add-to-list 'evil-normal-state-modes m))
-
     (setq evil-move-cursor-back nil)
-    (setq evil-normal-state-tag   (propertize "[N]" 'face '((:background "DarkGoldenrod2" :foreground "black")))
-          evil-emacs-state-tag    (propertize "[E]" 'face '((:background "SkyBlue2" :foreground "black")))
-          evil-insert-state-tag   (propertize "[I]" 'face '((:background "chartreuse3") :foreground "white"))
-          evil-motion-state-tag   (propertize "[M]" 'face '((:background "plum3") :foreground "white"))
-          evil-visual-state-tag   (propertize "[V]" 'face '((:background "gray" :foreground "black")))
-          evil-operator-state-tag (propertize "[O]" 'face '((:background "purple"))))
     (define-key evil-insert-state-map (kbd "C-z") 'evil-emacs-state)
     (add-hook 'xref--xref-buffer-mode-hook
               (lambda ()
                 (evil-add-hjkl-bindings xref--xref-buffer-mode-map 'normal
                   (kbd "RET") 'xref-goto-xref
                   (kbd "q") 'quit-window)))
-    (add-hook 'occur-mode-hook
-              (lambda ()
-                (evil-add-hjkl-bindings occur-mode-map 'emacs
-                  (kbd "/") 'evil-search-forward
-                  (kbd "n") 'evil-search-next
-                  (kbd "N") 'evil-search-previous
-                  (kbd "C-d") 'evil-scroll-down
-                  (kbd "C-u") 'evil-scroll-up)))
     (add-hook 'occur-edit-mode-hook
               (lambda ()
                 (evil-add-hjkl-bindings occur-edit-mode-map 'normal
@@ -80,7 +60,6 @@
                   (kbd "N") 'evil-search-previous
                   (kbd "C-d") 'evil-scroll-down
                   (kbd "C-u") 'evil-scroll-up)))
-
     ))
 
 
@@ -110,12 +89,18 @@
       "hv" 'describe-variable
       "hk" 'describe-key
       "hm" 'describe-mode
-      ":" 'execute-extended-command
+      ;; project
+      "pf" 'project-find-file
+      "pw" 'consult-ripgrep
+      "pp" 'projectile-switch-project
+      "pb" 'projectile-ibuffer
+      ;; lsp
+      "ls" 'lsp-describe-session
       ;; file
       "ff" 'find-file
       ;; buffer
       "bb" 'consult-buffer
-     )
+      )
     ))
 
 (use-package evil-nerd-commenter

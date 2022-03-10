@@ -83,7 +83,9 @@
       ;; opener
       "oa" 'org-agenda
       "oc" 'org-capture
-      "og" 'magit-status
+      ;; magit
+      "gs" 'magit-status
+      "gl" 'magit-log
       ;; helper
       "hf" 'describe-function
       "hv" 'describe-variable

@@ -32,6 +32,7 @@
 (require 'init-ui)
 (require 'init-treesitter)
 (require 'init-org)
+(require 'init-flycheck)
 ;;;  programming
 (require 'init-ctags)
 (require 'init-vcs)

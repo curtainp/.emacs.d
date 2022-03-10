@@ -18,7 +18,7 @@
 ;; load-path
 (use-package exec-path-from-shell
     :init
-    (setq exec-path-from-shell-variables '("PATH" "MANPATH")
+    (setq exec-path-from-shell-variables '("PATH")
             exec-path-from-shell-arguments '("-l"))
     (exec-path-from-shell-initialize))
 

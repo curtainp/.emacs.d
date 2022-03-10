@@ -3,8 +3,9 @@
 (add-hook 'emacs-startup-hook
           (lambda ()
             "Recover GC values after startup."
-            (setq gc-cons-threshold 800000
-                  gc-cons-percentage 0.1)))
+            (setq gc-cons-threshold 200000000
+                  gc-cons-percentage 0.5
+                  read-process-output-max (* 2048 1024))))
 
 ;; Load path
 ;; Optimize: Force "lisp"" and "site-lisp" at the head to reduce the startup time.
@@ -31,5 +32,8 @@
 (require 'init-ui)
 (require 'init-treesitter)
 (require 'init-org)
+;;;  programming
 (require 'init-ctags)
+(require 'init-vcs)
+(require 'init-projectile)
 (require 'init-language)

@@ -111,7 +111,7 @@
 
 ;; enable in evil insert mode
 (use-package company
-  ;; :ensure nil
+  :diminish
   :commands (global-company-mode)
   :config
   (setq company-tooltip-align-annotations t
@@ -123,10 +123,8 @@
         ;; company-echo-delay 0
         ;; Easy navigation to candidates with M-<n>
         company-show-numbers t
-        company-cmake-executable-arguments '("--help-command-list"
-                                             "--help-module-list"
-                                             "--help-property-list"
-                                             "--help-variable-list")
+        company-global-modes '(not erc-mode message-mode help-mode
+                                   gud-mode eshell-mode shell-mode)
         company-backends '((company-capf company-dabbrev-code company-dabbrev
                                          company-keywords)
                            (company-files)))
@@ -136,37 +134,30 @@
               ("C-p" . company-select-previous)
               ("M-i" . company-complete-selection)))
 
-(use-package eglot
-  ;; :ensure nil
-  :commands (eglot-ensure my/rust-expand-macro)
-  :hook (rust-mode . eglot-ensure)
-  :config
-  (progn
-    (setq eldoc-echo-area-use-multiline-p 3
-          eldoc-echo-area-display-truncation-message nil)
-    (set-face-attribute 'eglot-highlight-symbol-face nil
-                        :background "#b3d7ff")
-
-    (defun my/rust-expand-macro ()
-      "Expand macro at point, same as `lsp-rust-analyzer-expand-macro'.
-        https://rust-analyzer.github.io/manual.html#expand-macro-recursively"
-      (interactive)
-      (jsonrpc-async-request
-       (eglot--current-server-or-lose)
-       :rust-analyzer/expandMacro (eglot--TextDocumentPositionParams)
-       :error-fn (lambda (msg) (error "Macro expand failed, msg:%s." msg))
-       :success-fn
-       (lambda (expanded-macro)
-	     (cl-destructuring-bind (name format expansion result) expanded-macro
-	       (let* ((pr (eglot--current-project))
-			      (buf (get-buffer-create (format "*rust macro expansion %s*" (cdr pr)))))
-		     (with-current-buffer buf
-		       (let ((inhibit-read-only t))
-			     (erase-buffer)
-			     (insert result)
-			     (rust-mode)))
-		     (switch-to-buffer-other-window buf))))))
-    ))
+(use-package lsp-mode
+  :diminish
+  :commands (lsp-format-buffer
+             lsp-organize-imports
+             lsp-deferred)
+  :hook ((prog-mode . (lambda ()
+                        (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode 'makefile-mode)
+                          (lsp-deferred)))))
+  :init
+  ;; https://emacs-lsp.github.io/lsp-mode/page/settings/
+  (setq
+   lsp-keymap-prefix ""
+   lsp-keep-workspace-alive nil
+   lsp-signature-auto-activate nil
+   lsp-signature-render-documentation nil
+   lsp-ui-sideline-enable nil
+   lsp-ui-sideline-show-code-actions nil
+   lsp-enable-indentation nil
+   lsp-enable-on-type-formatting nil
+   lsp-display-inline-image nil
+   lsp-enable-dap-auto-configure nil
+   lsp-enable-folding nil
+   lsp-enable-suggest-server-download nil
+   ))
 
 
 (provide 'init-completion)

@@ -25,16 +25,24 @@
 (update-load-path)
 (toggle-frame-maximized)
 
-(require 'init-package)
-(require 'init-basic)
-(require 'init-completion)
-(require 'init-evil)
-(require 'init-ui)
-(require 'init-treesitter)
-(require 'init-org)
-(require 'init-flycheck)
-;;;  programming
-(require 'init-ctags)
-(require 'init-vcs)
-(require 'init-projectile)
-(require 'init-language)
+;; remove startup message when plugin start
+(with-temp-message ""
+  (require 'init-package)
+  (require 'init-basic)
+  (require 'init-completion)
+  (require 'init-evil)
+  (require 'init-ui)
+
+  ;; lazy load
+  (run-with-idle-timer
+   1 nil
+   #'(lambda ()
+       (require 'init-treesitter)
+       (require 'init-org)
+       (require 'init-flycheck)
+       (require 'init-ctags)
+       (require 'init-vcs)
+       (require 'init-projectile)
+       (require 'init-language)
+       ))
+  )

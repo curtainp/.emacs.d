@@ -1,5 +1,8 @@
 ;;; init-custom.el -*- lexical-binding: t -*-
 
+(defgroup curtain nil
+  "Curtain Emacs Customization"
+  :group 'convenience)
 
 (defcustom curtain-package-archives-alist
   (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
@@ -44,5 +47,32 @@
 
 ;; Load `custom-file'
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+
+(defcustom curtain-prettify-org-symbols-alist
+  "Beautiful Org Symbols"
+  '(("[ ]" . ?☐)
+    ("[X]" . ?☑)
+    ("[-]" . ?⛝)
+
+    ("#+ARCHIVE:" . ?📦)
+    ("#+AUTHOR:" . ?👤)
+    ("#+CREATOR:" . ?💁)
+    ("#+DATE:" . ?📆)
+    ("#+DESCRIPTION:" . ?⸙)
+    ("#+EMAIL:" . ?📧)
+    ("#+OPTIONS:" . ?⛭)
+    ("#+SETUPFILE:" . ?⛮)
+    ("#+TAGS:" . ?🏷)
+    ("#+TITLE:" . ?📓)
+
+    ("#+BEGIN_SRC" . ?✎)
+    ("#+END_SRC" . ?□)
+    ("#+BEGIN_QUOTE" . ?»)
+    ("#+END_QUOTE" . ?«)
+    ("#+HEADERS" . ?☰)
+    ("#+RESULTS:" . ?💻))
+  :group 'curtain
+  :type '(alist :key-type string :value-type (choice character sexp))
+  )
 
 (provide 'init-custom)

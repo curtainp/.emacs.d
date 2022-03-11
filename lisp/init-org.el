@@ -1,8 +1,26 @@
 ;;; init-org.el -*- lexical-binding: t -*-
 
+(require 'init-custom)
+
+(use-package org
+  :hook
+  (((org-babel-after-execute org-mode) . org-redisplay-inline-images)
+   (org-mode . (lambda ()
+                 "Beautiful Org Symbols"
+                 (setq prettify-symbols-alist curtain-prettify-org-symbols-alist)
+                 (prettify-symbols-mode 1)))
+   (org-indent-mode . (lambda ()
+                        (diminish 'org-indent-mode)
+                        (make-variable-buffer-local 'show-paren-mode)
+                        (setq show-paren-mode nil))))
+  :config
+  (setq org-modules nil
+        org-ellipsis (if (and (display-graphic-p) (char-displayable-p ?⏷)) "\t⏷" nil)))
+
+
 (use-package ox-hugo
-  :ensure t   ;Auto-install the package from Melpa
-  :pin melpa  ;`package-archives' should already have ("melpa" . "https://melpa.org/packages/")
+  :ensure t                             ;Auto-install the package from Melpa
+  :pin melpa ;`package-archives' should already have ("melpa"  "https://melpa.org/packages/")
   :after ox)
 
 (use-package org-super-agenda
@@ -10,28 +28,28 @@
   (require 'org-agenda)
   (define-key org-agenda-keymap "j" #'org-agenda-next-line)
   (define-key org-agenda-mode-map "j" #'org-agenda-next-line)
-  ;(define-key org-super-agenda-header-map "j" #'org-agenda-next-line)
+                                        ;(define-key org-super-agenda-header-map "j" #'org-agenda-next-line)
   (define-key org-agenda-keymap "k" #'org-agenda-previous-line)
   (define-key org-agenda-mode-map "k" #'org-agenda-previous-line)
-  ;(define-key org-super-agenda-header-map "k" #'org-agenda-previous-line)
+                                        ;(define-key org-super-agenda-header-map "k" #'org-agenda-previous-line)
 
 
   (setq org-super-agenda-groups
         '((:name "Important"
-           :priority "A")
+                 :priority "A")
           (:name "Quick Picks"
-           :effort< "0:30")
+                 :effort< "0:30")
           (:name "Next Items"
-           :tag ("NEXT" "outbox"))
+                 :tag ("NEXT" "outbox"))
           (:priority<= "B"
-           :scheduled future)))
+                       :scheduled future)))
   :config
-  (org-super-agenda-mode))
+  (org-super-agenda-mode)
+  (with-eval-after-load 'org-agenda
+    ;; keybindings
+    (evil-make-overriding-map org-agenda-mode-map 'normal)))
 
-(with-eval-after-load 'org-agenda
-  ;; keybindings
- (evil-make-overriding-map org-agenda-mode-map 'normal)
-)
+
 
 (with-eval-after-load 'org
   (progn
@@ -78,7 +96,7 @@
     (setq org-agenda-span 'day)
     (setq org-agenda-use-tag-inheritance nil) ;; 3-4x speedup
     (setq org-agenda-window-setup 'current-window)
-    (setq org-log-done t)
+    (setq org-log-done 'time)
     (setq org-todo-keywords
           (quote ((sequence "TODO(t)" "STARTED(s)" "|" "DONE(d!/!)")
                   (sequence "WAITING(w@/!)" "SOMEDAY(S)" "|" "CANCELLED(c@/!)" "MEETING(m)" "PHONE(p)"))))
@@ -160,7 +178,20 @@
                                 (org-agenda-start-with-log-mode nil)
                                 (org-agenda-log-mode-items '(closed clock state))
                                 (org-agenda-clockreport-mode t))))))
-    
+    (use-package org-modern
+      :hook ((org-mode . org-modern-mode)
+             (org-modern-mode . (lambda ()
+                                  (setq line-spacing 0.1)
+                                  (setq prettify-symbols-alist nil)
+                                  (prettify-symbols-mode -1)))))
+    (use-package org-superstar
+          :if (and (display-graphic-p) (char-displayable-p ?◉))
+          :hook (org-mode . org-superstar-mode)
+          :init (setq org-superstar-headline-bullets-list '("◉""○""◈""◇""⁕")))
+    ;; Babel
+    (setq org-confirm-babel-evaluate nil
+          org-src-fontify-natively t
+          org-src-tab-acts-natively t)
     ))
 
 (provide 'init-org)

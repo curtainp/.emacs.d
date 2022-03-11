@@ -122,7 +122,7 @@
         company-dabbrev-ignore-case nil
         ;; company-echo-delay 0
         ;; Easy navigation to candidates with M-<n>
-        company-show-numbers t
+        company-quick-access-keys nil
         company-global-modes '(not erc-mode message-mode help-mode
                                    gud-mode eshell-mode shell-mode)
         company-backends '((company-capf company-dabbrev-code company-dabbrev
@@ -146,7 +146,7 @@
                        (evil-define-key 'normal lsp-mode-map
                                             "gd" 'lsp-find-definition
                                             "gD" 'lsp-find-declaration
-                                            "K"  'lsp-hover
+                                            "K"  'lsp-describe-thing-at-point
                                             "gi" 'lsp-find-implementation
                                             "gc" 'lsp-execute-code-action
                                             "gn" 'lsp-rename
@@ -158,8 +158,8 @@
    lsp-keep-workspace-alive nil
    lsp-signature-auto-activate nil
    lsp-signature-render-documentation nil
-   lsp-ui-sideline-enable nil
-   lsp-ui-sideline-show-code-actions nil
+   ;; lsp-ui-sideline-enable nil
+   ;; lsp-ui-sideline-show-code-actions nil
    lsp-enable-indentation nil
    lsp-enable-on-type-formatting nil
    lsp-display-inline-image nil

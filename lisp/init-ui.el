@@ -53,7 +53,7 @@
       emacs-font-name)
          (cond
           ((featurep 'cocoa)
-           (setq emacs-font-name "JetBrainsMono Nerd Font Mono"))
+           (setq emacs-font-name "Operator Mono Lig"))
           ((string-equal system-type "gnu/linux")
            (setq emacs-font-name "JetBrainsMono Nerd Font Mono")))
          (when (display-grayscale-p)

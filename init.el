@@ -37,6 +37,7 @@
   (run-with-idle-timer
    1 nil
    #'(lambda ()
+       (require 'init-company-lsp)
        (require 'init-treesitter)
        (require 'init-org)
        (require 'init-flycheck)

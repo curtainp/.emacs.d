@@ -41,6 +41,7 @@
        (require 'init-treesitter)
        (require 'init-org)
        (require 'init-flycheck)
+       (require 'init-yasnippet)
        (require 'init-ctags)
        (require 'init-vcs)
        (require 'init-projectile)

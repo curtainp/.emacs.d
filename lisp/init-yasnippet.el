@@ -1,8 +1,8 @@
 ;;;  init-yasnippet.el -*- lexical-binding: t -*-
 
+;; enable in evil-insert-hook
 (use-package yasnippet
-  :diminish yas-minor-mode
-  :hook (after-init . yas-global-mode))
+  :defer t)
 
 (use-package yasnippet-snippets
   :after yasnippet)

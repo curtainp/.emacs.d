@@ -11,7 +11,7 @@
         (company-ensure-emulation-alist)))
     (defun ada/evil-insert-hook ()
       (global-company-mode 1)
-      ;; (yas-global-mode 1)
+      (yas-global-mode 1)
       ))
 
   :hook ((evil-local-mode . ada/fix-evil-company)
@@ -38,8 +38,9 @@
     (define-key evil-visual-state-map "p" 'evil-paste-after)
 
     (dolist (m '(minibuffer-inactive-mode
-                 makey-key-mode
-                 prodigy-mode
+                 helpful-mode help-mode easy-hugo-mode dired-mode
+                 makey-key-mode epa-key-list-mode epa-key-mode epa-info-mode
+                 prodigy-mode org-mode
                  ag-mode
                  flycheck-error-list-mode
                  git-rebase-mode))

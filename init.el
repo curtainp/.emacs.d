@@ -46,5 +46,6 @@
        (require 'init-vcs)
        (require 'init-projectile)
        (require 'init-language)
+       (require 'init-misc)
        ))
   )

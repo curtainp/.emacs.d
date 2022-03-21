@@ -1,3 +1,0 @@
-[submodule "site-lisp/xcscope"]
-	path = site-lisp/xcscope
-	url = https://github.com/dkogan/xcscope.el.git

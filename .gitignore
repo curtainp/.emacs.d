@@ -1,0 +1,7 @@
+*.db
+*.sqlite
+
+auto-save-list/
+straight/
+eln-cache/
+transient/

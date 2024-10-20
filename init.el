@@ -104,111 +104,6 @@
 	recentf-filename-handlers nil
 	recentf-show-file-shortcuts-flag nil))
 
-;; #####################################
-;; completion
-;; #####################################
-(use-package vertico
-  :custom (vertico-count 15)
-  :hook (after-init . vertico-mode)
-  :config
-  (setq vertico-cycle t
-	vertico-resize nil)
-  (add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy)
-  (add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
-  (define-key vertico-map [backspace] #'vertico-directory-delete-char)
-  (define-key vertico-map (kbd "C-'")  #'vertico-quick-jump)
-  )
-
-(use-package marginalia
-  :hook
-  (after-init . marginalia-mode))
-
-(use-package orderless
-  :demand t ;; prevent lazyload which cause below undefined
-  :config
-  (setq completion-styles '(orderless partial-completion)
-	completion-category-defaults nil
-	completion-category-overrides '((file (styles basic partial-completion)))
-	orderless-component-separator #'orderless-escapable-split-on-space
-	)
-   )
-
-(use-package consult
-  :demand t
-  :bind (
-	 ("C-c M-x" . consult-mode-command)
-	 ("C-c r"   . consult-ripgrep)
-	 ("C-c i"   . consult-info)
-	 ("C-c m"   . consult-man)
-	 ("C-c T"   . consult-theme)
-	 ("C-."     . consult-imenu)
-	 ("C-c c f" . describe-face)
-	 ("C-x b"   . consult-buffer)
-	 ([remap Info-search]      . consult-info)
-	 ([remap goto-line]        . consult-goto-line)
-	 ([remap isearch-forward]  . consult-line)
-	 ("M-y"     . consult-yank-pop))
-  :init
-  (advice-add #'multi-occur :override #'consult-multi-occur)
-  :config
-  (setq
-   consult-narrow-key "<"
-   consult-line-numbers-widen t
-   consult-async-min-input 2
-   consult-async-refresh-delay 0.15
-   consult-async-input-throttle 0.2
-   consult-async-input-debounce 0.1
-   consult-line-start-from-top t
-   )
-  )
-
-(use-package embark
-  :bind (("s-."   . embark-act)
-	 ("M-."   . embark-dwim)  ; NOTE: overrides `xref-find-definition'
-	 ([remap describe-bindings] . embark-bindings))
-  :config
-  ;; Hide the mode line of the Embark live/completions buffers
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
-(use-package embark-consult
-  :bind (:map minibuffer-mode-map
-	      ("C-c C-o" . embark-export))
-  :hook (embark-collect-mode . consult-preview-at-point-mode))
-
-;; buffer completion
-(use-package emacs
-  :init
-  (setq completion-cycle-threshold 3)
-  (setq tab-always-indent 'complete))
-
-(use-package corfu
-  :custom
-  (corfu-auto t)
-  (corfu-auto-prefix 2)
-  (corfu-preview-current nil)
-  (corfu-auto-delay 0.08)
-  (corfu-popupinfo-delay '(0.2 . 0.1))
-  :custom-face
-  (corfu-border ((t (:inherit region :background unspecified))))
-  :bind ("M-/" . completion-at-point)
-  :hook ((after-init . global-corfu-mode)
-	 (global-corfu-mode . corfu-popupinfo-mode))
-  )
-
-(use-package nerd-icons-corfu
-  :after corfu
-  :init (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
-
-(use-package cape
-  :init
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-  (add-to-list 'completion-at-point-functions #'cape-keyword)
-  (add-to-list 'completion-at-point-functions #'cape-abbrev)
-  (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster))
 
 ;; #####################################
 ;; snippets
@@ -222,6 +117,7 @@
   :init (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
 (require 'init-ui)
+(require 'init-completion)
 (require 'init-markdown)
 (require 'init-org)
 (require 'init-vcs)

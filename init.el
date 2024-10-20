@@ -22,6 +22,7 @@
 (global-set-key (kbd "C-,") 'duplicate-line)
 (global-set-key (kbd "C-x p") 'previous-buffer)
 (global-set-key (kbd "C-x n") 'next-buffer)
+(global-set-key (kbd "C--") 'set-mark-command)
 
 ;; straight.el for package manager
 (setq straight-use-package-by-default t
@@ -196,105 +197,6 @@
   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster))
 
 ;; #####################################
-;; UI
-;; #####################################
-(global-hl-line-mode t)
-(use-package doom-themes
-  :demand t
-  :config
-  (setq doom-themes-enable-bold t    
-        doom-themes-enable-italic t)
-  (load-theme 'doom-gruvbox t)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
-
-(use-package doom-modeline
-  :init
-  (setq doom-modeline-minor-mode t)
-  :custom-face
-  (mode-line ((t (:height 0.95))))
-  (mode-line-inactive ((t (:height 0.95))))
-  :hook (after-init . doom-modeline-mode))
-
-;; automatic install font use this
-(defun font-installed-p (font-name)
-  (find-font (font-spec :name font-name)))
-(use-package nerd-icons
-  :config
-  (when (and (display-graphic-p)
-	     (not (font-installed-p nerd-icons-font-family)))
-    (nerd-icons-install-fonts t)))
-
-(use-package expand-region
-  :bind ("C-=" . er/expand-region)
-  :config
-  (when (treesit-available-p)
-     (defun treesit-mark-bigger-node ()
-      "Use tree-sitter to mark regions."
-      (let* ((root (treesit-buffer-root-node))
-             (node (treesit-node-descendant-for-range root (region-beginning) (region-end)))
-             (node-start (treesit-node-start node))
-             (node-end (treesit-node-end node)))
-        ;; Node fits the region exactly. Try its parent node instead.
-        (when (and (= (region-beginning) node-start) (= (region-end) node-end))
-          (when-let ((node (treesit-node-parent node)))
-            (setq node-start (treesit-node-start node)
-                  node-end (treesit-node-end node))))
-        (set-mark node-end)
-        (goto-char node-start)))
-     (add-to-list 'er/try-expand-list 'treesit-mark-bigger-node))
-  )
-
-;; Highlight brackets according to their depth
-(use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
-
-;; Highlight TODO and similar keywords in comments and strings
-(use-package hl-todo
-  :custom-face
-  (hl-todo ((t (:inherit default :height 0.9 :width condensed :weight bold :underline nil :inverse-video t))))
-  :bind (:map hl-todo-mode-map
-         ([C-f3]    . hl-todo-occur)
-         ("C-c t o" . hl-todo-occur)
-         ("C-c t p" . hl-todo-previous)
-         ("C-c t n" . hl-todo-next)
-         ("C-c t i" . hl-todo-insert)
-         ("C-c t r" . hl-todo-rg-project)
-         ("C-c t R" . hl-todo-rg))
-  :hook ((after-init . global-hl-todo-mode)
-         (hl-todo-mode . (lambda ()
-                           (add-hook 'flymake-diagnostic-functions
-                                     #'hl-todo-flymake nil t))))
-  :init (setq hl-todo-require-punctuation t
-              hl-todo-highlight-punctuation ":")
-  :config
-  (dolist (keyword '("BUG" "DEFECT" "ISSUE"))
-    (add-to-list 'hl-todo-keyword-faces `(,keyword . "#e45649")))
-  (dolist (keyword '("TRICK" "WORKAROUND"))
-    (add-to-list 'hl-todo-keyword-faces `(,keyword . "#d0bf8f")))
-  (dolist (keyword '("DEBUG" "STUB"))
-    (add-to-list 'hl-todo-keyword-faces `(,keyword . "#7cb8bb")))
-
-  (defun hl-todo-rg (regexp &optional files dir)
-    "Use `rg' to find all TODO or similar keywords."
-    (interactive
-     (progn
-       (unless (require 'rg nil t)
-         (error "`rg' is not installed"))
-       (let ((regexp (replace-regexp-in-string "\\\\[<>]*" "" (hl-todo--regexp))))
-         (list regexp
-               (rg-read-files)
-               (read-directory-name "Base directory: " nil default-directory t)))))
-    (rg regexp files dir))
-
-  (defun hl-todo-rg-project ()
-    "Use `rg' to find all TODO or similar keywords in current project."
-    (interactive)
-    (unless (require 'rg nil t)
-      (error "`rg' is not installed"))
-    (rg-project (replace-regexp-in-string "\\\\[<>]*" "" (hl-todo--regexp)) "everything")))
-
-;; #####################################
 ;; snippets
 ;; #####################################
 (use-package yasnippet
@@ -305,7 +207,7 @@
 (use-package yasnippet-capf
   :init (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
-
+(require 'init-ui)
 (require 'init-markdown)
 (require 'init-org)
 (require 'init-vcs)

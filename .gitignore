@@ -8,5 +8,6 @@ transient/
 tree-sitter/
 devdocs/
 eshell/
+savehist
 bookmarks
 recentf

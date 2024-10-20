@@ -104,6 +104,12 @@
 	recentf-filename-handlers nil
 	recentf-show-file-shortcuts-flag nil))
 
+;;;; Eldoc (Emacs live documentation feedback)
+(use-package eldoc
+  :ensure nil
+  :hook (prog-mode . eldoc-mode)
+  :config
+  (setq eldoc-message-function #'message)) ; don't use mode line for M-x eval-expression, etc.
 
 ;; #####################################
 ;; snippets

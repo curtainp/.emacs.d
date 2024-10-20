@@ -7,5 +7,6 @@ eln-cache/
 transient/
 tree-sitter/
 devdocs/
+eshell/
 bookmarks
 recentf

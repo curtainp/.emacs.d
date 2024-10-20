@@ -311,5 +311,6 @@
 (require 'init-vcs)
 ;; (require 'init-lsp)
 (require 'init-prog)
+(require 'init-eshell)
 (require 'init-elisp)
 (require 'init-web)

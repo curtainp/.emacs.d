@@ -5,5 +5,7 @@ auto-save-list/
 straight/
 eln-cache/
 transient/
+tree-sitter/
+devdocs/
 bookmarks
 recentf

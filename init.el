@@ -83,6 +83,11 @@
 (when (native-comp-available-p)
   (setq native-comp-async-report-warnings-errors 'silent))
 
+(use-package proced
+  :custom
+  (proced-enable-color-flag t)
+  (proced-tree-flag t))
+
 
 ;; #####################################
 ;; completion

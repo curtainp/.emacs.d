@@ -20,6 +20,8 @@
 ;; duplicate line
 (setq duplicate-line-final-position 1)
 (global-set-key (kbd "C-,") 'duplicate-line)
+(global-set-key (kbd "C-x p") 'previous-buffer)
+(global-set-key (kbd "C-x n") 'next-buffer)
 
 ;; straight.el for package manager
 (setq straight-use-package-by-default t
@@ -53,6 +55,8 @@
       make-backup-files nil
       auto-save-default nil
       use-short-answers t
+      mac-option-modifier 'super
+      mac-command-modifier 'meta
       )
 
 ;; Show directory first
@@ -60,7 +64,7 @@
 ;; Always delete and copy recursively
 (setq dired-recursive-deletes 'always
       dired-recursive-copies 'always)
-
+ 
 (use-package diredfl
   :hook (dired-mode . diredfl-mode))
 

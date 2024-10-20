@@ -55,6 +55,9 @@
 (setq create-lockfiles nil
       make-backup-files nil
       auto-save-default nil
+      use-dialog-box nil
+      use-file-dialog nil
+      ring-bell-function 'ignore
       use-short-answers t
       mac-option-modifier 'super
       mac-command-modifier 'meta
@@ -89,6 +92,17 @@
   (proced-enable-color-flag t)
   (proced-tree-flag t))
 
+(use-package recentf
+  :hook (after-init . recentf-mode)
+  :config
+  (setq recentf-max-saved-items 100
+	recentf-max-menu-items 25
+	recentf-save-file-modes nil
+	recentf-keep nil
+	recentf-auto-cleanup nil
+	recentf-initialize-file-name-history nil
+	recentf-filename-handlers nil
+	recentf-show-file-shortcuts-flag nil))
 
 ;; #####################################
 ;; completion

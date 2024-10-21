@@ -104,6 +104,10 @@
 	recentf-filename-handlers nil
 	recentf-show-file-shortcuts-flag nil))
 
+(use-package hungry-delete
+  :init
+  (global-hungry-delete-mode))
+
 ;;;; Eldoc (Emacs live documentation feedback)
 (use-package eldoc
   :ensure nil

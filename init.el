@@ -108,6 +108,13 @@
   :init
   (global-hungry-delete-mode))
 
+(use-package smartparens
+  :init
+  (smartparens-global-mode t)
+  (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
+  (sp-local-pair 'emacs-lisp-mode "`" nil :actions nil)
+  (sp-local-pair 'lisp-interaction-mode "'" nil :actions nil))
+
 ;;;; Eldoc (Emacs live documentation feedback)
 (use-package eldoc
   :ensure nil

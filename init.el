@@ -131,4 +131,5 @@
 (require 'init-prog)
 (require 'init-eshell)
 (require 'init-elisp)
+(require 'init-rust)
 (require 'init-web)

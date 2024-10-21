@@ -3,14 +3,15 @@
 (use-package json-mode)
 (use-package yaml-mode)
 (use-package toml-mode)
+
 (use-package js
   :init (setq js-indent-level 2))
 
 (use-package js2-mode
   :mode (("\\.js\\'" . js2-mode)
          ("\\.jsx\\'" . js2-jsx-mode))
-  :interpreter (("node" . js2-mode)
-                ("node" . js2-jsx-mode))
+  ;; :interpreter (("node" . js2-mode)
+  ;;               ("node" . js2-jsx-mode))
   :hook ((js2-mode . js2-imenu-extras-mode)
          (js2-mode . js2-highlight-unused-variables-mode))
   :config
@@ -23,10 +24,9 @@
     :init (setq prettier-pre-warm 'none)))
 
 (use-package typescript-ts-mode
-  :init
-  :custom (typescript-ts-mode-indent-offset 2)
-  :config
-  (define-key typescript-ts-mode-map (kbd "RET") 'av/auto-indent-method-maybe))
+  :mode (("\\.ts\\'" . typescript-ts-mode)
+	 ("\\.tsx\\'" . tsx-ts-mode))
+  :custom (typescript-ts-mode-indent-offset 2))
 
 (use-package web-mode
   :mode "\\.\\(phtml\\|php\\|[gj]sp\\|as[cp]x\\|erb\\|djhtml\\|html?\\|hbs\\|ejs\\|jade\\|swig\\|tm?pl\\|vue\\)$"

@@ -123,6 +123,19 @@
   :config
   (setq eldoc-message-function #'message)) ; don't use mode line for M-x eval-expression, etc.
 
+(use-package vterm
+  :bind (:map vterm-mode-map
+	 ([return] . vterm-send-return))
+  :custom
+  (vterm-always-compile-module t)
+  (vterm-max-scrollback 5000)
+  )
+
+(use-package multi-vterm
+  :bind (([remap project-shell] . multi-vterm-project)
+	 ([f1] . multi-vterm-project))
+  :custom (multi-vterm-dedicated-window-height-percent 30))
+
 ;; #####################################
 ;; snippets
 ;; #####################################

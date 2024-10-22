@@ -10,7 +10,11 @@
 (scroll-bar-mode 0)
 (column-number-mode 1)
 (show-paren-mode 1)
-(global-display-line-numbers-mode)
+(dolist (mode '(text-mode-hook
+		prog-mode-hook
+		conf-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 1))))
+
 
 (add-to-list 'load-path "~/.emacs.d/site-lisp/")
 ;; use simpc-mode to substitude the fucking stupid c-mode

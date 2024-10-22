@@ -1,0 +1,2 @@
+** Curtain Emacs Configuration
+This time, I'ill use the built-in packages and key bindings as much as possible to keep Emacs clean.

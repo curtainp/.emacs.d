@@ -27,6 +27,6 @@
   (setq read-process-output-max 1048576))
 
 (add-to-list 'default-frame-alist '(undecorated-round . t))
-(add-to-list 'default-frame-alist `(font . "Iosevka-20"))
+(add-to-list 'default-frame-alist `(font . "IosevkaTerm Nerd Font-18"))
 (setq-default inhibit-splash-screen t)
 (setq frame-resize-pixelwise t)

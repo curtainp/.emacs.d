@@ -125,10 +125,13 @@
 
 (use-package vterm
   :bind (:map vterm-mode-map
-	 ([return] . vterm-send-return))
+	      ([return] . vterm-send-return))
+  :hook (vterm-mode . (lambda ()
+			(set (make-local-variable 'buffer-face-mode-face) '(:family "IosevkaTerm Nerd Font"))
+			(buffer-face-mode t)))
   :custom
   (vterm-always-compile-module t)
-  (vterm-max-scrollback 5000)
+  (vterm-max-scrollback 10000)
   )
 
 (use-package multi-vterm

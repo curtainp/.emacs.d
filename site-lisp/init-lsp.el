@@ -14,6 +14,18 @@
   (acm-enable-codeium nil)
   (acm-enable-lsp-workspace-symbol t)
   (lsp-bridge-enable-inlay-hint t)
+  (lsp-bridge-user-langserver-dir (concat (expand-file-name user-emacs-directory) "langserver"))
+  (lsp-bridge-user-multiserver-dir (concat (expand-file-name user-emacs-directory) "multiserver"))
+  :bind (:map global-map
+	      ("M-." . lsp-bridge-find-def)
+	      ("M-," . lsp-bridge-find-def-return)
+	      ("C-c C-d" . lsp-bridge-diagnostic-list)
+	      ("C-c C-a" . lsp-bridge-code-action)
+	      ("C-c C-r" . lsp-bridge-find-references)
+	      ("C-c C-k" . lsp-bridge-popup-documentation)
+	      ("C-c C-p" . lsp-bridge-peek)
+	      ("C-c C-n" . lsp-bridge-rename)
+	      ("C-c C-f" . lsp-bridge-code-format))
   :init
   (global-lsp-bridge-mode)
   :config

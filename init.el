@@ -160,6 +160,7 @@
 (require 'init-org)
 (require 'init-vcs)
 (require 'init-lsp)
+(require 'init-multimedia)
 (require 'init-prog)
 (require 'init-eshell)
 (require 'init-elisp)

@@ -20,7 +20,7 @@
 (when (executable-find "prettier")
   (use-package prettier
     :diminish
-    :hook ((js-mode js2-mode css-mode sgml-mode web-mode) . prettier-mode)
+    :hook ((js-mode js2-mode css-mode sgml-mode web-mode js-ts-mode js-jsx-mode typescript-ts-mode typescript-mode tsx-ts-mode typescript-tsx-mode) . prettier-mode)
     :init (setq prettier-pre-warm 'none)))
 
 (use-package typescript-ts-mode

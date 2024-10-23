@@ -36,21 +36,21 @@
   (setq savehist-save-minibuffer-history t)
   (add-to-list 'savehist-additional-variables 'kill-ring))
 
-(use-package dabbrev
-  :commands (dabbrev-expand dabbrev-completion)
-  :config
-;;;; `dabbrev' (dynamic word completion (dynamic abbreviations))
-  (setq dabbrev-abbrev-char-regexp "\\sw\\|\\s_")
-  (setq dabbrev-abbrev-skip-leading-regexp "[$*/=~']")
-  (setq dabbrev-backward-only nil)
-  (setq dabbrev-case-distinction 'case-replace)
-  (setq dabbrev-case-fold-search nil)
-  (setq dabbrev-case-replace 'case-replace)
-  (setq dabbrev-check-other-buffers t)
-  (setq dabbrev-eliminate-newlines t)
-  (setq dabbrev-upcase-means-case-search t)
-  (setq dabbrev-ignored-buffer-modes
-        '(archive-mode image-mode docview-mode pdf-view-mode)))
+;; (use-package dabbrev
+;;   :commands (dabbrev-expand dabbrev-completion)
+;;   :config
+;; ;;;; `dabbrev' (dynamic word completion (dynamic abbreviations))
+;;   (setq dabbrev-abbrev-char-regexp "\\sw\\|\\s_")
+;;   (setq dabbrev-abbrev-skip-leading-regexp "[$*/=~']")
+;;   (setq dabbrev-backward-only nil)
+;;   (setq dabbrev-case-distinction 'case-replace)
+;;   (setq dabbrev-case-fold-search nil)
+;;   (setq dabbrev-case-replace 'case-replace)
+;;   (setq dabbrev-check-other-buffers t)
+;;   (setq dabbrev-eliminate-newlines t)
+;;   (setq dabbrev-upcase-means-case-search t)
+;;   (setq dabbrev-ignored-buffer-modes
+;;         '(archive-mode image-mode docview-mode pdf-view-mode)))
 
 (use-package vertico
   :custom (vertico-count 15)
@@ -151,36 +151,36 @@
   (setq completion-cycle-threshold 3)
   (setq tab-always-indent 'complete))
 
-(use-package corfu
-  :custom
-  (corfu-auto t)
-  (corfu-auto-prefix 2)
-  (corfu-preview-current nil)
-  (corfu-auto-delay 0.08)
-  (corfu-popupinfo-delay '(0.2 . 0.1))
-  :custom-face
-  (corfu-border ((t (:inherit region :background unspecified))))
-  :bind ("M-/" . completion-at-point)
-  :config
-  (with-eval-after-load 'savehist
-    (corfu-history-mode 1)
-    (add-to-list 'savehist-additional-variables 'corfu-history))
-  :hook ((after-init . global-corfu-mode)
-	 (global-corfu-mode . corfu-popupinfo-mode))
-  )
+;; (use-package corfu
+;;   :custom
+;;   (corfu-auto t)
+;;   (corfu-auto-prefix 2)
+;;   (corfu-preview-current nil)
+;;   (corfu-auto-delay 0.08)
+;;   (corfu-popupinfo-delay '(0.2 . 0.1))
+;;   :custom-face
+;;   (corfu-border ((t (:inherit region :background unspecified))))
+;;   :bind ("M-/" . completion-at-point)
+;;   :config
+;;   (with-eval-after-load 'savehist
+;;     (corfu-history-mode 1)
+;;     (add-to-list 'savehist-additional-variables 'corfu-history))
+;;   :hook ((after-init . global-corfu-mode)
+;; 	 (global-corfu-mode . corfu-popupinfo-mode))
+;;   )
 
-(use-package nerd-icons-corfu
-  :after corfu
-  :init (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+;; (use-package nerd-icons-corfu
+;;   :after corfu
+;;   :init (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
-(use-package cape
-  :init
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-elisp-block)
-  (add-to-list 'completion-at-point-functions #'cape-keyword)
-  (add-to-list 'completion-at-point-functions #'cape-abbrev)
-  (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster))
+;; (use-package cape
+;;   :init
+;;   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+;;   (add-to-list 'completion-at-point-functions #'cape-file)
+;;   (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+;;   (add-to-list 'completion-at-point-functions #'cape-keyword)
+;;   (add-to-list 'completion-at-point-functions #'cape-abbrev)
+;;   (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster))
 
 
 (provide 'init-completion)

@@ -159,7 +159,7 @@
 (require 'init-markdown)
 (require 'init-org)
 (require 'init-vcs)
-;; (require 'init-lsp)
+(require 'init-lsp)
 (require 'init-prog)
 (require 'init-eshell)
 (require 'init-elisp)

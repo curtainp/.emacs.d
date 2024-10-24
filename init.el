@@ -148,11 +148,13 @@
 ;; #####################################
 (use-package yasnippet
   :hook ((prog-mode . yas-minor-mode)
-	 (org-mode . yas-minor-mode)))
+	 (org-mode . yas-minor-mode))
+  :config
+  (yas-reload-all))
 
-(use-package yasnippet-snippets)
-(use-package yasnippet-capf
-  :init (add-to-list 'completion-at-point-functions #'yasnippet-capf))
+;; (use-package yasnippet-snippets)
+;; (use-package yasnippet-capf
+;;   :init (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
 (require 'init-ui)
 (require 'init-completion)

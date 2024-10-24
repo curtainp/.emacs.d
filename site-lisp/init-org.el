@@ -11,7 +11,7 @@
 			      (make-variable-buffer-local 'show-paren-mode)
 			      (setq show-paren-mode nil))))
   :config
-  (require 'org-tempo nil t)
+  ;; (require 'org-tempo nil t)
   (setq org-modules nil
 	org-directory my-org-directory
 	org-capture-templates

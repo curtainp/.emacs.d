@@ -9,7 +9,7 @@
   (lsp-bride-signature-show-function 'lsp-bridge-signature-show-with-frame)
   (acm-enable-capf t)
   (acm-enable-quick-access t)
-  (acm-backend-yas-match-by-trigger-keyword t)
+  ;; (acm-backend-yas-match-by-trigger-keyword t)
   (acm-enable-tabnine nil)
   (acm-enable-codeium nil)
   (acm-enable-lsp-workspace-symbol t)

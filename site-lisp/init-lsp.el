@@ -29,8 +29,13 @@
   :init
   (global-lsp-bridge-mode)
   :config
-  (add-to-list 'lsp-bridge-multi-lang-server-extension-list '(("html") . "html_tailwindcss"))
-  (add-to-list 'lsp-bridge-multi-lang-server-extension-list '(("css") . "css_tailwindcss"))
+  (setq lsp-bridge-multi-lang-server-extension-list
+	'(
+	  (("ts")   . "typescript_eslint")
+	  (("tsx")  . "typescriptreact_eslint_tailwindcss")
+	  (("jsx")  . "javascriptreact_eslint_tailwindcss")
+	  (("html") . "html_tailwindcss")
+	  (("css")  . "css_tailwindcss")))
   )
 
 (provide 'init-lsp)

@@ -72,6 +72,8 @@
 ;; Always delete and copy recursively
 (setq dired-recursive-deletes 'always
       dired-recursive-copies 'always)
+
+(global-auto-revert-mode t)
  
 (use-package diredfl
   :hook (dired-mode . diredfl-mode))

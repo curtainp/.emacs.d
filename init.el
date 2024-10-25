@@ -24,6 +24,7 @@
 ;; duplicate line
 (setq duplicate-line-final-position 1)
 (global-set-key (kbd "C-,") 'duplicate-line)
+(global-set-key (kbd "C-;") 'compile)
 (global-set-key (kbd "C-x p") 'previous-buffer)
 (global-set-key (kbd "C-x n") 'next-buffer)
 (global-set-key (kbd "C--") 'set-mark-command)

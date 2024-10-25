@@ -13,7 +13,7 @@
 	 ("M-7" . sort-tab-select-visible-tab)
 	 ("M-8" . sort-tab-select-visible-tab)
 	 ("M-9" . sort-tab-select-visible-tab)
-	 ("C-;" . sort-tab-close-current-tab))
+	 ("C-'" . sort-tab-close-current-tab))
   :init
   (sort-tab-mode))
 

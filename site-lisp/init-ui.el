@@ -51,13 +51,18 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
-(use-package doom-modeline
-  :init
-  (setq doom-modeline-minor-mode t)
-  :custom-face
-  (mode-line ((t (:height 0.95))))
-  (mode-line-inactive ((t (:height 0.95))))
-  :hook (after-init . doom-modeline-mode))
+;; (use-package doom-modeline
+;;   :init
+;;   (setq doom-modeline-minor-mode t)
+;;   :custom-face
+;;   (mode-line ((t (:height 0.95))))
+;;   (mode-line-inactive ((t (:height 0.95))))
+;;   :hook (after-init . doom-modeline-mode))
+
+(use-package awesome-tray
+  :straight '(awesome-tray :type git :host github :repo "manateelazycat/awesome-tray")
+  :hook (after-init . awesome-tray-mode)
+  :custom (awesome-tray-active-modules '("location" "belong" "file-path" "mode-name" "last-command" "git")))
 
 ;; automatic install font use this
 (defun font-installed-p (font-name)

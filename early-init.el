@@ -29,4 +29,7 @@
 (add-to-list 'default-frame-alist '(undecorated-round . t))
 (add-to-list 'default-frame-alist `(font . "IosevkaTerm Nerd Font-18"))
 (setq-default inhibit-splash-screen t)
-(setq frame-resize-pixelwise t)
+(setq frame-resize-pixelwise t
+      frame-inhibit-implied-resize t
+      initial-major-mode 'fundamental-mode)
+

@@ -170,3 +170,4 @@
 (require 'init-elisp)
 (require 'init-rust)
 (require 'init-web)
+(require 'init-tools)

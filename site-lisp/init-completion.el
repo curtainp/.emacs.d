@@ -104,17 +104,17 @@
   :demand t
   :bind (:map global-map
 	 ("C-c M-x" . consult-mode-command)
-	 ("C-c r"   . consult-ripgrep)
+	 ;; ("C-c r"   . consult-ripgrep)
 	 ("C-c i"   . consult-info)
 	 ("C-c m"   . consult-man)
-	 ("C-c f"   . consult-fd)
+	 ;; ("C-c f"   . consult-fd)
 	 ("C-c T"   . consult-theme)
 	 ("C-."     . consult-imenu)
 	 ("C-c c f" . describe-face)
 	 ("C-x b"   . consult-buffer)
 	 ([remap Info-search]      . consult-info)
 	 ([remap goto-line]        . consult-goto-line)
-	 ([remap isearch-forward]  . consult-line)
+	 ;; ([remap isearch-forward]  . consult-line)
 	 ("M-y"     . consult-yank-pop))
   :init
   (advice-add #'multi-occur :override #'consult-multi-occur)

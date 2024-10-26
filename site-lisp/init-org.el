@@ -1,6 +1,5 @@
 ;; -*- lexical-binding: t -*-
 
-(defvar my-org-directory "~/workspace/docs/org/")
 (use-package org
   :custom-face (org-ellipsis ((t (:foreground unspecified))))
   :bind (("C-c a" . org-agenda)
@@ -13,7 +12,7 @@
   :config
   ;; (require 'org-tempo nil t)
   (setq org-modules nil
-	org-directory my-org-directory
+	org-directory cs/org-path
 	org-capture-templates
         `(("i" "Idea" entry (file ,(concat org-directory "/idea.org"))
            "*  %^{Title} %?\n%U\n%a\n")
@@ -36,7 +35,7 @@
         org-priority-faces '((?A . error)
                              (?B . warning)
                              (?C . success))
-	org-agenda-files (list my-org-directory)
+	org-agenda-files (list cs/org-path)
 	org-agenda-block-separator ?─
 	org-agenda-time-grid
         '((daily today require-timed)
@@ -124,7 +123,7 @@
          ("C-c n c" . org-roam-capture)
          ("C-c n j" . org-roam-dailies-capture-today))
   :init
-  (setq org-roam-directory (file-truename my-org-directory)
+  (setq org-roam-directory (file-truename cs/org-path)
         org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   :config
   (unless (file-exists-p org-roam-directory)

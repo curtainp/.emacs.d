@@ -80,6 +80,9 @@
 (defvar +elfeed-feeds
   '(
     ("https://matklad.github.io/feed.xml" rust)
+    ("https://u1f383.github.io/feed.xml"  kernel)
+    ("https://rss.packetstormsecurity.com/news/tags/zero_day/" ghost)
+    ("https://rss.packetstormsecurity.com/files/tags/tool/" tools)
     ))
 
 (defun nerd-icon-for-tags (tags)
@@ -87,9 +90,11 @@
   Returns default if no match."
   (cond ((member "youtube" tags)  (nerd-icons-faicon "nf-fa-youtube_play" :face '(:foreground "#FF0200")))
         ((member "instagram" tags) (nerd-icons-faicon "nf-fa-instagram" :face '(:foreground "#FF00B9")))
+        ((member "kernel" tags) (nerd-icons-faicon "nf-fa-linux" :face '(:foreground "#FF00B9")))
         ((member "emacs" tags) (nerd-icons-sucicon "nf-custom-emacs" :face '(:foreground "#9A5BBE")))
-        ((member "rust" tags) (nerd-icons-sucicon "nf-seti-rust" :face '(:foreground "#9A5BBE")))
-        ((member "economics" tags) (nerd-icons-mdicon "nf-md-alpha_e_box_outline" :face '(:foreground "#E3120C")))
+        ((member "rust" tags) (nerd-icons-sucicon "nf-seti-rust" :face '(:foreground "#6A5272")))
+        ((member "ghost" tags) (nerd-icons-mdicon "nf-md-ghost" :face '(:foreground "#E3120C")))
+        ((member "tools" tags) (nerd-icons-mdicon "nf-md-tools" :face '(:foreground "#33A2BC")))
         ((member "database" tags) (nerd-icons-devicon "nf-dev-database" :face '(:foreground "#0574E8")))
         ((member "forum" tags) (nerd-icons-faicon "nf-fa-forumbee" :face '(:foreground "#EF9120")))
         ((member "github" tags) (nerd-icons-faicon "nf-fa-github"))
@@ -138,6 +143,7 @@
 	      ("L" . +elfeed-overview))
   :custom
   (elfeed-feeds +elfeed-feeds)
+  (elfeed-db-directory (concat user-emacs-directory ".elfeed"))
   :config
   (setq elfeed-search-print-entry-function #'+elfeed-search-print-entry--better-default)
   )

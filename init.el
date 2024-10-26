@@ -1,13 +1,65 @@
 ;; -*- lexical-binding: t ; -*-
 
-;; Temp: Explicitly set PATH environment variable and update exec-path to match it.
-;; (the string here should be copied from the PATH in Emacs.app/Contents/Info.plist)
-(setenv "PATH" "/opt/homebrew/bin:/opt/homebrew/sbin:/Users/curtainw/.pyenv/shims:/Users/curtainw/.cargo/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/kitty.app/Contents/MacOS")
-(setq exec-path (split-string (getenv "PATH") path-separator))
-
 (setq custom-file "~/.emacs.d/.emacs.custom.el")
 
-(scroll-bar-mode 0)
+(setq warning-minimum-level :emergency) ; ignore native comp warning
+
+(defconst cs/is-mac (eq system-type 'darwin))
+(defconst cs/is-linux (memq system-type '(gnu gnu/linux gnu/kfreebsd berkeley-unix)))
+(defconst cs/org-path "~/workspace/docs/org")
+(defconst cs/fallback-fonts '("Jigmo" "Jigmo2" "Jigmo3"))
+(defconst cs/emoji-fonts '("Apple Color Emoji"
+			   "Noto Color Emoji"
+			   "Noto Emoji"
+			   "Segoe UI Emoji"
+			   "Symbola"))
+(defconst cs/default-font "IosevkaTerm Nerd Font 16")
+(defconst cs/zh-default-font "LXGW WenKai")
+(defconst cs/symbol-default-font "Symbols Nerd Font Mono")
+
+(when cs/is-mac
+  (setq mac-option-modifier 'super
+	mac-command-modifier 'meta
+	mouse-wheel-scroll-amount '(1 ((shift) . 5) ((control))))
+  (defconst +env-file (concat user-emacs-directory ".env"))
+  (defun +load-env-file (file &optional noerror)
+    "Read and set envvars from FILE.
+If NOERROR is non-nil, don't throw an error if the file doesn't exist or is
+unreadable. Returns the names of envvars that were changed."
+    (if (not (file-readable-p file))
+        (unless noerror
+          (signal 'file-error (list "Couldn't read envvar file" file)))
+      (let (envvars environment)
+        (with-temp-buffer
+          (save-excursion
+            (insert "\n")
+            (insert-file-contents file))
+          (while (re-search-forward "\n *\\([^#= \n]*\\)=" nil t)
+            (push (match-string 1) envvars)
+            (push (buffer-substring
+                   (match-beginning 1)
+                   (1- (or (save-excursion
+                             (when (re-search-forward "^\\([^= ]+\\)=" nil t)
+                               (line-beginning-position)))
+                           (point-max))))
+                  environment)))
+        (when environment
+          (setq process-environment
+                (append (nreverse environment) process-environment)
+                exec-path
+                (if (member "PATH" envvars)
+                    (append (split-string (getenv "PATH") path-separator t)
+                            (list exec-directory))
+                  exec-path)
+                shell-file-name
+                (if (member "SHELL" envvars)
+                    (or (getenv "SHELL") shell-file-name)
+                  shell-file-name))
+          envvars))))
+  (when (and (or (display-graphic-p))
+	     (file-exists-p +env-file))
+    (+load-env-file +env-file)))
+  
 (column-number-mode 1)
 (show-paren-mode 1)
 (dolist (mode '(text-mode-hook
@@ -60,13 +112,19 @@
 (setq create-lockfiles nil
       make-backup-files nil
       auto-save-default nil
-      use-dialog-box nil
-      use-file-dialog nil
       ring-bell-function 'ignore
       use-short-answers t
-      mac-option-modifier 'super
-      mac-command-modifier 'meta
-      )
+      word-wrap-by-category t
+      use-file-dialog nil
+      use-dialog-box nil
+      window-resize-pixelwise t
+      frame-resize-pixelwise t
+      indicate-buffer-boundaries 'left
+      scroll-preserve-screen-position 'always
+      truncate-partial-width-windows nil
+      history-length 1000
+      indent-tabs-mode nil
+      save-interprogram-paste-before-kill t)
 
 ;; Show directory first
 (setq dired-listing-switches "-alh")
@@ -104,6 +162,11 @@
   :config
   (setq recentf-max-saved-items 100
 	recentf-max-menu-items 25
+	recentf-exclude (list "\\.?cache" ".cask" "url" "COMMIT_EDITMSG\\'" "bookmarks"
+                                   "\\.?ido\\.last$" "\\.revive$" "/G?TAGS$" "/.elfeed/"
+                                   "^/tmp/" "^/var/folders/.+$" "^/ssh:" "/persp-confs/"
+                                   (lambda (file) (file-in-directory-p file package-user-dir))
+                                   (expand-file-name recentf-save-file))
 	recentf-save-file-modes nil
 	recentf-keep nil
 	recentf-auto-cleanup nil

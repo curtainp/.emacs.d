@@ -1,5 +1,8 @@
 *.db
 *.sqlite
+savehist
+bookmarks
+recentf
 
 auto-save-list/
 straight/
@@ -8,7 +11,5 @@ transient/
 tree-sitter/
 devdocs/
 eshell/
-savehist
-bookmarks
-recentf
 blink-search/
+url/

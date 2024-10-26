@@ -68,6 +68,7 @@
 (defun font-installed-p (font-name)
   (find-font (font-spec :name font-name)))
 (use-package nerd-icons
+  :demand t
   :config
   (when (and (display-graphic-p)
 	     (not (font-installed-p nerd-icons-font-family)))

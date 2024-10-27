@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t ; -*-
 
 (setq custom-file "~/.emacs.d/.emacs.custom.el")
+(and (file-readable-p custom-file) (load custom-file))
 
 (setq warning-minimum-level :emergency) ; ignore native comp warning
 

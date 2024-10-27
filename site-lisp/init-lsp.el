@@ -23,7 +23,7 @@
   (lsp-bridge-get-language-id 'get-tailwindcss-language-id-in-react)
   (lsp-bridge-user-langserver-dir (concat (expand-file-name user-emacs-directory) "langserver"))
   (lsp-bridge-user-multiserver-dir (concat (expand-file-name user-emacs-directory) "multiserver"))
-  (lsp-bridge-enable-log t)
+  ;; (lsp-bridge-enable-log t)
   (lsp-bridge-multi-lang-server-extension-list
 	'(
 	  (("ts")   . "typescript_eslint")

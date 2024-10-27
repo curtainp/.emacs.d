@@ -13,6 +13,9 @@
   ;; (require 'org-tempo nil t)
   (setq org-modules nil
 	org-directory cs/org-path
+	org-image-actual-width nil
+	org-edit-src-content-indentation 0
+	org-src-preserve-indentation nil
 	org-capture-templates
         `(("i" "Idea" entry (file ,(concat org-directory "/idea.org"))
            "*  %^{Title} %?\n%U\n%a\n")
@@ -48,8 +51,6 @@
         org-log-done 'time
         org-catch-invisible-edits 'smart
         org-startup-indented t
-        org-ellipsis (if (char-displayable-p ?⏷) "\t⏷" nil)
-        org-pretty-entities nil
 	org-hide-emphasis-markers t)
   ;; Add md/gfm backends
   (add-to-list 'org-export-backends 'md)
@@ -60,10 +61,24 @@
     :hook ((org-mode . org-modern-mode)
            (org-agenda-finalize . org-modern-agenda)
            (org-modern-mode . (lambda ()
-                                "Adapt `org-modern-mode'."
-                                ;; Disable Prettify Symbols mode
-                                (setq prettify-symbols-alist nil)
-                                (prettify-symbols-mode -1)))))
+                                "Beautiful org checkbox symbol"
+                                (push '("[ ]" . "☐") prettify-symbols-alist)
+				(push '("[X]" . "☑" ) prettify-symbols-alist)
+				(push '("[-]" . "❍" ) prettify-symbols-alist)
+				(prettify-symbols-mode)
+				)))
+    :custom
+    (org-modern-star 'replace)
+    (org-modern-replace-stars "❑❍❑❍❑❍")
+    (org-hide-emphasis-markers t)
+    (org-tags-column 0)
+    (org-modern-block-fringe 2)
+    (org-special-ctrl-a/e t)
+    (org-modern-checkbox nil)
+    (org-modern-list '((43 . "➢")
+                       (45 . "➣")))
+    (org-ellipsis "[+]")
+    )
   ;; Babel
   (setq org-confirm-babel-evaluate nil
         org-src-fontify-natively t

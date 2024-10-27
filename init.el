@@ -60,7 +60,7 @@ unreadable. Returns the names of envvars that were changed."
   (when (and (or (display-graphic-p))
 	     (file-exists-p +env-file))
     (+load-env-file +env-file)))
-  
+
 (column-number-mode 1)
 (show-paren-mode 1)
 (dolist (mode '(text-mode-hook
@@ -134,7 +134,7 @@ unreadable. Returns the names of envvars that were changed."
       dired-recursive-copies 'always)
 
 (global-auto-revert-mode t)
- 
+
 (use-package diredfl
   :hook (dired-mode . diredfl-mode))
 
@@ -143,7 +143,7 @@ unreadable. Returns the names of envvars that were changed."
   :custom-face
   (nerd-icons-dired-dir-face ((t (:inherit nerd-icons-dsilver :foreground unspecified))))
   :hook (dired-mode . nerd-icons-dired-mode))
-  
+
 ;; (add-hook 'dired-mode-hook (lambda () (dired-omit-mode)))
 
 (prefer-coding-system 'utf-8)
@@ -157,6 +157,15 @@ unreadable. Returns the names of envvars that were changed."
   :custom
   (proced-enable-color-flag t)
   (proced-tree-flag t))
+
+(use-package auto-save
+  :straight '(auto-save :type git :host github :repo "manateelazycat/auto-save")
+  :demand t
+  :custom
+  (auto-save-delete-trailing-whitespace t)
+  (auto-save-silent t)
+  :config
+  (auto-save-enable))
 
 (use-package recentf
   :hook (after-init . recentf-mode)
@@ -224,6 +233,7 @@ unreadable. Returns the names of envvars that were changed."
 ;;   :init (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
 (require 'init-ui)
+;; (require 'init-editing)
 (require 'init-completion)
 (require 'init-markdown)
 (require 'init-org)

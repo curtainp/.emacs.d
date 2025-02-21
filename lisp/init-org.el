@@ -7,6 +7,17 @@
   (add-to-list 'safe-local-variable-values '(org-hide-leading-stars . t))
   (add-to-list 'safe-local-variable-values '(org-hide-macro-markers . t))
   (setq org-export-backends '(html textinfo md))
+  :custom-face
+  (org-document-title ((t (:height 1.75 :weight bold))))
+  (org-level-1 ((t (:height 1.2 :weight bold))))
+  (org-level-2 ((t (:height 1.15 :weight bold))))
+  (org-level-3 ((t (:height 1.1 :weight bold))))
+  (org-level-4 ((t (:height 1.05 :weight bold))))
+  (org-level-5 ((t (:height 1.0 :weight bold))))
+  (org-level-6 ((t (:height 1.0 :weight bold))))
+  (org-level-7 ((t (:height 1.0 :weight bold))))
+  (org-level-8 ((t (:height 1.0 :weight bold))))
+  (org-level-9 ((t (:height 1.0 :weight bold))))
   :bind
   (:map global-map
         ("C-c l" . org-store-link)
@@ -20,8 +31,7 @@
         org-special-ctrl-k nil
         org-hide-emphasis-markers t
         org-pretty-entities t
-        org-hide-macro-markers nil
-        org-hide-leading-stars nil
+        org-hide-macro-markers t
         org-cycle-separator-lines 0
         org-structure-template-alist
         '(("s" . "src")
@@ -62,9 +72,9 @@
         ;; org-todo-keyword-faces
         ;; '(("CANCEL" . cur/org-bold-face))
         org-use-fast-todo-selection 'export
-        org-fontify-done-headline nil
-        org-fontify-todo-headline nil
-        org-fontify-whole-heading-line nil
+        org-fontify-done-headline t
+        org-fontify-todo-headline t
+        org-fontify-whole-heading-line t
         org-enforce-todo-dependencies t
         org-enforce-todo-checkbox-dependencies t)
   ;; agenda

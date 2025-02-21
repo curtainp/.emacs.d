@@ -1,0 +1,147 @@
+;;; -*- lexical-binding: t -*-
+
+(use-package org
+  :init
+  (setq org-directory (expand-file-name "~/workspace/docs/org/")
+        org-imenu-depth 7)
+  (add-to-list 'safe-local-variable-values '(org-hide-leading-stars . t))
+  (add-to-list 'safe-local-variable-values '(org-hide-macro-markers . t))
+  (setq org-export-backends '(html textinfo md))
+  :bind
+  (:map global-map
+        ("C-c l" . org-store-link)
+        ("C-c o" . org-open-at-point-global))
+  :config
+  (set-face-attribute 'org-ellipsis nil :inherit 'default :box nil)
+  (setq org-ellipsis "…"
+        org-startup-truncated nil
+        org-adapt-indentation nil
+        org-special-ctrl-a/e nil
+        org-special-ctrl-k nil
+        org-hide-emphasis-markers t
+        org-pretty-entities t
+        org-hide-macro-markers nil
+        org-hide-leading-stars nil
+        org-cycle-separator-lines 0
+        org-structure-template-alist
+        '(("s" . "src")
+          ("e" . "src emacs-lisp")
+          ("E" . "src emacs-lisp :results value code :lexical t")
+          ("t" . "src emacs-lisp :tangle FILENAME")
+          ("T" . "src emacs-lisp :tangle FILENAME :mkdirp yes")
+          ("x" . "example")
+          ("X" . "export")
+          ("q" . "quote"))
+        org-fold-catch-invisible-edits 'show
+        org-return-follows-link nil
+        org-loop-over-headlines-in-active-region 'start-level
+        org-use-sub-superscripts '{}
+        org-insert-heading-respect-content t
+        org-read-date-prefer-future 'time
+        org-fontify-whole-block-delimiter-line t
+        org-fontify-quote-and-verse-blocks t
+        org-track-ordered-property-with-tag t
+        org-highest-priority ?A
+        org-lowest-priority ?C
+        org-default-properties ?A)
+
+  ;; refile and todo
+  ;; (defface cur/org-bold-face
+  ;;         '((t :inherit (bold org-done)))
+  ;;         "Face for bold DONE-type org keywords")
+  (setq org-refile-targets
+        '((org-agenda-files . (:maxlevel . 2))
+          (nil . (:maxlevel . 2)))
+        org-refile-use-outline-path t
+        org-refile-allow-creating-parent-nodes 'confirm
+        org-refile-use-cache t
+        org-reverse-note-order nil
+        ;; org-todo-keywords
+        ;; '((sequence "TODO(t)" "|" "CANCEL(c@)" "DONE(d!)")
+        ;;   (sequence "COACH(k)" "|" "COACHED(K!)"))
+        ;; org-todo-keyword-faces
+        ;; '(("CANCEL" . cur/org-bold-face))
+        org-use-fast-todo-selection 'export
+        org-fontify-done-headline nil
+        org-fontify-todo-headline nil
+        org-fontify-whole-heading-line nil
+        org-enforce-todo-dependencies t
+        org-enforce-todo-checkbox-dependencies t)
+  ;; agenda
+  (setq org-agenda-tags-column 0
+        org-agenda-block-separator ?-
+        org-agenda-time-grid '((daily today require-timed)
+                               (800 1000 1200 1400 1600 1800 2000)
+                               " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+        org-agenda-current-time-string "◀── now ─────────────────────────────────────────────────")
+        
+
+  ;; tags
+  (setq org-tag-alist nil
+        org-auto-align-tags nil
+        org-tags-column 0)
+  ;; log
+  (setq org-log-done 'time
+        org-log-into-drawer t
+        org-log-note-clock-out nil
+        org-log-redeadline 'time
+        org-log-reschedule 'time)
+  ;; links
+  (setq org-link-context-for-files t
+        org-link-keep-stored-after-insertion nil
+        org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+  ;; code blocks
+  (setq org-confirm-babel-evaluate nil
+        org-src-window-setup 'current-window
+        org-edit-src-persistent-message nil
+        org-src-fontify-natively t
+        org-src-preserve-indentation t
+        org-src-tab-acts-natively t
+        org-edit-src-content-indentation 0)
+  ;; export
+  (setq org-export-with-toc t
+        org-export-headline-levels 8
+        org-export-dispatch-use-expert-ui nil
+        org-html-htmlize-output-type nil
+        org-html-head-include-default-style nil
+        org-html-head-include-scripts nil)
+      
+  )
+
+(use-package org-superstar
+  :disabled
+  :straight t
+  :after org
+  :hook (org-mode . org-superstar-mode)
+  :config
+  (setq org-superstar-special-todo-items t))
+
+(use-package org-modern
+  :straight t
+  :after org
+  :custom-face
+  (org-modern-tag ((t (:inherit org-verbatim :weight regular :foreground "black" :background "LightGray" :box "black"))))
+  :custom
+  (org-modern-star 'replace)
+  (org-modern-table-vertical 5)
+  (org-modern-table-horizontal 2)
+  (org-modern-block-fringe nil)
+  (org-modern-todo-faces
+   ;; Tweak colors, and force it to be monospaced, useful when using `mixed-pitch-mode'.
+   '(("IDEA" . (:inherit org-verbatim :weight semi-bold :foreground "white" :background "goldenrod"))
+     ("NEXT" . (:inherit org-verbatim :weight semi-bold :foreground "white" :background "IndianRed1"))
+     ("STRT" . (:inherit org-verbatim :weight semi-bold :foreground "white" :background "OrangeRed"))
+     ("WAIT" . (:inherit org-verbatim :weight semi-bold :foreground "white" :background "coral"))
+     ("KILL" . (:inherit org-verbatim :weight semi-bold :foreground "white" :background "DarkGreen"))
+     ("PROJ" . (:inherit org-verbatim :weight semi-bold :foreground "white" :background "LimeGreen"))
+     ("HOLD" . (:inherit org-verbatim :weight semi-bold :foreground "white" :background "orange"))
+     ("DONE" . (:inherit org-verbatim :weight semi-bold :foreground "black" :background "LightGray"))))
+  :init
+  (global-org-modern-mode 1))
+
+(use-package org-rich-yank
+  :straight t
+  :after org
+  :hook (org-mode . org-rich-yank-enable))
+
+(provide 'init-org)

@@ -339,6 +339,8 @@
   :straight '(lsp-bridge :type git :host github :repo "manateelazycat/lsp-bridge"
 			 :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
 			 :build (:not compile)) ;; disable native comp, which use python multithread.
+  :custom-face
+  (lsp-bridge-inlay-hint-face ((t (:foreground "#5B6268"))))
   :custom
   ;; (lsp-bridge-enable-in-minibuffer t)
   (lsp-bride-signature-show-function 'lsp-bridge-signature-show-with-frame)

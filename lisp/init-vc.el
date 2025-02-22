@@ -15,6 +15,8 @@
     (when-let* ((vc (assoc 'project-vc-dir project-switch-commands)))
       (setcar vc 'magit-project-status)
       (setcdr vc '("Magit project status"))))
+  :bind (:map global-map
+              ("C-x g" . magit-status))
   :config
   ;; Automatically refresh Magit after save
   (add-hook 'after-save-hook 'magit-after-save-refresh-status))

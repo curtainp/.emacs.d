@@ -7,19 +7,13 @@
  create-lockfiles nil
  make-backup-files nil
  auto-save-default t
+ scroll-preserve-screen-position 'always
  auto-save-include-big-deletions t ; Don't auto-disable auto-save after deleting big chunks.
  auto-save-list-file-prefix (expand-file-name "autosaves/" user-emacs-directory)
  auto-save-file-name-transforms (list (list "\\`/[^/]*:\\([^/]*/\\)*\\([^/]*\\)\\'"
                                             ;; Prefix tramp autosaves to prevent conflicts with local ones
                                             (concat auto-save-list-file-prefix "tramp-\\2") t)
                                       (list ".*" auto-save-list-file-prefix t))
-
- ;; Disable [bidirectional text] scanning for a modest performance
- ;; Will improve long line display performance
- bidi-inhibit-bpa t
- bidi-paragraph-direction 'left-to-right
- bidi-display-reordering 'left-to-right
-
  ;; smaller threshold to improve long line performance
  long-line-threshold 1000
  large-hscroll-threshold 1000

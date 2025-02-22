@@ -5,6 +5,7 @@
 (setq straight-check-for-modifications '(check-on-save find-when-checking)                   ; skip modification at startup, checking on demand
       comp-deferred-compilation-deny-list ()                 ; config native comp
       warning-suppress-log-types '((comp))                   ; Don't display comp warnings
+      straight-repository-branch "develop"
       straight-disable-native-compile (not (and (fboundp 'native-comp-available-p)
                                                 (native-comp-available-p))))
 
@@ -22,7 +23,7 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(require 'straight)
+;; (require 'straight)
 
 ;; HACK+PERF: Reduce installation time and disk usage using "--filter=tree:0",
 ;; this cuts the size of the "repos" directory by more than half (from 807M to

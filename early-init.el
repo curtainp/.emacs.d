@@ -6,12 +6,12 @@
       gc-cons-percentage 0.2
       ;; we use `straight'
       package-enable-at-startup nil
+      package-quickstart nil
       load-prefer-newer t
       default-frame-alist '((tool-bar-lines . 0)
                             (menu-bar-lines . 0)
                             (vertical-scroll-bars)
-                            (left-fringe . 8)
-                            (right-fringe . 13)
+                            ;; (undecorated-round . t)
                             (internal-border-width . 0)
                             (fullscreen . maximized))
       tool-bar-mode nil
@@ -24,6 +24,22 @@
   (push '(ns-transparent-titlebar . t) default-frame-alist))
 (setq frame-inhibit-implied-resize t)
 
+;; reduce rendering scan work for non-focused window
+(setq-default cursor-in-non-selected-windows nil)
+(setq highlight-nonselected-windows nil)
+
+;; disable warnings from the legacy advice API
+(setq ad-redefinition-action 'accept)
+
+;; FIXME: Emacs updates its ui more often that it needs to ?
+(setq idle-update-delay 1.0)
+(setq inhibit-compacting-font-caches t)
+;; Disable [bidirectional text] scanning for a modest performance
+;; Will improve long line display performance
+(setq bidi-inhibit-bpa t)
+(setq-default bidi-paragraph-direction 'left-to-right
+              bidi-display-reordering 'left-to-right)
+
 ;; startup screen
 (setq inhibit-startup-screen t
       inhibit-startup-echo-area-message t
@@ -35,6 +51,8 @@
       initial-major-mode 'fundamental-mode)
 (advice-add #'display-startup-echo-area-message :override #'ignore)
 (advice-add #'display-startup-screen :override #'ignore)
+(setq use-file-dialog nil
+      use-dialog-box nil)
 
 (setq-default inhibit-redisplay t
 	      inhibit-message t)

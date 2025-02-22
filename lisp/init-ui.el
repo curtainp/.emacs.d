@@ -11,11 +11,7 @@
 (defconst cs/symbol-default-font "Symbols Nerd Font Mono")
 
 (setq
- idle-update-delay 1.0
- redisplay-skip-fontification-on-input t
- highlight-nonselected-windows nil
- cursor-in-non-selected-windows nil
- inhibit-compacting-font-caches t)
+ redisplay-skip-fontification-on-input t)
 
 (blink-cursor-mode -1)
 (setq indicate-buffer-boundaries nil
@@ -61,9 +57,6 @@
 (setq frame-resize-pixelwise t
       window-resize-pixelwise t)
 
-(setq use-file-dialog nil
-      use-dialog-box nil)
-
 (setq epg-pinentry-mode 'loopback)
 
 (defun +setup-fonts ()
@@ -101,8 +94,8 @@
   (set-fontset-font t 'han (font-spec :script 'han) nil 'append)
   (set-fontset-font t '(#xE000 . #xF8FF) cs/symbol-default-font))
 
-(+setup-fonts)
-
+(add-hook 'window-setup-hook '+setup-fonts)
+(add-hook 'server-after-make-frame-hook '+setup-fonts)
 
 ;; Smooth Scroll (less "jumpy" than defaults)
 (when (display-graphic-p)
@@ -110,9 +103,8 @@
         mouse-wheel-scroll-amount-horizontal 1
         mouse-wheel-progressive-speed nil))
 
-(setq custom-safe-themes t)
-
 (use-package doom-themes
+  :disabled
   :straight t
   :demand t
   :config
@@ -125,7 +117,20 @@
     (doom-themes-org-config)))
 
 (use-package modus-themes
-  :straight t)
+  :straight (:host github :repo "LuciusChen/modus-themes"))
+
+(use-package curt-ui
+  :init
+  (setq custom-enabled-themes '(modus-vivendi-tinted)
+        custom-safe-themes t
+        light-theme 'modus-operandi-tinted
+        dark-theme 'modus-vivendi-tinted)
+  :hook (((after-init-hook window-setup-hook) . reapply-themes)
+         ((window-setup-hook after-make-frame-functions) . opacity-dark-theme)
+         (window-setup-hook . set-dividers-and-fringe-color))
+  :bind (:map global-map
+              ("C-M-8" . (lambda () (interactive) (+adjust-opacity nil -5)))
+              ("C-M-7" . (lambda () (interactive) (+adjust-opacity nil +5)))))
 
 (use-package doom-modeline
   :straight t
@@ -136,6 +141,8 @@
   (doom-modeline-unicode-fallback t)
   (doom-modeline-total-line-number t)
   (doom-modeline-enable-word-count t)
+  ;; (doom-modeline-hud t)
+  ;; (doom-modeline-hud-min-height 1)
   (doom-modeline-continuous-word-count-modes '(markdown-mode markdown-ts-mode gfm-mode org-mode rst-mode latex-mode tex-mode)))
 
 (use-package keycast

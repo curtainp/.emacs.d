@@ -26,6 +26,7 @@
   (set-face-attribute 'org-ellipsis nil :inherit 'default :box nil)
   (setq org-ellipsis "…"
         org-startup-truncated nil
+        org-image-actual-width nil
         org-adapt-indentation nil
         org-special-ctrl-a/e nil
         org-special-ctrl-k nil
@@ -55,10 +56,24 @@
         org-lowest-priority ?C
         org-default-properties ?A)
 
+  (add-hook 'org-mode-hook  (lambda ()
+                            (setq prettify-symbols-alist
+                                  '(("lambda" . ?λ)
+                                    (":END:" . ?)
+                                    ("#+TITLE:" . ?)
+                                    ("#+AUTHOR:" . ?)
+                                    ("#+BEGIN_QUOTE" . ?)
+                                    ("#+END_QUOTE" . ?)
+                                    ("#+RESULTS:" . ?)
+                                    ("[ ]" . ?)
+                                    ("[-]" . ?)
+                                    ("[X]" . ?)
+                                    ("[#A]" . ?🅐)
+                                    ("[#B]" . ?🅑)
+                                    ("[#C]" . ?🅒)))
+                            (prettify-symbols-mode)))
+
   ;; refile and todo
-  ;; (defface cur/org-bold-face
-  ;;         '((t :inherit (bold org-done)))
-  ;;         "Face for bold DONE-type org keywords")
   (setq org-refile-targets
         '((org-agenda-files . (:maxlevel . 2))
           (nil . (:maxlevel . 2)))
@@ -66,11 +81,11 @@
         org-refile-allow-creating-parent-nodes 'confirm
         org-refile-use-cache t
         org-reverse-note-order nil
-        ;; org-todo-keywords
-        ;; '((sequence "TODO(t)" "|" "CANCEL(c@)" "DONE(d!)")
-        ;;   (sequence "COACH(k)" "|" "COACHED(K!)"))
-        ;; org-todo-keyword-faces
-        ;; '(("CANCEL" . cur/org-bold-face))
+        org-todo-keywords
+        '((sequence "TODO(t)" "|" "CANCEL(c@)" "DONE(d!)")
+          (sequence "PROJECT(p)" "|" "NEXT(n)"))
+        org-todo-keyword-faces
+        '(("NEXT" :inherit warning))
         org-use-fast-todo-selection 'export
         org-fontify-done-headline t
         org-fontify-todo-headline t
@@ -118,14 +133,6 @@
       
   )
 
-(use-package org-superstar
-  :disabled
-  :straight t
-  :after org
-  :hook (org-mode . org-superstar-mode)
-  :config
-  (setq org-superstar-special-todo-items t))
-
 (use-package org-modern
   :straight t
   :after org
@@ -136,6 +143,7 @@
   (org-modern-table-vertical 5)
   (org-modern-table-horizontal 2)
   (org-modern-block-fringe nil)
+  (org-modern-hide-stars nil)
   (org-modern-todo-faces
    ;; Tweak colors, and force it to be monospaced, useful when using `mixed-pitch-mode'.
    '(("IDEA" . (:inherit org-verbatim :weight semi-bold :foreground "white" :background "goldenrod"))
@@ -146,8 +154,11 @@
      ("PROJ" . (:inherit org-verbatim :weight semi-bold :foreground "white" :background "LimeGreen"))
      ("HOLD" . (:inherit org-verbatim :weight semi-bold :foreground "white" :background "orange"))
      ("DONE" . (:inherit org-verbatim :weight semi-bold :foreground "black" :background "LightGray"))))
-  :init
-  (global-org-modern-mode 1))
+  :hook
+  ((org-mode . org-modern-mode)
+   (org-mode . org-indent-mode)
+   (org-agenda-finalize . org-modern-agenda-mode))
+  )
 
 (use-package org-rich-yank
   :straight t

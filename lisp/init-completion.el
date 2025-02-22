@@ -227,18 +227,17 @@
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :bind
   ( :map global-map
-    ("M-g M-g" . consult-goto-line)
     ("M-K" . consult-keep-lines) ; M-S-k is similar to M-S-5 (M-%)
     ("M-F" . consult-focus-lines) ; same principle
-    ("M-s M-b" . consult-buffer)
-    ("M-s M-f" . consult-find)
-    ("M-s M-g" . consult-grep)
-    ("M-s M-h" . consult-history)
-    ("M-s M-i" . consult-imenu)
-    ("M-s M-l" . consult-line)
-    ("M-s M-m" . consult-mark)
-    ("M-s M-y" . consult-yank-pop)
-    ("M-s M-s" . consult-outline)
+    ("M-s b" . consult-buffer)
+    ("M-s f" . consult-find)
+    ("M-s r" . consult-ripgrep)
+    ("M-s h" . consult-history)
+    ("M-s i" . consult-imenu)
+    ("M-s l" . consult-line)
+    ("M-s m" . consult-mark)
+    ("M-s y" . consult-yank-pop)
+    ("M-s s" . consult-outline)
     :map consult-narrow-map
     ("?" . consult-narrow-help))
   :config

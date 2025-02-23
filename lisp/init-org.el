@@ -26,6 +26,7 @@
   (set-face-attribute 'org-ellipsis nil :inherit 'default :box nil)
   (setq org-ellipsis "…"
         org-startup-truncated nil
+        org-startup-folded 'content
         org-image-actual-width nil
         org-adapt-indentation nil
         org-special-ctrl-a/e nil

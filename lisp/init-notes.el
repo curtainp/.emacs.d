@@ -51,6 +51,8 @@
   :straight (:type git :host github :repo "mclear-tools/consult-notes")
   :commands (consult-notes
              consult-notes-search-in-all-notes)
+  :bind (:map global-map
+              ("C-c n f" . consult-notes))
   :config
   ;; (setq consult-notes-file-dir-sources '(("Security" ?s "~/workspace/docs/org")))   ;; use denote-mode instead
   (when (locate-library "denote")

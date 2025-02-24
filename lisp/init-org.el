@@ -25,6 +25,7 @@
   :config
   (set-face-attribute 'org-ellipsis nil :inherit 'default :box nil)
   (setq org-ellipsis "…"
+        org-yank-image-save-method "."
         org-startup-truncated nil
         org-startup-folded 'content
         org-image-actual-width nil

@@ -137,6 +137,8 @@
         ("M-l" . downcase-dwim)
         ("M-u" . upcase-dwim)
         ("M-=" . count-words)
+        ("C-'" . duplicate-dwim) ;; NOTE: original bind with undo
+        ("C-x C-p" . yank-from-kill-ring) ;; NOTE: original bind with mark-page
         ("C-h K" . describe-keymap)
         ))
  

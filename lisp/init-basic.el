@@ -110,6 +110,11 @@
  read-extended-command-predicate #'command-completion-default-include-p
  )
 
+;; make underscore as part of the word
+(add-hook 'after-change-major-mode-hook
+          (lambda ()
+            (modify-syntax-entry ?_ "w")))
+
 ;; unbind some annoying commands
 (keymap-global-unset "C-z" 'remove)
 (keymap-global-unset "C-x C-z" 'remove)
@@ -139,6 +144,7 @@
         ("M-=" . count-words)
         ("C-'" . duplicate-dwim) ;; NOTE: original bind with undo
         ("C-x C-p" . yank-from-kill-ring) ;; NOTE: original bind with mark-page
+        ;; ("C-w" . backward-kill-word)
         ("C-h K" . describe-keymap)
         ))
  

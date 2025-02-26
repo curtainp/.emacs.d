@@ -1,9 +1,8 @@
 ;;; -*- lexical-binding: t -*-
 
 (use-package treesit-auto
-  :straight (:host github :repo "renzmann/treesit-auto")
-  :when (featurep 'tree-sitter)
-  :hook (prog-mode . global-treesit-auto-mode)
+  :straight (:type git :host github :repo "renzmann/treesit-auto")
+  :demand t
   :custom
   (treesit-auto-install 'prompt)
   :config
@@ -58,31 +57,8 @@
   (treesit-auto-add-to-auto-mode-alist 'all)
 
   (defvar +treesit-auto-create-parser-modes-deny '(org-mode))
-
-  ;; Create `treesit' parsers when they are available even in non-treesit modes.
-  ;; This is useful for packages like `virtual-format', `treesit-fold', `expreg'
-  ;; and `ts-movement'.
-  (defun +treesit-auto-create-parser-in-buffer (&optional buffer)
-    "Create `treesit' in BUFF-NAME, even if the mode isn't a ts-mode."
-    (interactive (list (when current-prefix-arg (get-buffer (read-buffer "Create treesit parser in buffer: ")))))
-    (let ((buffer (or buffer (current-buffer)))
-          (interact-p (called-interactively-p 'interactive)))
-      (if (treesit-available-p)
-          (when (or (not (derived-mode-p +treesit-auto-create-parser-modes-deny))
-                    (and interact-p (y-or-n-p "Creating parsers for `%S' is blacklisted in `+treesit-auto-create-parser-modes-deny', continue?")))
-            (with-current-buffer buffer
-              (if-let* ((lang-recipe (cl-find-if (lambda (recipe) (eq major-mode (treesit-auto-recipe-remap recipe)))
-                                                 treesit-auto-recipe-list))
-                        (lang (treesit-auto-recipe-lang lang-recipe))
-                        (lang (and (treesit-language-available-p lang) lang)))
-                  (when (or (not (treesit-parser-list buffer lang))
-                            (and interact-p (y-or-n-p (format "The %S buffer already have a %S language parser, continue?" buffer lang))))
-                    (treesit-parser-create lang)
-                    (when interact-p (message "Created a %S language parser in %S" lang buffer)))
-                (when interact-p (user-error "No installed tree-sitter grammar for mode `%s'" major-mode)))))
-        (when interact-p (user-error "Tree-sitter isn't available in this Emacs build")))))
-
-  (add-hook 'after-change-major-mode-hook '+treesit-auto-create-parser-in-buffer))
+  (global-treesit-auto-mode)
+  )
 
 ;; Highlight TODO keywords
 (use-package hl-todo
@@ -100,7 +76,7 @@
 
 (use-package rust-mode
   :straight t
-  :mode ("\\.rs\\'" . rust-ts-mode)
+  ;; :mode ("\\.rs\\'" . rust-ts-mode)
   :init
   (setq rust-mode-treesitter-derive t
         rust-format-goto-problem nil))

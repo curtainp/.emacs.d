@@ -82,9 +82,10 @@
                    nil 'prepend))
   ;; Set Chinese font
   ;; Do not use 'unicode charset, it will cause the English font setting invalid
-  (dolist (charset '(kana han symbol cjk-misc bopomofo))
-    (set-fontset-font (frame-parameter nil 'font) charset
-                      (font-spec :family cs/zh-default-font)))
+  (when (display-graphic-p)
+    (dolist (charset '(kana han symbol cjk-misc bopomofo))
+      (set-fontset-font (frame-parameter nil 'font) charset
+                        (font-spec :family cs/zh-default-font))))
   ;; Setting fall-back fonts
   ;; https://idiocy.org/emacs-fonts-and-fontsets.html
   (dolist (font cs/fallback-fonts)

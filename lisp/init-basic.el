@@ -352,6 +352,16 @@
   :hook (compilation-filter . ansi-color-compilation-filter) ; Enable ANSI colors in compilation buffer
   :hook (shell-mode . compilation-shell-minor-mode)
   :bind ("C-;" . compile)
+  :bind (:map compilation-mode-map
+              ("x" . meow-line)
+              ("y" . meow-save)
+              ("f" . meow-find)
+              ("t" . meow-till)
+              ("L" . meow-right-expand)
+              ("H" . meow-left-expand)
+              ("h" . meow-left)
+              ("l" . meow-right)
+              ("o" . meow-block))
   :custom
   (compilation-scroll-output t) ; Keep scrolling the compilation buffer, `first-error' can be interesting
   (compilation-always-kill t) ; Always kill current compilation process before starting a new one

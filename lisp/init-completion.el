@@ -11,7 +11,7 @@
   ;; in the `completion-category-overrides' without having to
   ;; explicitly override everything.
   (setq completion-category-defaults nil)
-
+  
   ;; A non-exhaustve list of known completion categories:
   ;;
   ;; - `bookmark'
@@ -156,6 +156,7 @@
   :hook ((eshell-mode shell-mode) . +corfu-less-intrusive-h)
   :hook (minibuffer-setup . +corfu-enable-in-minibuffer-h)
   :hook (corfu-mode . corfu-history-mode)
+  :if (not (display-graphic-p))
   :custom
   (corfu-auto t) ; Enable auto completion
   (corfu-cycle t) ; Allows cycling through candidates
@@ -185,10 +186,10 @@
   (unless (bound-and-true-p savehist-mode) (savehist-mode 1))
   (add-to-list 'savehist-additional-variables 'corfu-history))
 
-
 ;; Candidate information popup for Corfu
 (use-package corfu-popupinfo
   :disabled
+  :if (not (display-graphic-p))
   :hook (corfu-mode . corfu-popupinfo-mode)
   :bind ( ; Bind these to toggle/scroll documentation
          :map corfu-map
@@ -205,22 +206,6 @@
    (defun +corfu--hide-popupinfo-h ()
      (when (and (not completion-in-region-mode) (boundp 'corfu-popupinfo--hide))
        (corfu-popupinfo--hide)))))
-
-
-;; Corfu popup on terminal
-;; (use-package corfu-terminal
-;;   :straight t
-;;   :hook (corfu-mode . corfu-terminal-mode))
-
-
-;; Icons for Corfu using `nerd-icons'
-(use-package nerd-icons-corfu
-  :disabled
-  :straight t
-  :after corfu
-  :init
-  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
-
 
 (use-package consult
   :straight t
@@ -343,7 +328,7 @@
   ;; (lsp-bridge-enable-in-minibuffer t)
   (lsp-bride-signature-show-function 'lsp-bridge-signature-show-with-frame)
   (acm-enable-capf t)
-  (acm-enable-quick-access t)
+  (acm-enable-quick-access nil)
   ;; (acm-backend-yas-match-by-trigger-keyword t)
   (acm-enable-tabnine nil)
   (acm-enable-codeium nil)

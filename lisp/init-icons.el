@@ -5,15 +5,16 @@
 
 (use-package nerd-icons-dired
   :straight t
-  :when (display-graphic-p)
   :hook (dired-mode . nerd-icons-dired-mode))
               
 ;; Icons for Corfu using `nerd-icons'
-;; (use-package nerd-icons-corfu
-;;   :straight t
-;;   :after corfu
-;;   :init
-;;   (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+(use-package nerd-icons-corfu
+  :disabled
+  :straight t
+  :after corfu
+  :if (not (display-graphic-p))
+  :init
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
 
 ;; Use nerd-icons for completion
 (use-package nerd-icons-completion

@@ -39,7 +39,7 @@
 (require 'init-basic)
 (require 'init-ui)
 (require 'init-completion)
-(require 'init-meow)
+(require 'init-evil)
 (when (eq system-type 'darwin)
   (require 'init-mac))
 (require 'init-search)

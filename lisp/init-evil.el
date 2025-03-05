@@ -10,6 +10,8 @@
         evil-spilt-window-below t
         evil-symbol-word-search t
         evil-vspilt-window-right t)
+  :custom
+  (evil-search-module 'evil-search)
   :config
   ;; insert mode cursor movements
   (define-key evil-insert-state-map (kbd "C-a") 'beginning-of-line)
@@ -38,7 +40,7 @@
     "sg" 'consult-ripgrep
     "pf" 'project-find-file
     )
-  ;; global key bindings for lsp-bridge
+  ;; global key bindings and initial mode custom for lsp-bridge
   (with-eval-after-load 'lsp-bridge
     (evil-define-key '(normal visual) 'global
                          "ga" 'lsp-bridge-code-action
@@ -51,16 +53,25 @@
                          "gI" 'lsp-bridge-find-impl-other-window
                          "K"  'lsp-bridge-popup-documentation
                          "gp" 'lsp-bridge-peek
-                         ))
+                         )
+    (dolist (mode '(lsp-bridge-peek-mode lsp-bridge-ref-mode))
+      (evil-set-initial-state mode 'emacs))
+    ;; (add-hook 'lsp-bridge-peek-mode-hook 'evil-normalize-keymaps) ;
+    ;; (evil-define-key '(normal visual) 'lsp-bridge-peek-keymap
+    ;;   "M-j" 'lsp-bridge-peek-list-next-line
+    ;;   "M-k" 'lsp-bridge-peek-list-prev-line)
+    )
   )
 
 (use-package evil-collection
   :straight t
   :after evil
   :demand t
+  :custom
+  (evil-collection-want-find-usages-bindings nil)
+  (evil-collection-term-state-and-mode-p nil)
+  (evil-collection-want-unimpaired-p nil)
   :config
-  (dolist (mode '(fundamental-mode))
-    (add-to-list 'evil-collection-mode-list mode))
   (evil-collection-init))
 
 (provide 'init-evil)

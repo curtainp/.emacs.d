@@ -2,12 +2,14 @@
 
 (use-package evil
   :straight t
+  :hook (after-init . evil-mode)
   :init
   (setq evil-want-C-u-scroll t
         evil-want-keybinding nil
+        evil-undo-system 'undo-redo
         evil-spilt-window-below t
+        evil-symbol-word-search t
         evil-vspilt-window-right t)
-  (evil-mode)
   :config
   ;; insert mode cursor movements
   (define-key evil-insert-state-map (kbd "C-a") 'beginning-of-line)

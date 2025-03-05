@@ -6,7 +6,7 @@
 			   "Noto Emoji"
 			   "Segoe UI Emoji"
 			   "Symbola"))
-(defconst cs/default-font "Maple Mono 18")
+(defconst cs/default-font "JetBrains Mono 16")
 (defconst cs/zh-default-font "LXGW WenKai")
 (defconst cs/symbol-default-font "Symbols Nerd Font Mono")
 

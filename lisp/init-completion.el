@@ -327,6 +327,7 @@
   :custom
   ;; (lsp-bridge-enable-in-minibuffer t)
   (lsp-bride-signature-show-function 'lsp-bridge-signature-show-with-frame)
+  (lsp-bridge-python-multi-lsp-server 'basedpyright_ruff)
   (acm-enable-capf t)
   (acm-enable-quick-access nil)
   ;; (acm-backend-yas-match-by-trigger-keyword t)

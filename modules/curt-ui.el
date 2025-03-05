@@ -57,15 +57,15 @@
   (setq custom-enabled-themes (list dark-theme))
   (reapply-themes)
   (set-dividers-and-fringe-color)
-  (when window-system (set-opacity 60)))
+  (when window-system (set-opacity 95)))
 
 (defun opacity-dark-theme (&rest frame)
-  "Set the opacity of the FRAME to 60% if the background mode is dark.
+  "Set the opacity of the FRAME to 95% if the background mode is dark.
 This function only works in a graphical interface.  The FRAME argument is
 optional and is used to specify which frame's opacity to change."
   (if (display-graphic-p)
       (if (eq (frame-parameter nil 'background-mode) 'dark)
-          (set-opacity 60))
+          (set-opacity 95))
     (message "Non-graphical interface")))
 
 (provide 'curt-ui)

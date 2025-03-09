@@ -44,6 +44,7 @@
   (require 'init-mac))
 (require 'init-search)
 (require 'init-prog)
+(require 'init-llm)
 (require 'init-org)
 (require 'init-icons)
 (require 'init-notes)

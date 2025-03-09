@@ -146,6 +146,16 @@
   ;; (doom-modeline-hud-min-height 1)
   (doom-modeline-continuous-word-count-modes '(markdown-mode markdown-ts-mode gfm-mode org-mode rst-mode latex-mode tex-mode)))
 
+;; (use-package awesome-tray
+;;   :straight (:type git :host github :repo "manateelazycat/awesome-tray")
+;;   :custom
+;;   (awesome-tray-active-modules '("evil" "buffer-name" "location" "file-path" "belong" "last-command" "git" "date"))
+;;   :hook (after-init . awesome-tray-mode))
+
+;; (use-package sort-tab
+;;   :straight (:type git :host github :repo "manateelazycat/sort-tab")
+;;   :hook (after-init . sort-tab-mode))
+
 (use-package keycast
   :straight t
   :commands (keycast-doom-modeline-mode)
@@ -187,8 +197,8 @@
                             "\\\\" "://"))
   )
 
-(setq frame-title-format
-      '((:eval (or buffer-file-truename "%b"))
-        (" · Emacs")))
+;; (setq frame-title-format
+;;       '((:eval (or buffer-file-truename "%b"))
+;;         (" · Emacs")))
 
 (provide 'init-ui)

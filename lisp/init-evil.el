@@ -22,6 +22,8 @@
   (define-key minibuffer-local-map (kbd "C-w") 'evil-delete-backward-word)
   (define-key minibuffer-local-map (kbd "C-u") 'evil-delete-back-to-indentation)
   (define-key minibuffer-local-map (kbd "<escape>") 'keyboard-escape-quit)
+  (evil-define-key 'normal org-mode-map
+    "q" 'quit-window)
   ;; define space-leader-map
   (define-prefix-command 'space-leader-map)
   (keymap-set evil-motion-state-map "SPC" 'space-leader-map)

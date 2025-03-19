@@ -1,8 +1,9 @@
 ;;; -*- lexical-binding: t -*-
 
 (use-package org
+  :straight nil
   :init
-  (setq org-directory (expand-file-name "~/workspace/docs/org/")
+  (setq org-directory curtain-org-directory
         org-imenu-depth 7)
   (add-to-list 'safe-local-variable-values '(org-hide-leading-stars . t))
   (add-to-list 'safe-local-variable-values '(org-hide-macro-markers . t))
@@ -163,7 +164,7 @@
   )
 
 (use-package org-rich-yank
-  :straight t
+  :disabled
   :after org
   :hook (org-mode . org-rich-yank-enable))
 

@@ -1,5 +1,22 @@
 ;;; -*- lexical-binding: t -*-
 
+(require 'init-funcs)
+
+(setq user-full-name curtain-full-name
+      user-mail-address curtain-email-address)
+
+;; Exec Environment
+(use-package exec-path-from-shell
+  :disabled
+  :custom (exec-path-from-shell-arguments '("-l"))
+  :init (exec-path-from-shell-initialize))
+
+;; Server-mode
+(use-package server
+  :straight nil
+  :if curtain-server-p
+  :hook (after-init . server-mode))
+
 (setq-default
  ;; no client startup messages
  server-client-instructions nil
@@ -21,8 +38,7 @@
 
  ;; Larger process output buffer for LSP module
  read-process-output-max (* 3 1024 1024)
-
- ;; [Wrapping] words at whitespace, but do not wrap by default
+ visible-bell t
  ;; Wrap words at whitespace, rather than in the middle of a word.
  word-wrap t
  ;; don't do any wrapping by default since it's expensive
@@ -30,9 +46,6 @@
  truncate-partial-width-windows nil
  ;; better wrapping for cjk
  word-wrap-by-category t
-
- ;; Custom file path
- custom-file (expand-file-name "custom.el" user-emacs-directory)
 
  ;; Always follow link when visiting a [symbolic link]
  find-file-visit-truename t
@@ -121,13 +134,9 @@
 
 ;; remap some keys
 (keymap-global-set "M-:" #'pp-eval-expression)
-(keymap-global-set "C-c f" #'recentf)
 
 ;; Enable the disabled dired commands
 (put 'dired-find-alternate-file 'disabled nil)
-
-;; fullscreen with maximized
-(setq initial-frame-alist '((fullscreen . maximized)))
 
 ;; Encoding & locale
 (set-locale-environment "en_US.UTF-8")
@@ -135,6 +144,7 @@
 (setq system-time-locale "C")
 
 (use-package emacs
+  :straight nil
   :demand t
   :bind
   (:map global-map
@@ -150,6 +160,7 @@
  
 ;;; [recentf] recently visited files
 (use-package recentf
+  :straight nil
   :hook (after-init . recentf-mode)
   :config
   (setq recentf-auto-cleanup nil
@@ -168,6 +179,7 @@
   )
 
 (use-package repeat
+  :straight nil
   :hook (after-init . repeat-mode)
   :config
   (setq repeat-on-final-keystroke t
@@ -181,6 +193,7 @@
   )
 
 (use-package bookmark
+  :straight nil
   :commands (bookmark-set bookmark-jump bookmark-bmenu-list)
   :hook (bookmark-bmenu-mode . hl-line-mode)
   :config
@@ -193,8 +206,8 @@
   ;; (e.g. power failure).
   (setq bookmark-save-flag 1))
 
-
 (use-package time
+  :straight nil
   :commands (world-clock)
   :config
   (setq display-time-world-list t)
@@ -234,6 +247,7 @@
   (setq world-clock-timer-second 60))
 
 (use-package proced
+  :straight nil
   :commands (proced)
   :config
   (setq proced-auto-update-flag 'visible) ; Emacs 30 supports more the `visible' value
@@ -245,6 +259,7 @@
 
 ;; [so-long] Workaround for long one-line file
 (use-package so-long
+  :straight nil
   :hook ((after-init . global-so-long-mode)
 	 ((so-long-mode prog-mode fundamental-mode) . +so-long-settings))
   :config
@@ -293,6 +308,7 @@
 
 
 (use-package display-line-numbers
+  :straight nil
   :hook ((prog-mode
           conf-mode toml-ts-mode
           yaml-mode yaml-ts-mode)
@@ -301,6 +317,7 @@
   (setq display-line-numbers-width-start t))
 
 (use-package dired
+  :straight nil
   :config
   (setq
    ;; Always delete and copy recursively
@@ -336,32 +353,29 @@
           dired-listing-switches "-alh --group-directories-first"))
   )
 
+(use-package nerd-icons-dired
+  :disabled
+  :straight t
+  :hook (dired-mode . nerd-icons-dired-mode))
+
 (use-package wdired
+  :disabled
   :commands (wdired-change-to-wdired-mode)
   :config
   (setq wdired-allow-to-change-permissions t)
   (setq wdired-create-parent-directories t))
 
 (use-package diredfl
-  :straight t
+  :disabled
   :hook (dired-mode . diredfl-mode)
   :config
   (cl-callf append diredfl-compressed-extensions '(".zst" ".rar" ".7z" ".cab" ".arc" ".zoo")))
 
 (use-package compile
+  :straight nil
   :hook (compilation-filter . ansi-color-compilation-filter) ; Enable ANSI colors in compilation buffer
   :hook (shell-mode . compilation-shell-minor-mode)
   :bind ("C-;" . compile)
-  :bind (:map compilation-mode-map
-              ("x" . meow-line)
-              ("y" . meow-save)
-              ("f" . meow-find)
-              ("t" . meow-till)
-              ("L" . meow-right-expand)
-              ("H" . meow-left-expand)
-              ("h" . meow-left)
-              ("l" . meow-right)
-              ("o" . meow-block))
   :custom
   (compilation-scroll-output t) ; Keep scrolling the compilation buffer, `first-error' can be interesting
   (compilation-always-kill t) ; Always kill current compilation process before starting a new one
@@ -382,13 +396,5 @@
 
 (column-number-mode 1)
 (show-paren-mode 1)
-
-
-(use-package yasnippet
-  :straight t
-  :hook ((text-mode prog-mode conf-mode) . yas-minor-mode)
-  :custom
-  (yas-triggers-in-field t))
-
 
 (provide 'init-basic)

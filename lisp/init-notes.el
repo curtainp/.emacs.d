@@ -23,24 +23,11 @@
               ("C-c C-d C-f" . denote-dired-rename-marked-files-using-front-matter))
               
   :config
-  (setq denote-directory (expand-file-name "~/workspace/docs/org"))
+  (setq denote-directory curtain-org-directory)
   (denote-rename-buffer-mode 1))
 
-
-;; Use Consult in tandem with Denote
-(use-package consult-denote
-  :disabled
-  :straight t
-  :after consult
-  :init
-  (consult-denote-mode 1)
-  :config
-  ;; Prefer `ripgrep' and `fd' variants when available
-  (when (executable-find "fd")
-    (setopt consult-denote-find-command #'consult-fd))
-  (when (executable-find "rg")
-    (setopt consult-denote-grep-command #'consult-ripgrep)))
-
+(use-package denote-sequence
+  :straight t)
 
 ;; View and filter Denote files in a tabulated list
 (use-package denote-menu
@@ -79,8 +66,9 @@
   (markdown-fontify-code-blocks-natively t)
   (markdown-enable-highlighting-syntax t))
 
+;; use `yank-media' instead
 (use-package org-download
-  :straight t
+  :disabled
   :after org
   :bind (:map org-mode-map
               ("C-c d c" . org-download-clipboard))

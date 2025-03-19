@@ -1,5 +1,15 @@
 ;;; -*- lexical-binding: t -*-
 
+(eval-when-compile
+  (require 'init-custom)
+  (require 'init-funcs))
+
+(set-package-archives curtain-package-archives nil nil t)
+
+;; (setq url-proxy-services
+;;       `(("http" . ,curtain-proxy)
+;;         ("https" . ,curtain-proxy)))
+
 (defvar straight-check-for-modifications)
 
 (setq straight-check-for-modifications '(check-on-save find-when-checking)                   ; skip modification at startup, checking on demand

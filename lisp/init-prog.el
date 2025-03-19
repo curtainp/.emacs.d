@@ -1,7 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
 (use-package treesit-auto
-  :straight (:type git :host github :repo "renzmann/treesit-auto")
+  :straight t
   :demand t
   :custom
   (treesit-auto-install 'prompt)
@@ -62,7 +62,7 @@
 
 ;; Highlight TODO keywords
 (use-package hl-todo
-  :straight (:host github :repo "tarsius/hl-todo")
+  :straight t
   :hook (prog-mode . hl-todo-mode)
   :config
   (cl-callf append hl-todo-keyword-faces

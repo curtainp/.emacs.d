@@ -4,9 +4,9 @@
 ;; Better garbage collection settings, no GCMH required, See: https://zenodo.org/records/10518083
 (setq gc-cons-threshold (* 100 1000 1000)
       gc-cons-percentage 0.2
-      ;; we use `straight'
       package-enable-at-startup nil
-      package-quickstart nil
+      ;; `use-package' is built-in from 29, so we need set it before loading `use-package'
+      use-package-enable-imenu-support t
       load-prefer-newer t
       default-frame-alist '((tool-bar-lines . 0)
                             (menu-bar-lines . 0)
@@ -20,6 +20,7 @@
       ;; prevent modeline from showing at startup.
       mode-line-format nil
       )
+(prefer-coding-system 'utf-8)
 (when (featurep 'ns)
   (push '(ns-transparent-titlebar . t) default-frame-alist))
 (setq frame-inhibit-implied-resize t)

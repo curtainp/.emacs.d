@@ -12,6 +12,7 @@
         evil-vspilt-window-right t)
   :custom
   (evil-search-module 'evil-search)
+  (evil-echo-state nil) ;; we have state indicator with awesome-tray
   :config
   ;; insert mode cursor movements
   (define-key evil-insert-state-map (kbd "C-a") 'beginning-of-line)
@@ -33,13 +34,13 @@
     (kbd "SPC") 'execute-extended-command
     (kbd "RET") 'consult-bookmark
     "u" 'universal-argument
-    "bb" 'consult-buffer
+    ;;"bb" 'consult-buffer
     "bd" 'evil-delete-buffer
     "br" 'revert-buffer
     "ff" 'find-file
     "fr" 'recentf
-    "ss" 'consult-line
-    "sg" 'consult-ripgrep
+    ;;"ss" 'consult-line
+    ;;"sg" 'consult-ripgrep
     "pf" 'project-find-file
     )
   ;; global key bindings and initial mode custom for lsp-bridge
@@ -56,13 +57,18 @@
                          "K"  'lsp-bridge-popup-documentation
                          "gp" 'lsp-bridge-peek
                          )
-    (dolist (mode '(lsp-bridge-peek-mode lsp-bridge-ref-mode))
+    (dolist (mode '(lsp-bridge-peek-mode lsp-bridge-ref-mode eaf-mode))
       (evil-set-initial-state mode 'emacs))
     ;; (add-hook 'lsp-bridge-peek-mode-hook 'evil-normalize-keymaps) ;
     ;; (evil-define-key '(normal visual) 'lsp-bridge-peek-keymap
     ;;   "M-j" 'lsp-bridge-peek-list-next-line
     ;;   "M-k" 'lsp-bridge-peek-list-prev-line)
     )
+  ;; centaur-tabs
+  (with-eval-after-load 'centaur-tabs
+    (evil-define-key '(normal visual) 'global
+                         "H" 'centaur-tabs-backward
+                         "L" 'centaur-tabs-forward))
   )
 
 (use-package evil-collection

@@ -1,6 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
 (use-package minibuffer
+  :straight nil
   :config
   ;;;; Completion styles
   (setq completion-styles '(basic substring initials flex orderless)) ; also see `completion-category-overrides'
@@ -82,6 +83,7 @@
           ("?" . nil)))
 
 (use-package curt-orderless
+  :straight nil
   :demand t
   :config
   (setq orderless-style-dispatchers
@@ -95,17 +97,20 @@
 (setq read-file-name-completion-ignore-case t)
 
 (use-package mb-depth
+  :straight t
   :hook (after-init . minibuffer-depth-indicate-mode)
   :config
   (setq read-minibuffer-restore-windows nil) ; Emacs 28
   (setq enable-recursive-minibuffers t))
 
 (use-package minibuf-eldef
+  :straight t
   :hook (after-init . minibuffer-electric-default-mode)
   :config
   (setq minibuffer-default-prompt-format " [%s]")) ; Emacs 29
 
 (use-package rfn-eshadow
+  :straight nil
   :hook (minibuffer-setup . cursor-intangible-mode)
   :config
   ;; Not everything here comes from rfn-eshadow.el, but this is fine.
@@ -124,6 +129,7 @@
   (file-name-shadow-mode 1))
 
 (use-package minibuffer
+  :straight nil
   :demand t
   :config
   (setq completions-format 'one-column)
@@ -141,6 +147,7 @@
   )
 
 (use-package savehist
+  :straight nil
   :hook (after-init . savehist-mode)
   :config
   (setq savehist-file (locate-user-emacs-file "savehist"))
@@ -208,7 +215,7 @@
        (corfu-popupinfo--hide)))))
 
 (use-package consult
-  :straight t
+  :disabled
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :bind
   ( :map global-map
@@ -245,7 +252,7 @@
   )
 
 (use-package embark
-  :straight t
+  :disabled
   :defer 1
   :config
   (setq embark-confirm-act-all nil)
@@ -266,34 +273,36 @@
   )
 
 (use-package curt-embark
-    :after embark
-    :bind
-    ( :map global-map
-      ("C-," . curt-embark-act-no-quit)
-      ("C-." . curt-embark-act-quit)
-      :map embark-collect-mode-map
-      ("C-," . curt-embark-act-no-quit)
-      ("C-." . curt-embark-act-quit)
-      :map minibuffer-local-filename-completion-map
-      ("C-," . curt-embark-act-no-quit)
-      ("C-." . curt-embark-act-quit))
-    :config
-    (setq embark-keymap-alist
-          '((buffer curt-embark-buffer-map)
-            (command curt-embark-command-map)
-            (expression curt-embark-expression-map)
-            (file curt-embark-file-map)
-            (function curt-embark-function-map)
-            (identifier curt-embark-identifier-map)
-            (package curt-embark-package-map)
-            (region curt-embark-region-map)
-            (symbol curt-embark-symbol-map)
-            (url curt-embark-url-map)
-            (variable curt-embark-variable-map)
-            (t embark-general-map))))
+  :disabled
+  :straight nil
+  :after embark
+  :bind
+  ( :map global-map
+    ("C-," . curt-embark-act-no-quit)
+    ("C-." . curt-embark-act-quit)
+    :map embark-collect-mode-map
+    ("C-," . curt-embark-act-no-quit)
+    ("C-." . curt-embark-act-quit)
+    :map minibuffer-local-filename-completion-map
+    ("C-," . curt-embark-act-no-quit)
+    ("C-." . curt-embark-act-quit))
+  :config
+  (setq embark-keymap-alist
+        '((buffer curt-embark-buffer-map)
+          (command curt-embark-command-map)
+          (expression curt-embark-expression-map)
+          (file curt-embark-file-map)
+          (function curt-embark-function-map)
+          (identifier curt-embark-identifier-map)
+          (package curt-embark-package-map)
+          (region curt-embark-region-map)
+          (symbol curt-embark-symbol-map)
+          (url curt-embark-url-map)
+          (variable curt-embark-variable-map)
+          (t embark-general-map))))
 
 (use-package embark-consult
-  :straight t
+  :disabled
   :after (embark consult))
 
 (use-package marginalia
@@ -303,7 +312,7 @@
   (setq marginalia-max-relative-age 0)) ; absolute time
 
 (use-package vertico
-  :straight (:files (:defaults "extensions/*.el"))
+  :straight t
   :hook (after-init . vertico-mode)
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
   :hook (minibuffer-setup . vertico-repeat-save)
@@ -318,47 +327,5 @@
   (vertico-resize nil)
   (vertico-count 12))
 
-(use-package lsp-bridge
-  :straight '(lsp-bridge :type git :host github :repo "manateelazycat/lsp-bridge"
-			 :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
-			 :build (:not compile)) ;; disable native comp, which use python multithread.
-  :custom-face
-  (lsp-bridge-inlay-hint-face ((t (:foreground "#5B6268"))))
-  :custom
-  ;; (lsp-bridge-enable-in-minibuffer t)
-  (lsp-bride-signature-show-function 'lsp-bridge-signature-show-with-frame)
-  (lsp-bridge-python-multi-lsp-server 'basedpyright_ruff)
-  (acm-enable-capf t)
-  (acm-enable-quick-access nil)
-  ;; (acm-backend-yas-match-by-trigger-keyword t)
-  (acm-enable-tabnine nil)
-  (acm-enable-codeium nil)
-  (acm-enable-lsp-workspace-symbol t)
-  (lsp-bridge-enable-inlay-hint t)
-  ;; (lsp-bridge-get-language-id 'get-tailwindcss-language-id-in-react)
-  (lsp-bridge-user-langserver-dir (concat (expand-file-name user-emacs-directory) "langserver"))
-  (lsp-bridge-user-multiserver-dir (concat (expand-file-name user-emacs-directory) "multiserver"))
-  (lsp-bridge-log-level 'error)
-  (lsp-bridge-multi-lang-server-extension-list
-	'(
-	  (("ts")   . "typescript_eslint")
-	  (("tsx")  . "typescriptreact_tailwindcss")
-	  (("jsx")  . "javascriptreact_tailwindcss")
-	  (("html") . "html_tailwindcss")
-	  (("css")  . "css_tailwindcss")))
-  ;; :bind (:map global-map
-  ;;         ("M-j" . acm-doc-scroll-down)
-  ;;         ("M-k" . acm-doc-scroll-up)
-  ;;         ("C-c C-d" . lsp-bridge-diagnostic-list)
-  ;;         ("C-c C-a" . lsp-bridge-code-action)
-  ;;         ("C-c C-r" . lsp-bridge-find-references)
-  ;;         ("C-c C-k" . lsp-bridge-popup-documentation)
-  ;;         ("C-c C-p" . lsp-bridge-peek)
-  ;;         ("C-c C-n" . lsp-bridge-rename)
-  ;;         ("C-c C-f" . lsp-bridge-code-format))
-  ;; :bind (("<remap> <xref-find-definitions>" . lsp-bridge-find-def)
-  ;;       ("<remap> <xref-go-back>" . lsp-bridge-find-def-return))
-  :init
-  (global-lsp-bridge-mode))
 
 (provide 'init-completion)

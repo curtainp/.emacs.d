@@ -1,0 +1,33 @@
+;; init-eaf.el  -*- lexical-binding: t -*-
+
+(add-to-list 'load-path "~/.emacs.d/straight/repos/emacs-application-framework/")
+(require 'eaf)
+(require 'eaf-browser)
+(require 'eaf-pdf-viewer)
+(require 'eaf-markdown-previewer)
+(require 'eaf-markmap)
+(require 'eaf-video-player)
+(require 'eaf-image-viewer)
+(require 'eaf-org-previewer)
+(require 'eaf-jupyter)
+(require 'eaf-music-player)
+(require 'eaf-file-manager)
+(require 'eaf-map)
+
+(setq eaf-browser-continue-where-left-off t)
+(setq eaf-webengine-default-zoom 1.5)
+(setq eaf-webengine-font-size 18)
+(setq eaf-browser-enable-adblocker t)
+(setq eaf-jupyter-font-family "JetBrainsMono")
+(setq eaf-jupyter-font-size 20)
+(defalias 'browse-web #'eaf-open-browser)
+
+(defun eaf-goto-left-tab ()
+  (interactive)
+  (centaur-tabs-backward))
+
+(defun eaf-goto-right-tab ()
+  (interactive)
+  (centaur-tabs-forward))
+
+(provide 'init-eaf)

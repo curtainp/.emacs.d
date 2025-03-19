@@ -1,5 +1,7 @@
 /.org-id-locations
 /autosaves/
+/auto-save*/
+/elpa/
 /history
 *.eld
 /places
@@ -13,3 +15,5 @@
 /projects
 /eln-cache/
 .aider*
+/.mc-lists.el
+/eaf/

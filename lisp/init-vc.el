@@ -22,6 +22,7 @@
   (add-hook 'after-save-hook 'magit-after-save-refresh-status))
 
 (use-package git-commit
+  :straight nil
   :after magit
   :commands (global-git-commit-mode)
   :custom
@@ -32,6 +33,7 @@
 
 ;; Show source files' TODOs (and FIXMEs, etc) in Magit status buffer
 (use-package magit-todos
+  :disabled
   :straight t)
 
 ;; Magit extension for "git-imerge"
@@ -44,10 +46,12 @@
 
 ;; View diffs side-by-side in Emacs
 (use-package diffview
+  :disabled
   :straight t)
 
 ;; A structural diff that understands syntax
 (use-package difftastic
+  :disabled
   :straight t)
 
 

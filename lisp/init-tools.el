@@ -1,14 +1,83 @@
 ;;; lexical-binding: t -*-
 
 (use-package ialign
-  :straight t
+  :disabled
   :bind (("C-x l" . ialign)))
 
-(use-package symbol-overlay
-  :straight t)
+;;(use-package symbol-overlay)
+
+(use-package sort-tab
+  :disabled
+  :straight '(:type git :host github :repo "manateelazycat/sort-tab")
+  ;; :demand t
+  :config
+  (sort-tab-mode))
+
+(use-package holo-layer
+  :straight '(:type git :host github :repo "manateelazycat/holo-layer"
+                    :files (:defaults "*.el" "*.py" "icon_cache" "plugin" "resources")
+                    :build (:not compile))
+  :demand t
+  :custom
+  (holo-layer-enable-cursor-animation nil)
+  (holo-layer-enable-window-border nil)
+  (holo-layer-sort-tab-ui nil)
+  (holo-layer-hide-mode-line t)
+  :config
+  (holo-layer-enable))
+
+
+(use-package hungry-delete
+  :straight t
+  :hook (after-init . global-hungry-delete-mode)
+  :init (setq hungry-delete-chars-to-skip " \t\f\v"
+              hungry-delete-except-modes
+              '(help-mode minibuffer-mode minibuffer-inactive-mode calc-mode)))
+
+(use-package eee
+  :disabled
+  :bind-keymap
+  ("C-c e" . ee-keymap)
+  :config
+  (setq ee-terminal-command "st"))
+
+(use-package multiple-cursors
+  :disabled
+  :bind (("C-c m" . multiple-cursors-hydra/body)
+         ("C-S-c C-S-c"   . mc/edit-lines)
+         ("C->"           . mc/mark-next-like-this)
+         ("C-<"           . mc/mark-previous-like-this)
+         ("C-c C-<"       . mc/mark-all-like-this)
+         ("C-M->"         . mc/skip-to-next-like-this)
+         ("C-M-<"         . mc/skip-to-previous-like-this)
+         ("s-<mouse-1>"   . mc/add-cursor-on-click)
+         ("C-S-<mouse-1>" . mc/add-cursor-on-click)
+         :map mc/keymap
+         ("C-|" . mc/vertical-align-with-space))
+  :pretty-hydra
+  ((:title (pretty-hydra-title "Multiple Cursors" 'mdicon "nf-md-cursor_move")
+    :color amaranth :quit-key ("q" "C-g"))
+   ("Up"
+	(("p" mc/mark-previous-like-this "prev")
+	 ("P" mc/skip-to-previous-like-this "skip")
+	 ("M-p" mc/unmark-previous-like-this "unmark")
+	 ("|" mc/vertical-align "align with input CHAR"))
+    "Down"
+    (("n" mc/mark-next-like-this "next")
+	 ("N" mc/skip-to-next-like-this "skip")
+	 ("M-n" mc/unmark-next-like-this "unmark"))
+    "Misc"
+    (("l" mc/edit-lines "edit lines" :exit t)
+	 ("a" mc/mark-all-like-this "mark all" :exit t)
+	 ("s" mc/mark-all-in-region-regexp "search" :exit t)
+     ("<mouse-1>" mc/add-cursor-on-click "click"))
+    "% 2(mc/num-cursors) cursor%s(if (> (mc/num-cursors) 1) \"s\" \"\")"
+	(("0" mc/insert-numbers "insert numbers" :exit t)
+	 ("A" mc/insert-letters "insert letters" :exit t)))))
 
 ;; [project] Project manager
 (use-package project
+  :straight nil
   :bind (:map project-prefix-map
               ("m" . magit-status))
   :config
@@ -47,7 +116,7 @@
   )
 
 (use-package vterm
-  :straight t
+  :disabled
   :hook (vterm-mode . compilation-shell-minor-mode)
   :bind (:map vterm-mode-map ([return] . vterm-send-return))
   :custom
@@ -55,7 +124,7 @@
   (vterm-max-scrollback 10000))
 
 (use-package multi-vterm
-  :straight t
+  :disabled
   :bind (([remap project-shell] . multi-vterm-project)
          ([f1] . +multi-vterm-dedicated-toggle-dwim)
          :map vterm-mode-map ([f1] . +multi-vterm-dedicated-toggle-dwim))

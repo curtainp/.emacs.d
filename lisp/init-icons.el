@@ -3,9 +3,6 @@
 (use-package nerd-icons
   :straight t)
 
-(use-package nerd-icons-dired
-  :straight t
-  :hook (dired-mode . nerd-icons-dired-mode))
               
 ;; Icons for Corfu using `nerd-icons'
 (use-package nerd-icons-corfu

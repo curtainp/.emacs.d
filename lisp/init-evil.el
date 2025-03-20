@@ -34,13 +34,13 @@
     (kbd "SPC") 'execute-extended-command
     (kbd "RET") 'consult-bookmark
     "u" 'universal-argument
-    ;;"bb" 'consult-buffer
+    "bb" 'consult-buffer
     "bd" 'evil-delete-buffer
     "br" 'revert-buffer
     "ff" 'find-file
     "fr" 'recentf
-    ;;"ss" 'consult-line
-    ;;"sg" 'consult-ripgrep
+    "ss" 'consult-line
+    "sg" 'consult-ripgrep
     "pf" 'project-find-file
     )
   ;; global key bindings and initial mode custom for lsp-bridge
@@ -64,6 +64,11 @@
     ;;   "M-j" 'lsp-bridge-peek-list-next-line
     ;;   "M-k" 'lsp-bridge-peek-list-prev-line)
     )
+  (with-eval-after-load 'eaf
+    (evil-define-key '(normal visual insert) 'global
+      (kbd "C-x C-j") 'eaf-open-in-file-manager
+      (kbd "C-x p s") 'eaf-open-pyqterminal
+      ))
   ;; centaur-tabs
   (with-eval-after-load 'centaur-tabs
     (evil-define-key '(normal visual) 'global

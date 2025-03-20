@@ -12,13 +12,16 @@
 (require 'eaf-jupyter)
 (require 'eaf-music-player)
 (require 'eaf-file-manager)
+(require 'eaf-pyqterminal)
 (require 'eaf-map)
 
 (setq eaf-browser-continue-where-left-off t)
 (setq eaf-webengine-default-zoom 1.5)
 (setq eaf-webengine-font-size 18)
 (setq eaf-browser-enable-adblocker t)
-(setq eaf-jupyter-font-family "JetBrainsMono")
+(setq eaf-jupyter-font-family "JetBrainsMono Nerd Font")
+(setq eaf-pyqterminal-font-family "JetBrainsMono Nerd Font")
+(setq eaf-pyqterminal-font-size 28)
 (setq eaf-jupyter-font-size 20)
 (defalias 'browse-web #'eaf-open-browser)
 

@@ -104,6 +104,9 @@
  ;; POSIX standard [newline]
  require-final-newline t
 
+ ;; disable `tramp-mode'
+ tramp-mode nil
+
  ;; Don't prompt for confirmation when creating a new file or buffer
  confirm-nonexistent-file-or-buffer nil
 

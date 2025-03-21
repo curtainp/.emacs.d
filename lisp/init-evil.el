@@ -43,6 +43,9 @@
     "sg" 'consult-ripgrep
     "pf" 'project-find-file
     )
+  (evil-define-key '(normal insert) 'global
+        (kbd "C-x C-p")  'yank-from-kill-ring) ;; NOTE: original bind with mark-page
+
   ;; global key bindings and initial mode custom for lsp-bridge
   (with-eval-after-load 'lsp-bridge
     (evil-define-key '(normal visual) 'global

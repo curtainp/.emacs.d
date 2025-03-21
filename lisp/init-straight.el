@@ -1,10 +1,10 @@
 ;;; -*- lexical-binding: t -*-
 
-(eval-when-compile
-  (require 'init-custom)
-  (require 'init-funcs))
-
-(set-package-archives curtain-package-archives nil nil t)
+;;(eval-when-compile
+;;  (require 'init-custom)
+;;  (require 'init-funcs))
+;;
+;;(set-package-archives curtain-package-archives nil nil t)
 
 ;; (setq url-proxy-services
 ;;       `(("http" . ,curtain-proxy)

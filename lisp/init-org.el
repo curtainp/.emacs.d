@@ -40,6 +40,7 @@
         org-structure-template-alist
         '(("s" . "src")
           ("e" . "src emacs-lisp")
+          ("p" . "src python :results output")
           ("E" . "src emacs-lisp :results value code :lexical t")
           ("t" . "src emacs-lisp :tangle FILENAME")
           ("T" . "src emacs-lisp :tangle FILENAME :mkdirp yes")
@@ -133,7 +134,34 @@
         org-html-htmlize-output-type nil
         org-html-head-include-default-style nil
         org-html-head-include-scripts nil)
-      
+
+  ;; org babel languages
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((perl . t)
+                                 (shell . t)
+                                 (js . t)
+                                 (python . t) ;; refer https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-python.html
+                                 (emacs-lisp . t)))
+
+  (with-eval-after-load 'org-capture
+    (defun org-zola-subtree-post-capture-template ()
+      (let* ((title (read-from-minibuffer "Post Title: "))
+             (fname (org-hugo-slug title)))
+        (mapconcat #'identity
+                   `(
+                     ,(concat "* TODO " title)
+                     ":PROPERTIES:"
+                     ,(concat ":EXPORT_HUGO_SECTION: posts/" fname)
+                     ":EXPORT_FILE_NAME: index"
+                     ":END:"
+                     "\n\n")
+                   "\n")))
+    (add-to-list 'org-capture-templates
+                 '("b"
+                   "Zola Post"
+                   entry
+                   (file+headline "all-posts.org" "Blog Ideas")
+                   (function org-zola-subtree-post-capture-template))))
   )
 
 (use-package org-modern

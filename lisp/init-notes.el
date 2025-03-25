@@ -79,4 +79,14 @@
   (setq-default org-download-heading-lvl nil
                 org-download-image-dir "./imgs"))
 
+(use-package ox-hugo
+  :straight t
+  :after ox)
+
+(use-package ox-zola
+  :straight (:host github :repo "gicrisf/ox-zola"
+                   :files (:defaults "*.el" "backend" "stylesheets"))
+  :demand t)
+
+
 (provide 'init-notes)

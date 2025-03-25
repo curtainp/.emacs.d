@@ -35,4 +35,29 @@
         rust-format-goto-problem nil
         rust-format-on-save t))
 
+(use-package pyvenv
+  :disabled
+  :straight t
+  :demand t
+  :hook (pyvenv-post-activate . (lambda ()
+                                  (setq python-shell-interpreter (concat pyvenv-virtual-env "bin/python3"))))
+  :hook (pyvenv-post-deactivate . (lambda ()
+                                    (setq python-shell-interpreter "python3")))
+  :init
+  (pyvenv-mode t))
+
+(use-package pyvenv-auto
+  :disabled
+  :straight t
+  :demand t
+  :hook (python-mode . pyvenv-auto-mode))
+
+(use-package python
+  :straight nil
+  :custom
+  (python-indent-guess-indent-offset t)
+  ;; Don't emit warning
+  (python-indent-guess-indent-offset-verbose nil))
+
+
 (provide 'init-prog)

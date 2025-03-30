@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: blog quote
+# contributor: curtain <curtainwk@gmail.com>
+# key: blog_quote
+# --
+
+{% quote(cite=\"${1:cite}\") %}
+${2:content}
+{% end %}

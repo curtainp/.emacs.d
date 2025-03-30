@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: blog callout
+# contributor: curtain <curtainwk@gmail.com>
+# key: blog_callout
+# --
+
+{% ${1:|note,important,warning,alert,question,tip|} %}
+${2:note text}
+{% end %}

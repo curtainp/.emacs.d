@@ -2,7 +2,7 @@
 
 (use-package yasnippet
   :straight t
-  :hook ((text-mode prog-mode conf-mode) . yas-minor-mode)
+  :hook ((text-mode prog-mode conf-mode markdown-mode) . yas-minor-mode)
   :custom
   (yas-triggers-in-field t))
 

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: blog img
+# contributor: curtain <curtainwk@gmail.com>
+# key: blog_img
+# --
+
+{{ figure(src=\"${1:file_path}\" alt=\"${2:alt_info}\") }}

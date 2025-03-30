@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: blog header
+# contributor: curtain <curtainwk@gmail.com>
+# key: blog_header
+# --
+
++++
+title = ${1:title}
+author = [${2:author}]
+date = `(format-time-string "%Y-%m-%d")`
+
+[taxonomies]
+tags = [${3:tags}]
+categories = [${4:categories}]
+
+[extra]
+toc = true
+comment = true
++++
+
+$0

@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: blog detail
+# contributor: curtain <curtainwk@gmail.com>
+# key: blog_detail
+# --
+
+{% detail(title=\"${1:title}\", default_open=${2:|false,true|}) %}
+${2:content}
+{% end %}

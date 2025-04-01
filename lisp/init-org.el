@@ -21,14 +21,18 @@
   (org-level-9 ((t (:height 1.0 :weight bold))))
   :bind
   (:map global-map
-        ("C-c l" . org-store-link)
-        ("C-c o" . org-open-at-point-global))
+        ;; ("C-c l" . org-store-link)
+        ;; ("C-c o" . org-open-at-point-global)
+        ("C-c o p" . org-insert-property-drawer)
+        ("C-c o c" . org-capture)
+        )
   :config
   (set-face-attribute 'org-ellipsis nil :inherit 'default :box nil)
   (setq org-ellipsis "…"
+        org-default-notes-file (expand-file-name "all-blogpost.org" curtain-blog-directory)
         org-yank-image-save-method "."
         org-startup-truncated nil
-        org-startup-folded 'content
+        org-startup-folded 'show2levels
         org-image-actual-width nil
         org-adapt-indentation nil
         org-special-ctrl-a/e nil
@@ -144,24 +148,24 @@
                                  (emacs-lisp . t)))
 
   (with-eval-after-load 'org-capture
-    (defun org-zola-subtree-post-capture-template ()
+    (defun org-hugo-subtree-post-capture-template ()
       (let* ((title (read-from-minibuffer "Post Title: "))
              (fname (org-hugo-slug title)))
         (mapconcat #'identity
                    `(
                      ,(concat "* TODO " title)
                      ":PROPERTIES:"
-                     ,(concat ":EXPORT_HUGO_SECTION: posts/" fname)
+                     ,(concat ":EXPORT_HUGO_BUNDLE: " fname)
                      ":EXPORT_FILE_NAME: index"
                      ":END:"
                      "\n\n")
                    "\n")))
     (add-to-list 'org-capture-templates
                  '("b"
-                   "Zola Post"
+                   "Hugo Post"
                    entry
-                   (file+headline "all-posts.org" "Blog Ideas")
-                   (function org-zola-subtree-post-capture-template))))
+                   (file+headline "" "Emacs") ;; use `org-default-notes-file' instead
+                   (function org-hugo-subtree-post-capture-template))))
   )
 
 (use-package org-modern

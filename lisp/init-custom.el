@@ -25,6 +25,11 @@
   :group 'curtain
   :type 'string)
 
+(defcustom curtain-blog-directory (expand-file-name "~/Documents/site")
+  "Set org blog directory."
+  :group 'curtain
+  :type 'string)
+
 (defcustom curtain-server-p nil
   "Enable `server-mode' or not."
   :group 'curtain

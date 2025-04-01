@@ -23,7 +23,11 @@
               ("C-c C-d C-f" . denote-dired-rename-marked-files-using-front-matter))
               
   :config
-  (setq denote-directory curtain-org-directory)
+  (setq denote-directory curtain-org-directory
+        denote-known-keywords '("emacs" "work" "blog" "journal")
+        denote-infer-keywords t
+        denote-sort-keywords t
+        )
   (denote-rename-buffer-mode 1))
 
 (use-package denote-sequence
@@ -84,6 +88,7 @@
   :after ox)
 
 (use-package ox-zola
+  :disabled
   :straight (:host github :repo "gicrisf/ox-zola"
                    :files (:defaults "*.el" "backend" "stylesheets"))
   :demand t)

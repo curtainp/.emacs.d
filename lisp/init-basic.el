@@ -13,6 +13,7 @@
 
 ;; Server-mode
 (use-package server
+  :disabled
   :straight nil
   :if curtain-server-p
   :hook (after-init . server-mode))

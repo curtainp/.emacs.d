@@ -53,6 +53,7 @@
           ("d" . "details")
           ("u" . "summary")
           ("m" . "mark")
+          ("r" . "raw")
           ("X" . "export")
           ("q" . "quote"))
         org-fold-catch-invisible-edits 'show

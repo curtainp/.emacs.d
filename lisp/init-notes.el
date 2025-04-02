@@ -85,7 +85,9 @@
 
 (use-package ox-hugo
   :straight t
-  :after ox)
+  :after ox
+  :config
+  (add-to-list 'org-hugo-special-block-type-properties '("raw" . (:raw t))))
 
 (use-package ox-zola
   :disabled

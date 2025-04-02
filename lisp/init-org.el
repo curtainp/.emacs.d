@@ -27,6 +27,7 @@
         ("C-c o c" . org-capture)
         )
   :config
+  (require 'org-tempo)
   (set-face-attribute 'org-ellipsis nil :inherit 'default :box nil)
   (setq org-ellipsis "…"
         org-default-notes-file (expand-file-name "all-blogpost.org" curtain-blog-directory)
@@ -49,6 +50,9 @@
           ("t" . "src emacs-lisp :tangle FILENAME")
           ("T" . "src emacs-lisp :tangle FILENAME :mkdirp yes")
           ("x" . "example")
+          ("d" . "details")
+          ("u" . "summary")
+          ("m" . "mark")
           ("X" . "export")
           ("q" . "quote"))
         org-fold-catch-invisible-edits 'show
@@ -64,22 +68,26 @@
         org-lowest-priority ?C
         org-default-properties ?A)
 
-  (add-hook 'org-mode-hook  (lambda ()
-                            (setq prettify-symbols-alist
-                                  '(("lambda" . ?λ)
-                                    (":END:" . ?)
-                                    ("#+TITLE:" . ?)
-                                    ("#+AUTHOR:" . ?)
-                                    ("#+BEGIN_QUOTE" . ?)
-                                    ("#+END_QUOTE" . ?)
-                                    ("#+RESULTS:" . ?)
-                                    ("[ ]" . ?)
-                                    ("[-]" . ?)
-                                    ("[X]" . ?)
-                                    ("[#A]" . ?🅐)
-                                    ("[#B]" . ?🅑)
-                                    ("[#C]" . ?🅒)))
-                            (prettify-symbols-mode)))
+  ;; (add-hook 'org-mode-hook  (lambda ()
+  ;;                             (setq prettify-symbols-alist
+  ;;                                   '(("lambda" . ?λ)
+  ;;                                     (":END:" . ?)
+  ;;                                     ("#+TITLE:" . ?)
+  ;;                                     ("#+AUTHOR:" . ?)
+  ;;                                     ("#+BEGIN_QUOTE" . ?)
+  ;;                                     ("#+END_QUOTE" . ?)
+  ;;                                     ("#+RESULTS:" . ?)
+  ;;                                     ("[ ]" . ?)
+  ;;                                     ("[-]" . ?)
+  ;;                                     ("[X]" . ?)
+  ;;                                     ("[#A]" . ?🅐)
+  ;;                                     ("[#B]" . ?🅑)
+  ;;                                     ("[#C]" . ?🅒)))
+  ;;                             (prettify-symbols-mode)))
+  (add-hook 'org-mode-hook (lambda ()
+                             (setq-local electric-pair-inhibit-predicate
+                                         `(lambda (c)
+                                            (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 
   ;; refile and todo
   (setq org-refile-targets
@@ -163,8 +171,8 @@
     (add-to-list 'org-capture-templates
                  '("b"
                    "Hugo Post"
-                   entry
-                   (file+headline "" "Emacs") ;; use `org-default-notes-file' instead
+                   plain
+                   (file "") ;; use `org-default-notes-file' instead
                    (function org-hugo-subtree-post-capture-template))))
   )
 

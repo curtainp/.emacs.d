@@ -25,7 +25,7 @@
   :group 'curtain
   :type 'string)
 
-(defcustom curtain-blog-directory (expand-file-name "~/Documents/site")
+(defcustom curtain-blog-directory (expand-file-name "~/Documents/site/blog/content-org")
   "Set org blog directory."
   :group 'curtain
   :type 'string)

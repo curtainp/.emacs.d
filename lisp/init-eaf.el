@@ -24,7 +24,7 @@
 (setq eaf-webengine-serif-font-family "LXGW WenKai Mono")
 (setq eaf-webengine-font-family "WenQuanYi Micro Hei Mono")
 (setq eaf-webengine-fixed-font-family "WenQuanYi Micro Hei Mono")
-(setq eaf-browser-enable-adblocker t)
+(setq eaf-browser-enable-adblocker nil)
 (setq eaf-jupyter-font-family "JetBrainsMono Nerd Font")
 (setq eaf-pyqterminal-font-family "JetBrainsMono Nerd Font")
 (setq eaf-pyqterminal-font-size 28)

@@ -1,6 +1,9 @@
 ;; init-eaf.el  -*- lexical-binding: t -*-
 
 (add-to-list 'load-path "~/.emacs.d/straight/repos/emacs-application-framework/")
+;; (add-to-list 'load-path "~/.emacs.d/straight/repos/popweb/extension/dict/")
+
+
 (require 'eaf)
 (require 'eaf-browser)
 (require 'eaf-pdf-viewer)
@@ -15,6 +18,8 @@
 (require 'eaf-pyqterminal)
 (require 'eaf-rss-reader)
 (require 'eaf-map)
+
+;;(require 'popweb-dict)
 
 (setq eaf-browser-continue-where-left-off t)
 (setq eaf-webengine-pc-user-agent "Mozilla/5.0 (X11; Linux x86_64; rv:136.0) Gecko/20100101 Firefox/136.0")
@@ -38,5 +43,8 @@
 (defun eaf-goto-right-tab ()
   (interactive)
   (centaur-tabs-forward))
+
+;; (defun eaf-translate-text (text)
+;;   (popweb-dict-youdao-input text))
 
 (provide 'init-eaf)

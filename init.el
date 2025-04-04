@@ -45,8 +45,11 @@
 ;;(require 'init-search)
 (require 'init-rime)
 (require 'init-prog)
+;;(require 'init-emigo)
+
 (run-with-idle-timer
  1 nil #'(lambda ()
+           ;; (require 'init-popweb)
            (require 'init-eaf)
            ;;(require 'init-llm)
            (require 'init-org)

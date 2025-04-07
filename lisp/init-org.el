@@ -86,9 +86,12 @@
   ;;                                     ("[#C]" . ?🅒)))
   ;;                             (prettify-symbols-mode)))
   (add-hook 'org-mode-hook (lambda ()
-                             (setq-local electric-pair-inhibit-predicate
+                             (progn
+                               (auto-fill-mode)
+                               (setq-local electric-pair-inhibit-predicate
                                          `(lambda (c)
-                                            (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+                                            (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c)))))
+                             ))
 
   ;; refile and todo
   (setq org-refile-targets

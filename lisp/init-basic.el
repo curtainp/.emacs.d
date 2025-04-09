@@ -90,6 +90,9 @@
  tab-always-indent t
  tab-width 4
 
+ ;; indent offset for language
+ c-basic-offset 4
+
  ;; Sentence end
  sentence-end "\\([。！？]\\|……\\|[.?!][]\"')}]*\\($\\|[ \t]\\)\\)[ \t\n]*"
  sentence-end-double-space nil

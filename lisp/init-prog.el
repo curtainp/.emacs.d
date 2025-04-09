@@ -59,5 +59,4 @@
   ;; Don't emit warning
   (python-indent-guess-indent-offset-verbose nil))
 
-
 (provide 'init-prog)

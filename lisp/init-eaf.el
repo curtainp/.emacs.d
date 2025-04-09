@@ -33,6 +33,7 @@
 (setq eaf-jupyter-font-family "JetBrainsMono Nerd Font")
 (setq eaf-pyqterminal-font-family "JetBrainsMono Nerd Font")
 (setq eaf-pyqterminal-font-size 28)
+(setq eaf-pyqterminal-cursor-type "hbar")
 (setq eaf-jupyter-font-size 20)
 (defalias 'browse-web #'eaf-open-browser)
 

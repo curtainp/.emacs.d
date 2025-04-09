@@ -19,6 +19,8 @@
 (setq
  redisplay-skip-fontification-on-input t)
 
+(setq x-underline-at-descent-line t)
+
 (blink-cursor-mode -1)
 (setq indicate-buffer-boundaries nil
       indicate-empty-lines nil)

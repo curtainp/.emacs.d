@@ -164,15 +164,6 @@
       window-divider-default-right-width 1)
 (add-hook 'window-setup-hook #'window-divider-mode)
 
-;; Show line numbers
-(use-package display-line-numbers
-  :straight nil
-  :hook ((prog-mode
-          conf-mode toml-ts-mode
-          yaml-mode yaml-ts-mode)
-         . display-line-numbers-mode)
-  :init (setq display-line-numbers-width-start t))
-
 ;; Easily adjust the font size in all frames
 (use-package default-text-scale
   :straight t

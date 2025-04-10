@@ -13,6 +13,102 @@
   :config
   (treesit-auto-add-to-auto-mode-alist custom-auto-langs))
 
+(use-package emacs
+  :straight nil
+  :demand t
+  :config
+  (setq tab-always-indent 'complete) ; try indent first, if indent already, try complete
+  (setq tab-first-completion 'word-or-paren-or-punct)
+  (setq-default tab-width 4
+                indent-tabs-mode nil))
+
+(use-package electric
+  :straight nil
+  :hook (prog-mode . electric-indent-local-mode)
+  :config
+  ;; only enable electric in `prog-mode'
+  (electric-pair-mode -1)
+  (electric-quote-mode -1)
+  (electric-indent-mode -1))
+
+(use-package paren
+  :straight nil
+  :hook (prog-mode . show-paren-local-mode)
+  :config
+  (setq show-paren-style 'parenthesis
+        show-paren-when-point-in-periphery nil
+        show-paren-when-point-inside-paren nil
+        show-paren-context-when-offscreen 'overlay))
+
+(use-package tex-mode
+  :straight nil
+  :mode "\\`\\(README\\|CHANGELOG\\|COPYING\\|LICENSE\\)\\'"
+  :hook
+  ((text-mode . turn-on-auto-fill)
+   (prog-mode . (lambda () (setq-local sentence-end-double-space t))))
+  :config
+  (setq sentence-end-double-space nil
+        sentence-end-without-period nil
+        colon-double-space nil
+        use-hard-newlines nil
+        adaptive-fill-mode t))
+
+;;;; Arch Linux and AUR package scripts
+(use-package sh-script
+  :straight nil
+  :mode ("PKGBUILD" . sh-mode))
+
+(use-package conf-mode
+  :straight nil
+  :mode ("\\`dircolors\\'" "\\.\\(service\\|timer\\)\\'"))
+
+;;;; Emacs live documentation feedback
+(use-package eldoc
+  :straight nil
+  :hook (prog-mode . eldoc-mode)
+  :config
+  (setq eldoc-message-function #'message))
+
+;; [so-long] Workaround for long one-line file
+(use-package so-long
+  :straight nil
+  :hook ((after-init . global-so-long-mode)
+	 ((so-long-mode prog-mode fundamental-mode) . +so-long-settings))
+  :config
+  ;; improve long line performance
+  (defun +so-long-settings ()
+    (setq bidi-display-reordering nil))
+
+  ;; Saveplace should not operate in large/long files
+  (add-to-list 'so-long-variable-overrides '(save-place-alist . nil)))
+
+(use-package markdown-mode
+  :straight t
+  :custom
+  (markdown-enable-html t)
+  ;; (markdown-enable-math t)
+  (markdown-fontify-code-blocks-natively t)
+  (markdown-enable-highlighting-syntax t))
+
+(use-package csv-mode
+  :straight t
+  :commands (csv-align-mode))
+
+(use-package flyspell
+  :straight nil
+  :bind
+  (:map flyspell-mode-map
+        ("C-;" . nil)
+        :map flyspell-mouse-map
+        ("<mouse-3>" . flyspell-correct-word)
+        :map ctl-x-x-map
+        ("s" . flyspell-mode))
+  :config
+  (setq flyspell-issue-message-flag nil
+        flyspell-issue-welcome-flag nil
+        ispell-program-name "aspell"
+        ispell-dictionary "en_US"))
+
 ;; Highlight TODO keywords
 (use-package hl-todo
   :straight t

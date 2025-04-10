@@ -11,9 +11,6 @@
   :if curtain-server-p
   :hook (after-init . server-mode))
 
-(add-hook 'after-init-hook #'electric-pair-mode)
-(add-hook 'after-init-hook #'transient-mark-mode)
-
 (setq-default
  ;; no client startup messages
  server-client-instructions nil
@@ -74,14 +71,6 @@
  kill-do-not-save-duplicates t
  scroll-error-top-bottom t
  echo-keystrokes-help nil
-
- ;; [tab]
- ;; Make `tabify' only affect indentation
- tabify-regexp "^\t* [ \t]+"
- ;; Indent with 4 space by default
- indent-tabs-mode nil
- tab-always-indent t
- tab-width 4
 
  ;; indent offset for language
  c-basic-offset 4
@@ -159,7 +148,7 @@
         ("M-u" . upcase-dwim)
         ("M-=" . count-words)
         ("M-:" . pp-eval-expression)
-        ("C-'" . duplicate-dwim) ;; NOTE: original bind with undo
+        ;; ("C-'" . duplicate-dwim) ;; NOTE: original bind with undo
         ;; ("C-w" . backward-kill-word)
         ("C-h K" . describe-keymap)
         ))
@@ -177,6 +166,13 @@
         ("C-x o" . curt-simple-other-window)
         ("C-x k" . curt-simple-kill-buffer-current)))
 
+(use-package curt-pair
+  :disabled
+  :straight nil
+  :bind
+  (("C-'" . curt-pair-insert)
+   ("M-'" . curt-pair-insert)
+   ("M-\\" . curt-pair-delete)))
  
 ;;; [recentf] recently visited files
 (use-package recentf
@@ -275,21 +271,6 @@
   (setq proced-auto-update-interval 5)
   (setq proced-descend t)
   (setq proced-filter 'user))
-
-
-;; [so-long] Workaround for long one-line file
-(use-package so-long
-  :straight nil
-  :hook ((after-init . global-so-long-mode)
-	 ((so-long-mode prog-mode fundamental-mode) . +so-long-settings))
-  :config
-  ;; improve long line performance
-  (defun +so-long-settings ()
-    (setq bidi-display-reordering nil))
-
-  ;; Saveplace should not operate in large/long files
-  (add-to-list 'so-long-variable-overrides '(save-place-alist . nil))
-  )
 
 (setq
  ;; Performant and rapid scrolling
@@ -406,9 +387,5 @@
   ;; Integration of `compile' with `savehist'
   (with-eval-after-load 'savehist
     (add-to-list 'savehist-additional-variables 'compile-history)))
-
-
-(column-number-mode 1)
-(show-paren-mode 1)
 
 (provide 'init-basic)

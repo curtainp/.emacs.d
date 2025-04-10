@@ -97,14 +97,14 @@
 (setq read-file-name-completion-ignore-case t)
 
 (use-package mb-depth
-  :straight t
+  :straight nil
   :hook (after-init . minibuffer-depth-indicate-mode)
   :config
   (setq read-minibuffer-restore-windows nil) ; Emacs 28
   (setq enable-recursive-minibuffers t))
 
 (use-package minibuf-eldef
-  :straight t
+  :straight nil
   :hook (after-init . minibuffer-electric-default-mode)
   :config
   (setq minibuffer-default-prompt-format " [%s]")) ; Emacs 29

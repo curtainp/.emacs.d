@@ -62,13 +62,6 @@
   (setq org-super-links-related-into-drawer t
   	org-super-links-link-prefix 'org-super-links-link-prefix-timestamp))
 
-(use-package markdown-mode
-  :straight t
-  :custom
-  (markdown-enable-html t)
-  ;; (markdown-enable-math t)
-  (markdown-fontify-code-blocks-natively t)
-  (markdown-enable-highlighting-syntax t))
 
 ;; use `yank-media' instead
 (use-package org-download

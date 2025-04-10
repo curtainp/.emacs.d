@@ -28,6 +28,7 @@
 
 
 (use-package hungry-delete
+  :disabled
   :straight t
   :hook (after-init . global-hungry-delete-mode)
   :init (setq hungry-delete-chars-to-skip " \t\f\v"

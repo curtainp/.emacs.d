@@ -75,6 +75,25 @@
         mouse-wheel-scroll-amount-horizontal 1
         mouse-wheel-progressive-speed nil))
 
+(use-package pulsar
+  :straight t
+  :config
+  (setopt pulsar-pulse t
+          pulsar-delay 0.055
+          pulsar-iterations 10
+          pulsar-face 'pulsar-yellow
+          pulsar-highlight-face 'pulsar-magenta)
+
+  (pulsar-global-mode 1)
+  :hook
+  ((next-error . (pulsar-pulse-line-red pulsar-recenter-top pulsar-reveal-entry))
+   (minibuffer-setup . pulsar-pulse-line-yellow)
+   )
+  :bind
+  ;; pular doesn't define any key bindings.
+  (("C-x l" . pulsar-pulse-line) ; override `count-lines-page'
+   ("C-x L" . pulsar-highlight-dwim))) ; override `pulsar-highlight-line'
+
 (use-package doom-themes
   :straight t
   :init

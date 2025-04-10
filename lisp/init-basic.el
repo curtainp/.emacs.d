@@ -5,15 +5,8 @@
 (setq user-full-name curtain-full-name
       user-mail-address curtain-email-address)
 
-;; Exec Environment
-(use-package exec-path-from-shell
-  :disabled
-  :custom (exec-path-from-shell-arguments '("-l"))
-  :init (exec-path-from-shell-initialize))
-
 ;; Server-mode
 (use-package server
-  :disabled
   :straight nil
   :if curtain-server-p
   :hook (after-init . server-mode))
@@ -139,13 +132,6 @@
           (lambda ()
             (modify-syntax-entry ?_ "w")))
 
-;; unbind some annoying commands
-(keymap-global-unset "C-z" 'remove)
-(keymap-global-unset "C-x C-z" 'remove)
-
-;; remap some keys
-(keymap-global-set "M-:" #'pp-eval-expression)
-
 ;; Enable the disabled dired commands
 (put 'dired-find-alternate-file 'disabled nil)
 
@@ -159,14 +145,38 @@
   :demand t
   :bind
   (:map global-map
+        ("<insert>" . nil)
+        ("<menu>" . nil)
+        ("C-z" . nil)
+        ("C-x C-z" . nil)
+        ("C-x C-d" . nil)
+        ("C-x C-v" . nil)
+        ("C-x C-c" . nil)
+        ("C-x C-c C-c" . save-buffers-kill-emacs)
+        ("C-x C-r" . restart-emacs) ; override `find-file-read-only'
         ("M-c" . capitalize-dwim)
         ("M-l" . downcase-dwim)
         ("M-u" . upcase-dwim)
         ("M-=" . count-words)
+        ("M-:" . pp-eval-expression)
         ("C-'" . duplicate-dwim) ;; NOTE: original bind with undo
         ;; ("C-w" . backward-kill-word)
         ("C-h K" . describe-keymap)
         ))
+
+(use-package curt-simple
+  :straight nil
+  :demand t
+  :config
+  (curt-simple-override-mode 1)
+  :bind
+  (:map global-map
+        ("ESC ESC" . curt-simple-keyboard-quit-dwim)
+        ("C-g" . curt-simple-keyboard-quit-dwim)
+        ("C-=" . curt-simple-insert-date)
+        ("C-x o" . curt-simple-other-window)
+        ("C-x k" . curt-simple-kill-buffer-current)))
+
  
 ;;; [recentf] recently visited files
 (use-package recentf
@@ -396,12 +406,6 @@
   ;; Integration of `compile' with `savehist'
   (with-eval-after-load 'savehist
     (add-to-list 'savehist-additional-variables 'compile-history)))
-
-(use-package simpc-mode
-  :straight nil
-  :demand t
-  :init
-  (add-to-list 'auto-mode-alist '("\\.[hc]\\(pp\\)?\\'" . simpc-mode)))
 
 
 (column-number-mode 1)

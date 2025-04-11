@@ -13,10 +13,6 @@
 
 
 (setq-default
- ;; no client startup messages
- server-client-instructions nil
- tab-always-indent 'complete
-
  create-lockfiles nil
  make-backup-files nil
  auto-save-default t
@@ -53,10 +49,6 @@
 
  ;; disable [bell] completely
  ring-bell-function 'ignore
-
- ;; Disable copy region blink
- copy-region-blink-delay 0
- delete-pair-blink-delay 0
 
  ;; set [fill column] indicator to 100
  fill-column 100

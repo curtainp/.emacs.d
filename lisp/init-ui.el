@@ -164,17 +164,12 @@
       window-divider-default-right-width 1)
 (add-hook 'window-setup-hook #'window-divider-mode)
 
-;; Easily adjust the font size in all frames
-(use-package default-text-scale
-  :straight t
-  :hook (after-init . default-text-scale-mode)
-  :bind (:map default-text-scale-mode-map
-         ("s-="   . default-text-scale-increase)
-         ("s--"   . default-text-scale-decrease)
-         ("s-0"   . default-text-scale-reset)
-         ("C-s-=" . default-text-scale-increase)
-         ("C-s--" . default-text-scale-decrease)
-         ("C-s-0" . default-text-scale-reset)))
+(use-package face-remap
+  :straight nil
+  :bind
+  (("C-x C-=" . global-text-scale-adjust)
+   ("C-x C--" . global-text-scale-adjust)
+   ("C-x C-0" . global-text-scale-adjust)))
 
 ;; Child frame
 (use-package posframe

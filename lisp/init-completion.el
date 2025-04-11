@@ -70,7 +70,8 @@
 
 (use-package orderless
   :straight t
-  :init (require 'orderless)
+  :demand t
+  :after minibuffer
   :config
   ;; Remember to check my `completion-styles' and the
   ;; `completion-category-overrides'.
@@ -315,7 +316,6 @@
   :straight t
   :hook (after-init . vertico-mode)
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
-  :hook (minibuffer-setup . vertico-repeat-save)
   :bind (("M-R" . vertico-repeat)
          :map vertico-map
          ("RET" . vertico-directory-enter)
@@ -323,9 +323,10 @@
          ("M-DEL" . vertico-directory-delete-word)
          ("M-h" . vertico-directory-up))
   :custom
+  (vertico-scroll-margin 0)
   (vertico-cycle t)
-  (vertico-resize nil)
-  (vertico-count 12))
+  (vertico-resize t)
+  (vertico-count 5))
 
 
 (provide 'init-completion)

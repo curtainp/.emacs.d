@@ -19,6 +19,10 @@
 (require 'eaf-rss-reader)
 (require 'eaf-map)
 
+(use-package hide-mode-line
+  :straight t
+  :hook (eaf-mode . hide-mode-line-mode))
+
 ;;(require 'popweb-dict)
 
 (setq eaf-browser-continue-where-left-off t)

@@ -6,6 +6,8 @@
   :config
   (setq mode-line-compact nil
         mode-line-right-align-edge 'right-margin)
+  (set-face-attribute 'mode-line nil :background 'unspecified :overline t)
+  (set-face-attribute 'mode-line-inactive nil :background 'unspecified :overline t)
   (setq-default mode-line-format
                 `("%e"
                   curt-modeline-kbd-macro

@@ -105,26 +105,25 @@
   (with-eval-after-load 'org
     (doom-themes-org-config)))
 
-(use-package doom-modeline
+(use-package modus-themes
   :disabled
-  :hook (after-init . doom-modeline-mode)
-  :custom
-  (doom-modeline-time-icon nil)
-  (doom-modeline-buffer-encoding 'nondefault)
-  (doom-modeline-unicode-fallback t)
-  (doom-modeline-total-line-number t)
-  (doom-modeline-enable-word-count t)
-  ;; (doom-modeline-hud t)
-  ;; (doom-modeline-hud-min-height 1)
-  (doom-modeline-continuous-word-count-modes '(markdown-mode markdown-ts-mode gfm-mode org-mode rst-mode latex-mode tex-mode)))
-
-(use-package awesome-tray
-  :straight '(:type git :host github :repo "manateelazycat/awesome-tray")
+  :straight t
   :demand t
-  :custom
-  (awesome-tray-active-modules '("evil" "buffer-name" "location" "belong" "last-command"))
+  :bind (("<f5>" . modus-themes-toggle)
+         ("C-<f5>" . modus-themes-select)
+         ("M-<f5>" . modus-themes-rotate))
   :config
-  (awesome-tray-mode 1))
+  (setq modus-themes-custom-auto-reload nil
+        modus-themes-to-toggle '(modus-operandi modus-vivendi)
+        modus-themes-to-rotate modus-themes-items
+        modus-themes-mixed-fonts t
+        modus-themes-variable-pitch-ui t
+        modus-themes-italic-constructs t
+        modus-themes-bold-constructs t
+        modus-themes-completions '((t . (bold)))
+        modus-themes-prompt '(bold))
+  (setq modus-themes-common-palette-overrides nil)
+  (modus-themes-load-theme (cadr modus-themes-to-toggle)))
 
 (use-package nerd-icons
   :straight t)
@@ -145,24 +144,6 @@
   (centaur-tabs-headline-match)
   (centaur-tabs-mode t))
 
-(use-package keycast
-  :disabled
-  :commands (keycast-doom-modeline-mode)
-  :config
-  (define-minor-mode keycast-doom-modeline-mode
-    "Show keycast in `doom-modeline'."
-    :global t
-    (if keycast-doom-modeline-mode
-        (progn (add-hook 'pre-command-hook 'keycast--update t)
-               (add-to-list 'global-mode-string '("" keycast-mode-line " ")))
-      (remove-hook 'pre-command-hook 'keycast--update)
-      (cl-callf2 delete '("" keycast-mode-line " ") global-mode-string))))
-
-;; [window-divider] Display window divider
-(setq window-divider-default-places t
-      window-divider-default-bottom-width 1
-      window-divider-default-right-width 1)
-(add-hook 'window-setup-hook #'window-divider-mode)
 
 (use-package face-remap
   :straight nil

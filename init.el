@@ -39,6 +39,7 @@
 (require 'init-straight)
 (require 'init-basic)
 (require 'init-ui)
+(require 'init-modeline)
 (require 'init-completion)
 (require 'init-lsp-bridge)
 (require 'init-evil)

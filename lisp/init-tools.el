@@ -14,6 +14,7 @@
   (sort-tab-mode))
 
 (use-package holo-layer
+  :disabled
   :straight '(:type git :host github :repo "manateelazycat/holo-layer"
                     :files (:defaults "*.el" "*.py" "icon_cache" "plugin" "resources")
                     :build (:not compile))

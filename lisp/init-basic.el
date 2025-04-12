@@ -346,61 +346,6 @@
   :init
   (setq display-line-numbers-width-start t))
 
-(use-package dired
-  :straight nil
-  :config
-  (setq
-   ;; Always delete and copy recursively
-   dired-recursive-deletes 'top
-   dired-recursive-copies 'always
-   ;; Move between two dired buffer quickly
-   dired-dwim-target t
-   ;; Ask whether destination dirs should get created when copying/removing files.
-   dired-create-destination-dirs 'ask
-   ;; don't prompt to revert, just do it
-   dired-auto-revert-buffer #'dired-buffer-stale-p
-   ;; symlink
-   dired-hide-details-hide-symlink-targets nil
-   dired-auto-revert-buffer #'dired-directory-changed-p
-   dired-make-directory-clickable t
-   dired-free-space nil
-   dired-mouse-drag-files t
-   )
-
-  ;;(add-hook 'dired-mode-hook #'dired-hide-details-mode)
-  (add-hook 'dired-mode-hook #'hl-line-mode)
-  (define-key dired-jump-map (kbd "j") nil)
-
-  (when (eq system-type 'darwin)
-    (if (executable-find "gls")
-        (setq insert-directory-program "gls") ; Use GNU ls as `gls' from `coreutils' if available.
-      ;; Suppress the warning: `ls does not support --dired'.
-      (setq dired-use-ls-dired nil)))
-
-  (when (or (not (eq system-type 'darwin)) (executable-find "gls"))
-    (setq ls-lisp-use-insert-directory-program t ; Using `insert-directory-program'
-          ;; Show directory first
-          dired-listing-switches "-alh --group-directories-first"))
-  )
-
-(use-package nerd-icons-dired
-  :disabled
-  :straight t
-  :hook (dired-mode . nerd-icons-dired-mode))
-
-(use-package wdired
-  :disabled
-  :commands (wdired-change-to-wdired-mode)
-  :config
-  (setq wdired-allow-to-change-permissions t)
-  (setq wdired-create-parent-directories t))
-
-(use-package diredfl
-  :disabled
-  :hook (dired-mode . diredfl-mode)
-  :config
-  (cl-callf append diredfl-compressed-extensions '(".zst" ".rar" ".7z" ".cab" ".arc" ".zoo")))
-
 (use-package compile
   :straight nil
   :hook (compilation-filter . ansi-color-compilation-filter) ; Enable ANSI colors in compilation buffer

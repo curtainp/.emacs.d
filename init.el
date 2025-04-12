@@ -52,7 +52,7 @@
  1 nil #'(lambda ()
            ;; (require 'init-popweb)
            (require 'init-eaf)
-           ;;(require 'init-llm)
+           ;; (require 'init-llm)
            (require 'init-org)
            (require 'init-notes)
            (require 'init-docs)

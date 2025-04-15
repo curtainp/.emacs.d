@@ -5,6 +5,13 @@
   :bind (("C-x l" . ialign)))
 
 ;;(use-package symbol-overlay)
+(use-package rainbow-mode
+  :straight t
+  :init
+  (setq rainbow-ansi-colors nil)
+  (setq rainbow-x-colors nil)
+  :bind (:map ctl-x-x-map
+              ("c" . rainbow-mode)))
 
 (use-package sort-tab
   :disabled

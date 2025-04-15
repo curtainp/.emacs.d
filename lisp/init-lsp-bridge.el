@@ -18,6 +18,7 @@
   (lsp-bridge-python-multi-lsp-server 'basedpyright_ruff)
   (lsp-bridge-enable-hover-diagnostic t)
   (acm-enable-capf t)
+  (acm-enable-icon t)
   (acm-enable-quick-access nil)
   ;; (acm-backend-yas-match-by-trigger-keyword t)
   (acm-enable-tabnine nil)

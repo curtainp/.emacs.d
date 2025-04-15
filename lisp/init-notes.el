@@ -1,4 +1,4 @@
-;;; lexical-binding: t -*-
+;;; init-notes.el -*- lexical-binding: t -*-
 
 ;; Simple notes for Emacs with an efficient file-naming scheme
 (use-package denote

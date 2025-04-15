@@ -1,4 +1,4 @@
-;;; lexical-binding: t -*-
+;;; init-tools.el -*- lexical-binding: t -*-
 
 (use-package ialign
   :disabled

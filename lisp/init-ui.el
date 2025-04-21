@@ -109,6 +109,12 @@
   (with-eval-after-load 'org
     (doom-themes-org-config)))
 
+(use-package gruvbox-theme
+  :disabled
+  :straight t
+  :config
+  (load-theme 'gruvbox-dark-medium t))
+
 (use-package modus-themes
   :disabled
   :straight t

@@ -84,11 +84,15 @@
           pulsar-face 'pulsar-yellow
           pulsar-highlight-face 'pulsar-magenta)
 
+  (add-to-list 'pulsar-pulse-functions 'evil-yank)
+  (add-to-list 'pulsar-pulse-functions 'evil-yank-line)
+  (add-to-list 'pulsar-pulse-functions 'evil-delete)
+  (add-to-list 'pulsar-pulse-functions 'evil-delete-line)
+  (add-to-list 'pulsar-pulse-functions 'evil-jump-item)
   (pulsar-global-mode 1)
   :hook
   ((next-error . (pulsar-pulse-line-red pulsar-recenter-top pulsar-reveal-entry))
-   (minibuffer-setup . pulsar-pulse-line-yellow)
-   )
+   (minibuffer-setup . pulsar-pulse-line-yellow))
   :bind
   ;; pular doesn't define any key bindings.
   (("C-x l" . pulsar-pulse-line) ; override `count-lines-page'

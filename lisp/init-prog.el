@@ -158,7 +158,7 @@
   :straight (:type git :host github :repo "merrickluo/kdl-ts-mode")
   :demand t
   :config
-  (setq kdl-ts-mode-indent-offset 2))
+  (setq kdl-ts-mode-indent-offset 4))
 
 
 (provide 'init-prog)

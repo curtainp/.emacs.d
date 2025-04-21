@@ -1,7 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
 (defvar custom-auto-langs '(bash c cpp css dockerfile html javascript json latex make org python rust sql toml
-                             tsx typescript yaml xml markdown markdown-inline elisp))
+                             tsx typescript yaml xml markdown markdown-inline elisp kdl))
 (use-package treesit-auto
   :straight t
   :hook (after-init . global-treesit-auto-mode)
@@ -153,5 +153,12 @@
   (python-indent-guess-indent-offset t)
   ;; Don't emit warning
   (python-indent-guess-indent-offset-verbose nil))
+
+(use-package kdl-ts-mode
+  :straight (:type git :host github :repo "merrickluo/kdl-ts-mode")
+  :demand t
+  :config
+  (setq kdl-ts-mode-indent-offset 2))
+
 
 (provide 'init-prog)

@@ -11,7 +11,6 @@
       default-frame-alist '((tool-bar-lines . 0)
                             (menu-bar-lines . 0)
                             (vertical-scroll-bars)
-                            (alpha-background . 90)
                             (undecorated-round . t)
                             (internal-border-width . 0)
                             (fullscreen . maximized))

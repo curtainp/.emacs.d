@@ -106,8 +106,7 @@
   :config
   (setq flyspell-issue-message-flag nil
         flyspell-issue-welcome-flag nil
-        ispell-program-name "aspell"
-        ispell-dictionary "en_US"))
+        ispell-program-name "aspell"))
 
 ;; Highlight TODO keywords
 (use-package hl-todo

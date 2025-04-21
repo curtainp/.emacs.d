@@ -9,6 +9,9 @@
  :custom
  (emigo-model "openrouter/google/gemini-2.5-pro-exp-03-25:free")
  (emigo-base-url "https://openrouter.ai/api/v1")
- (emigo-api-key (emigo-read-file-content "~/.config/openrouter/key.txt")))
+ (emigo-api-key (with-temp-buffer
+                  (insert-file-contents "~/.config/openrouter/key.txt")
+                  (string-trim (buffer-string))))
+ )
 
 (provide 'init-emigo)

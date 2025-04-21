@@ -70,7 +70,7 @@
   (with-eval-after-load 'eaf
     (evil-define-key '(normal visual insert) 'global
       (kbd "C-x C-j") 'eaf-open-in-file-manager
-      (kbd "C-x p s") 'eaf-open-pyqterminal
+      ;; (kbd "C-x p s") 'eaf-open-pyqterminal
       ))
   ;; centaur-tabs
   (with-eval-after-load 'centaur-tabs

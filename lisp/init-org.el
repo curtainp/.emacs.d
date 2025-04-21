@@ -7,7 +7,7 @@
         org-imenu-depth 7)
   (add-to-list 'safe-local-variable-values '(org-hide-leading-stars . t))
   (add-to-list 'safe-local-variable-values '(org-hide-macro-markers . t))
-  (setq org-export-backends '(html textinfo md))
+  ;; (setq org-export-backends '(html textinfo md))
   :custom-face
   (org-document-title ((t (:height 1.75 :weight bold))))
   (org-level-1 ((t (:height 1.2 :weight bold))))

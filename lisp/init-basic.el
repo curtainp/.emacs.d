@@ -339,6 +339,8 @@
 
 (use-package display-line-numbers
   :straight nil
+  :custom
+  (display-line-numbers-type 'relative)
   :hook ((prog-mode
           conf-mode toml-ts-mode
           yaml-mode yaml-ts-mode)

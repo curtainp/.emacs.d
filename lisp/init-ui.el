@@ -12,7 +12,7 @@
 			   "Segoe UI Emoji"
                "Symbola"
 			   ))
-(defconst cs/default-font "JetBrainsMono 12")
+(defconst cs/default-font "Iosevka 15")
 (defconst cs/zh-default-font "LXGW WenKai")
 (defconst cs/symbol-default-font "Symbols Nerd Font Mono")
 
@@ -193,6 +193,7 @@
 
 ;; [ligature] ligature support for Emacs
 (use-package ligature
+  :disabled
   :straight t
   :hook ((prog-mode markdown-mode) . ligature-mode)
   :config

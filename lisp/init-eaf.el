@@ -22,7 +22,7 @@
 
 (use-package hide-mode-line
   :straight t
-  :hook (eaf-mode . hide-mode-line-mode))
+  :hook ((eaf-mode vterm-mode) . hide-mode-line-mode))
 
 ;;(require 'popweb-dict)
 
@@ -37,7 +37,7 @@
 (setq eaf-webengine-fixed-font-family "WenQuanYi Micro Hei Mono")
 (setq eaf-browser-enable-adblocker nil)
 (setq eaf-jupyter-font-family "JetBrainsMono")
-(setq eaf-pyqterminal-font-family "JetBrainsMono")
+(setq eaf-pyqterminal-font-family "JetBrains Mono")
 (setq eaf-pyqterminal-font-size 28)
 ;; (setq eaf-pyqterminal-cursor-type "hbar")
 (setq eaf-jupyter-font-size 20)

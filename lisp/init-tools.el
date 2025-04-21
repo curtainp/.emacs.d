@@ -89,9 +89,18 @@
   :config
   (projectile-mode +1))
 
-(use-package vterm
+(use-package vterm-toggle
   :disabled
-  :hook (vterm-mode . compilation-shell-minor-mode)
+  :straight t
+  :bind (:map global-map
+              ([f8] . vterm-toggle)
+              :map vterm-mode-map
+              ([f8] . vterm-toggle))
+  )
+
+
+(use-package vterm
+  :straight t
   :bind (:map vterm-mode-map ([return] . vterm-send-return))
   :custom
   (vterm-always-compile-module t)

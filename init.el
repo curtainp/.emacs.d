@@ -43,6 +43,7 @@
   (require 'init-modeline)
   (require 'init-completion)
   (require 'init-lsp-bridge)
+  (require 'init-nav)
   (require 'init-evil)
   ;;(require 'init-search)
   (require 'init-prog)

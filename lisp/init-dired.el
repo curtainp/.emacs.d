@@ -72,8 +72,13 @@
                 "\\)")))
 
 (use-package diredfl
+  :straight t
   :hook (dired-mode . diredfl-mode)
   :config
   (cl-callf append diredfl-compressed-extensions '(".zst" ".rar" ".7z" ".cab" ".arc" ".zoo")))
+
+(use-package sudo-edit
+  :straight t
+  :hook (after-init . sudo-edit-indicator-mode))
 
 (provide 'init-dired)

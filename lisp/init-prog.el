@@ -40,6 +40,11 @@
         show-paren-when-point-inside-paren nil
         show-paren-context-when-offscreen 'overlay))
 
+(use-package elisp-plus
+  :straight (:host github :repo "abougouffa/elisp-plus")
+  :init
+  (elisp-plus-mode 1))
+
 (use-package tex-mode
   :straight nil
   :mode "\\`\\(README\\|CHANGELOG\\|COPYING\\|LICENSE\\)\\'"

@@ -30,39 +30,6 @@
   :after org
   :hook (org-mode . org-appear-mode))
 
-(defun my/set-org-font ()
-  (interactive)
-  ;; org 字体美化
-  (require 'org-faces)
-  ;; 标题字体大小优化
-  (set-face-attribute 'org-document-title nil :weight 'bold :height 1.2)
-  (dolist (face '((org-level-1 . 1.15)
-                  (org-level-2 . 1.1)
-                  (org-level-3 . 1.0)
-                  (org-level-4 . 1.0)
-                  (org-level-5 . 1.0)
-                  (org-level-6 . 1.0)
-                  (org-level-7 . 1.0)
-                  (org-level-8 . 1.0)))
-    (set-face-attribute (car face) nil :weight 'medium :height (cdr face)))
-
-  (set-face-attribute 'org-block nil :foreground 'unspecified' :inherit 'fixed-pitch)
-  (set-face-attribute 'org-block-begin-line nil :foreground 'unspecified' :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-block-end-line nil :foreground 'unspecified' :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-property-value nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-verbatim nil  :inherit '(shadow fixed-pitch))
-  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
-  (set-face-attribute 'org-drawer nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-document-info-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-  (set-face-attribute 'org-table nil :inherit 'fixed-pitch)
-  (setq org-fontify-quote-and-verse-blocks t) ; 启用 org-qoute 变量为 quote 设置不同的字体
-  (set-face-attribute 'org-quote nil :inherit 'fixed-pitch)
-  (require 'org-indent) ;; 开启 org-indent 并设设置缩进字体
-  (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch)))
-
 (use-package org
   :straight nil
   :init
@@ -77,19 +44,22 @@
         )
   :config
   (require 'org-tempo)
-  (my/set-org-font)
-  (set-face-attribute 'org-ellipsis nil :inherit 'default :box nil)
-  (setq org-ellipsis "…"
-        org-default-notes-file (expand-file-name "all-blogpost.org" curtain-blog-directory)
+  (setq org-ellipsis " ↩"
+        ;; hugo support org mode blog
+        ;; org-default-notes-file (expand-file-name "all-blogpost.org" curtain-blog-directory)
         org-yank-image-save-method "."
         org-startup-truncated nil
         org-startup-folded 'show2levels
         org-image-actual-width nil
+        org-list-allow-alphabetical t
         ;; org-adapt-indentation nil
         ;; org-special-ctrl-a/e nil
         ;; org-special-ctrl-k nil
-        ;; org-hide-emphasis-markers t
-        ;; org-pretty-entities t
+        org-hide-emphasis-markers t
+        org-highlight-latex-and-related '(native latex script entities)
+        org-pretty-entities t
+        org-use-property-inheritance t
+        org-use-sub-superscripts '{}
         ;; org-hide-macro-markers t
         ;; org-cycle-separator-lines 0
         org-structure-template-alist
@@ -106,14 +76,14 @@
           ("r" . "raw")
           ("X" . "export")
           ("q" . "quote"))
-        ;; org-fold-catch-invisible-edits 'show
+        org-fold-catch-invisible-edits 'smart
         ;; org-return-follows-link nil
         ;; org-loop-over-headlines-in-active-region 'start-level
         ;; org-use-sub-superscripts '{}
-        ;; org-insert-heading-respect-content t
+        org-insert-heading-respect-content t
         ;; org-read-date-prefer-future 'time
         ;; org-fontify-whole-block-delimiter-line t
-        ;; org-fontify-quote-and-verse-blocks t
+        org-fontify-quote-and-verse-blocks t  ; special faces for +begin_quote and +begin_verse
         ;; org-track-ordered-property-with-tag t
         org-highest-priority ?A
         org-lowest-priority ?C

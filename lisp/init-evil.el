@@ -40,9 +40,19 @@
     "ff" 'find-file
     "fr" 'recentf
     "ss" 'consult-line
-    "sg" 'consult-ripgrep
     "pf" 'project-find-file
     )
+  ;; color-rg integration with evil
+  (with-eval-after-load 'color-rg
+    (evil-define-key nil space-leader-map
+      "sg" 'color-rg-search-input
+      "sp" 'color-rg-search-input-in-project
+      "sb" 'color-rg-search-input-in-current-file)
+    (evil-define-key '(normal visual) 'global
+      "g*" 'color-rg-search-symbol)
+    (dolist (mode '(color-rg-mode color-rg-search-mode color-rg-switch-to-edit-mode color-rg-switch-to-view-mode))
+      (evil-set-initial-state mode 'emacs)))
+
   (evil-define-key '(normal insert) 'global
         (kbd "C-x C-p")  'yank-from-kill-ring) ;; NOTE: original bind with mark-page
 

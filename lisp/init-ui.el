@@ -28,8 +28,8 @@
 			   ))
 (defconst cs/default-font "Iosevka Nerd Font")
 (defconst cs/default-font-size "11")
-(defconst cs/variable-pitch-font "Segoe Print")
-(defconst cs/fixed-pitch-font "JetBrainsMono Nerd Font")
+(defconst cs/variable-pitch-font "Lato")
+(defconst cs/fixed-pitch-font "Iosevka Nerd Font")
 (defconst cs/zh-default-font "lxgw wenkai")
 (defconst cs/symbol-default-font "symbols nerd font mono")
 

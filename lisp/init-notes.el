@@ -65,7 +65,7 @@
 
 ;; use `yank-media' instead
 (use-package org-download
-  :disabled
+  :straight t
   :after org
   :bind (:map org-mode-map
               ("C-c d c" . org-download-clipboard))
@@ -74,7 +74,7 @@
   (when (eq system-type 'darwin)
     (setq org-download-screenshot-method "pngpaste %s"))
   (setq-default org-download-heading-lvl nil
-                org-download-image-dir "./imgs"))
+                org-download-image-dir "."))
 
 (use-package ox-hugo
   :straight t

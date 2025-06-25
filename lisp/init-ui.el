@@ -12,7 +12,7 @@
 			   "Segoe UI Emoji"
                "Symbola"
 			   ))
-(defconst cs/default-font "Iosevka 15")
+(defconst cs/default-font "Iosevka 11")
 (defconst cs/zh-default-font "LXGW WenKai")
 (defconst cs/symbol-default-font "Symbols Nerd Font Mono")
 

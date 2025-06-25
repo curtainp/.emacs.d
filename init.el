@@ -51,7 +51,7 @@
 (run-with-idle-timer
  1 nil #'(lambda ()
            ;; (require 'init-popweb)
-           (require 'init-eaf)
+           ;; (require 'init-eaf)
            ;; (require 'init-llm)
            (require 'init-org)
            (require 'init-notes)

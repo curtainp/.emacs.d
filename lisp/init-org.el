@@ -187,6 +187,7 @@
   (org-modern-tag ((t (:inherit org-verbatim :weight regular :foreground "black" :background "LightGray" :box "black"))))
   :custom
   (org-modern-star 'replace)
+  ;; (org-modern-replace-stars "♔♙♖♗♘♲")
   (org-modern-table-vertical 5)
   (org-modern-table-horizontal 2)
   (org-modern-block-fringe nil)

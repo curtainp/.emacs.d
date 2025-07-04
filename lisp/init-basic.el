@@ -11,6 +11,12 @@
   :if curtain-server-p
   :hook (after-init . server-mode))
 
+(when (and (eq system-type 'darwin) (display-graphic-p))
+  (use-package exec-path-from-shell
+    :straight t
+    :commands exec-path-from-shell-initialize
+    :custom (exec-path-from-shell-arguments '("-l"))
+    :init (exec-path-from-shell-initialize)))
 
 (setq-default
  create-lockfiles nil

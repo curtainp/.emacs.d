@@ -99,6 +99,7 @@
    ("C-x L" . pulsar-highlight-dwim))) ; override `pulsar-highlight-line'
 
 (use-package doom-themes
+  :disabled
   :straight t
   :init
   (load-theme 'doom-one t)
@@ -108,6 +109,12 @@
   ;; (doom-themes-visual-bell-config)
   (with-eval-after-load 'org
     (doom-themes-org-config)))
+
+(use-package base16-theme
+  :straight t
+  :init
+  (load-theme 'base16-gruvbox-dark-hard t))
+
 
 (use-package gruvbox-theme
   :disabled

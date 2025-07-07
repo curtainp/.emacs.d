@@ -12,11 +12,15 @@
   :hook (after-init . server-mode))
 
 (when (and (eq system-type 'darwin) (display-graphic-p))
-  (use-package exec-path-from-shell
-    :straight t
-    :commands exec-path-from-shell-initialize
-    :custom (exec-path-from-shell-arguments '("-l"))
-    :init (exec-path-from-shell-initialize)))
+  ;; NOTE: When PATH is changed, run following command to update:
+  ;; sh -c 'printf "%s" "$PATH"' > .env
+  (condition-case err
+      (let ((path (with-temp-buffer
+                    (insert-file-contents-literally "~/.emacs.d/.env")
+                    (buffer-string))))
+        (setenv "PATH" path)
+        (setq exec-path (append (parse-colon-path path) (list exec-directory))))
+    (error (warn "%s" (error-message-string err)))))
 
 (setq-default
  create-lockfiles nil

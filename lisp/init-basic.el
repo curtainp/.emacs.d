@@ -119,6 +119,9 @@
  read-extended-command-predicate #'command-completion-default-include-p
  )
 
+(global-auto-revert-mode 1)
+(setq global-auto-revert-non-file-buffers nil)
+
 ;; make underscore as part of the word
 (add-hook 'after-change-major-mode-hook
           (lambda ()

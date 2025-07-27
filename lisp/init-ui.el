@@ -4,18 +4,6 @@
   (require 'init-const)
   (require 'init-custom))
 
-(defconst cs/fallback-fonts '("Jigmo" "Jigmo2" "Jigmo3"))
-(defconst cs/emoji-fonts '(
-               "Apple Color Emoji"
-			   "Noto Color Emoji"
-			   "Noto Emoji"
-			   "Segoe UI Emoji"
-               "Symbola"
-			   ))
-(defconst cs/default-font "Iosevka 15")
-(defconst cs/zh-default-font "LXGW WenKai")
-(defconst cs/symbol-default-font "Symbols Nerd Font Mono")
-
 (setq
  redisplay-skip-fontification-on-input t)
 
@@ -30,41 +18,58 @@
 
 (setq epg-pinentry-mode 'loopback)
 
+(defconst cs/fallback-fonts '("jigmo" "jigmo2" "jigmo3"))
+(defconst cs/emoji-fonts '(
+               "apple color emoji"
+			   "noto color emoji"
+			   "noto emoji"
+			   "segoe ui emoji"
+               "symbola"
+			   ))
+(defconst cs/default-font "Iosevka 15")
+(defconst cs/variable-pitch-font "Segoe Print")
+(defconst cs/fixed-pitch-font "JetBrainsMono Nerd Font")
+(defconst cs/zh-default-font "lxgw wenkai")
+(defconst cs/symbol-default-font "symbols nerd font mono")
+
 (defun +setup-fonts ()
-  "Setup fonts."
-  ;; Setting the default
+  "setup fonts."
+  ;; setting the default
   (set-face-attribute 'default nil :font cs/default-font :weight 'normal)
-  ;; 特殊字符需要安装 Symbola 字体 😇
+  (set-face-attribute 'variable-pitch nil :font cs/variable-pitch-font :weight 'normal)
+  (set-face-attribute 'fixed-pitch nil :font cs/fixed-pitch-font :weight 'normal)
+
+  ;; 特殊字符需要安装 symbola 字体 😇
   ;; https://www.wfonts.com/font/symbola
-  ;; "Emacs 28 now has 'emoji . before, emoji is part of 'symbol"
-  ;; 根据上面这句话应该写成 'emoji 就可以了，但是由于 Emoji 本身
-  ;; 分布比较散，所以还是先设置 'unicode 后再设置 CJK 比较靠谱。
+  ;; "emacs 28 now has 'emoji . before, emoji is part of 'symbol"
+  ;; 根据上面这句话应该写成 'emoji 就可以了，但是由于 emoji 本身
+  ;; 分布比较散，所以还是先设置 'unicode 后再设置 cjk 比较靠谱。
   ;; 特例：'emoji 就会导致 ⛈️ fallback 到 ⛈
   ;; https://emacs-china.org/t/emacs/15676/34
-  (cl-loop for font in cs/emoji-fonts
-           when (find-font (font-spec :name font))
-           return (set-fontset-font
-                   t
-                   'unicode
-                   (font-spec :family font
-                              :size
-                              (cond ((eq system-type 'darwin) 12)
-                                    ((eq system-type 'gnu/linux) 25)))
-                   nil 'prepend))
-  ;; Set Chinese font
-  ;; Do not use 'unicode charset, it will cause the English font setting invalid
+  ;; (cl-loop for font in cs/emoji-fonts
+  ;;          when (find-font (font-spec :name font))
+  ;;          return (set-fontset-font
+  ;;                  t
+  ;;                  'unicode
+  ;;                  (font-spec :family font
+  ;;                             :size
+  ;;                             (cond ((eq system-type 'darwin) 12)
+  ;;                                   ((eq system-type 'gnu/linux) 25)))
+  ;;                  nil 'prepend))
+  ;; set chinese font
+  ;; do not use 'unicode charset, it will cause the english font setting invalid
   (when (display-graphic-p)
     (dolist (charset '(kana han symbol cjk-misc bopomofo))
       (set-fontset-font (frame-parameter nil 'font) charset
                         (font-spec :family cs/zh-default-font))))
-  ;; Setting fall-back fonts
+  ;; setting fall-back fonts
   ;; https://idiocy.org/emacs-fonts-and-fontsets.html
   (dolist (font cs/fallback-fonts)
     (when (member font (font-family-list))
       (set-fontset-font "fontset-default" 'han font nil 'append)))
-  ;; Force Emacs to search by using font-spec
+  ;; force emacs to search by using font-spec
   (set-fontset-font t 'han (font-spec :script 'han) nil 'append)
-  (set-fontset-font t '(#xE000 . #xF8FF) cs/symbol-default-font))
+  (set-fontset-font t '(#xe000 . #xf8ff) cs/symbol-default-font))
 
 (add-hook 'window-setup-hook '+setup-fonts)
 (add-hook 'server-after-make-frame-hook '+setup-fonts)
@@ -99,18 +104,17 @@
    ("C-x L" . pulsar-highlight-dwim))) ; override `pulsar-highlight-line'
 
 (use-package doom-themes
-  :disabled
   :straight t
   :init
-  (load-theme 'doom-one t)
+  (load-theme 'doom-moonlight t)
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
   ;; (doom-themes-visual-bell-config)
-  (with-eval-after-load 'org
-    (doom-themes-org-config)))
+  (doom-themes-org-config))
 
 (use-package base16-theme
+  :disabled
   :straight t
   :init
   (load-theme 'base16-gruvbox-dark-hard t))
@@ -157,8 +161,10 @@
   (centaur-tabs-gray-out-icons 'buffer) ;; gray out icons for buffer that not selected
   (centaur-tabs-set-close-button nil)
   (centaur-tabs-modified-marker t)
+  ;; (centaur-tabs-style "rounded")
+  (centaur-tabs-left-edge-margin nil)
   :config
-  (centaur-tabs-headline-match)
+  ;; (centaur-tabs-headline-match)
   (centaur-tabs-mode t))
 
 

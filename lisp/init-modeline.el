@@ -1,6 +1,7 @@
 ;;; init-modeline.el -*- lexical-binding: t -*-
 
 (use-package curt-modeline
+  :disabled
   :straight nil
   :demand t
   :config
@@ -37,17 +38,23 @@
   (awesome-tray-mode 1))
 
 (use-package doom-modeline
-  :disabled
+  :straight t
   :hook (after-init . doom-modeline-mode)
   :custom
-  (doom-modeline-time-icon nil)
-  (doom-modeline-buffer-encoding 'nondefault)
+  ; (doom-modeline-time-icon nil)
+  ; (doom-modeline-buffer-encoding 'nondefault)
   (doom-modeline-unicode-fallback t)
-  (doom-modeline-total-line-number t)
-  (doom-modeline-enable-word-count t)
+  ; (doom-modeline-total-line-number t)
+  ;; (doom-modeline-enable-word-count t)
   ;; (doom-modeline-hud t)
   ;; (doom-modeline-hud-min-height 1)
-  (doom-modeline-continuous-word-count-modes '(markdown-mode markdown-ts-mode gfm-mode org-mode rst-mode latex-mode tex-mode)))
+  ; (doom-modeline-continuous-word-count-modes '(markdown-mode markdown-ts-mode gfm-mode org-mode rst-mode latex-mode tex-mode))
+  :config
+  (custom-set-faces
+   '(mode-line ((t (:height 0.85))))
+   '(mode-line-active ((t (:height 0.85)))) ; For 29+
+   '(mode-line-inactive ((t (:height 0.85)))))
+  )
 
 (use-package keycast
   :disabled

@@ -103,10 +103,23 @@
         ("<mouse-3>" . flyspell-correct-word)
         :map ctl-x-x-map
         ("s" . flyspell-mode))
+  :hook
+  (LaTeX-mode org-mode)
   :config
   (setq flyspell-issue-message-flag nil
         flyspell-issue-welcome-flag nil
         ispell-program-name "aspell"))
+
+(use-package jinx
+  :straight t
+  :hook (emacs-startup . global-jinx-mode)
+  :bind ([remap ispell-word] . jinx-correct)
+  :config
+  (setq jinx-languages "en_US-large")
+  (add-to-list 'jinx-exclude-regexps '(t "\\cc")) ;ignore chinese check
+  (add-to-list 'jinx-exclude-faces
+               '(latex-mode font-lock-constant-face
+                            font-lock-comment-face)))
 
 ;; Highlight TODO keywords
 (use-package hl-todo

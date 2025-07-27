@@ -3,6 +3,7 @@
 (use-package rime
   :straight (:type git :host github :repo "DogLooksGood/emacs-rime"
                    :files ("*.el" "Makefile" "lib.c"))
+  :defer 3
   :custom
   (default-input-method "rime")
   :config

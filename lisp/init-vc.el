@@ -26,7 +26,7 @@
   :after magit
   :commands (global-git-commit-mode)
   :custom
-  (git-commit-summary-max-length 72) ; defaults to Github's max commit message length
+  (git-commit-summary-max-length 80) ; defaults to Github's max commit message length
   (git-commit-style-convention-checks '(overlong-summary-line non-empty-second-line))
   :init
   (global-git-commit-mode 1))

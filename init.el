@@ -44,7 +44,6 @@
 (require 'init-lsp-bridge)
 (require 'init-evil)
 ;;(require 'init-search)
-(require 'init-rime)
 (require 'init-prog)
 ;;(require 'init-emigo)
 
@@ -57,5 +56,6 @@
            (require 'init-notes)
            (require 'init-docs)
            (require 'init-tools)
+           (require 'init-rime)
            (require 'init-vc)
            ))

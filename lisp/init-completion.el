@@ -328,5 +328,11 @@
   (vertico-resize t)
   (vertico-count 5))
 
+(use-package which-key
+  :straight t
+  :defer 3
+  :custom (which-key-idle-delay 1)
+  :config (which-key-mode))
+
 
 (provide 'init-completion)

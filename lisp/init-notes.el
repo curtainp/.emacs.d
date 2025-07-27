@@ -63,7 +63,6 @@
   	org-super-links-link-prefix 'org-super-links-link-prefix-timestamp))
 
 
-;; use `yank-media' instead
 (use-package org-download
   :straight t
   :after org
@@ -87,6 +86,11 @@
   :straight (:host github :repo "gicrisf/ox-zola"
                    :files (:defaults "*.el" "backend" "stylesheets"))
   :demand t)
+
+(use-package org-transclusion
+  :straight (:host github
+                   :repo "nobiot/org-transclusion")
+  :after org)
 
 
 (provide 'init-notes)

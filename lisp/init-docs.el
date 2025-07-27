@@ -19,6 +19,7 @@
 
 (use-package helpful
   :straight t
+  :defer 3
   :bind (("<remap> <describe-variable>" . helpful-variable)
          ("<remap> <describe-symbol>" . helpful-symbol)
          ("<remap> <describe-function>" . helpful-callable)

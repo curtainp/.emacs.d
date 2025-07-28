@@ -160,6 +160,10 @@
   :demand t
   :hook (python-mode . pyvenv-auto-mode))
 
+(use-package envrc
+  :straight t
+  :hook (after-init . envrc-global-mode))
+
 (use-package python
   :straight nil
   :custom

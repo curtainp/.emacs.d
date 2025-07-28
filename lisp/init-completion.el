@@ -331,8 +331,14 @@
 (use-package which-key
   :straight t
   :defer 3
-  :custom (which-key-idle-delay 1)
-  :config (which-key-mode))
+  :config
+  ;; Show which-key buffer only when C-h or ? trigger
+  (setopt which-key-show-early-on-C-h t)
+  ;; Only trigger by above key sequence
+  (setopt which-key-idle-delay 10000.0)
+  ;; Real-time react after which-key buffer shows
+  (setopt which-key-idle-secondary-delay 0.05)
+  (which-key-mode))
 
 
 (provide 'init-completion)

@@ -172,12 +172,6 @@
         ("C-x o" . curt-simple-other-window)
         ("C-x k" . curt-simple-kill-buffer-current)))
 
-(use-package smartparens
-  :straight t
-  :hook (prog-mode text-mode markdown-mode)
-  :config
-  (require 'smartparens-config))
- 
 ;;; [recentf] recently visited files
 (use-package recentf
   :straight nil
@@ -226,91 +220,13 @@
   ;; (e.g. power failure).
   (setq bookmark-save-flag 1))
 
-(use-package time
-  :straight nil
-  :commands (world-clock)
+(use-package ultra-scroll
+  :straight (:host github :repo "jdtsmith/ultra-scroll")
+  :init
+  (setq scroll-conservatively 101
+        scroll-margin 0)
   :config
-  (setq display-time-world-list t)
-  (setq zoneinfo-style-world-list ; M-x shell RET timedatectl list-timezones
-        '(("America/Los_Angeles" "Los Angeles")
-          ("America/Vancouver" "Vancouver")
-          ("Canada/Pacific" "Canada/Pacific")
-          ("America/Chicago" "Chicago")
-          ("Brazil/Acre" "Rio Branco")
-          ("America/Toronto" "Toronto")
-          ("America/New_York" "New York")
-          ("Canada/Atlantic" "Canada/Atlantic")
-          ("Brazil/East" "Brasília")
-          ("UTC" "UTC")
-          ("Europe/Lisbon" "Lisbon")
-          ("Europe/Brussels" "Brussels")
-          ("Europe/Athens" "Athens")
-          ("Asia/Riyadh" "Riyadh")
-          ("Asia/Tehran" "Tehran")
-          ("Asia/Tbilisi" "Tbilisi")
-          ("Asia/Yekaterinburg" "Yekaterinburg")
-          ("Asia/Kolkata" "Kolkata")
-          ("Asia/Singapore" "Singapore")
-          ("Asia/Shanghai" "Shanghai")
-          ("Asia/Seoul" "Seoul")
-          ("Asia/Tokyo" "Tokyo")
-          ("Asia/Vladivostok" "Vladivostok")
-          ("Australia/Brisbane" "Brisbane")
-          ("Australia/Sydney" "Sydney")
-          ("Pacific/Auckland" "Auckland")))
-
-  ;; All of the following variables are for Emacs 28
-  (setq world-clock-list t)
-  (setq world-clock-time-format "%R %z (%Z)	%A %d %B")
-  (setq world-clock-buffer-name "*world-clock*") ; Placement handled by `display-buffer-alist'
-  (setq world-clock-timer-enable t)
-  (setq world-clock-timer-second 60))
-
-(use-package proced
-  :straight nil
-  :commands (proced)
-  :config
-  (setq proced-auto-update-flag 'visible) ; Emacs 30 supports more the `visible' value
-  (setq proced-enable-color-flag t) ; Emacs 29
-  (setq proced-auto-update-interval 5)
-  (setq proced-descend t)
-  (setq proced-filter 'user))
-
-(setq
- ;; Performant and rapid scrolling
- fast-but-imprecise-scrolling t
-
- ;; Keep 5 lines when scrolling
- scroll-step 0
- scroll-margin 3
- scroll-up-aggressively 0.01 ; less jumpy
- scroll-down-aggressively 0.01
- scroll-conservatively 101
- ;; Reduce cursor lag by a tiny bit by not auto-adjusting `window-vscroll' for tall lines.
- auto-window-vscroll nil
-
- ;; [hscroll]
- auto-hscroll-mode t
- hscroll-step 0
- hscroll-margin 2)
-
-;; (pixel-scroll-precision-mode)
-
-(defvar +scrolling-lines 10)
-(defun +scroll-other-window () (interactive) (scroll-other-window +scrolling-lines))
-(defun +scroll-other-window-down () (interactive) (scroll-other-window-down +scrolling-lines))
-(defun +scroll-window () (interactive) (scroll-up +scrolling-lines))
-(defun +scroll-window-down () (interactive) (scroll-down +scrolling-lines))
-(bind-keys*
- ("C-M-v" . +scroll-other-window)
- ("M-<down>" . +scroll-other-window)
-
- ("C-M-S-v" . +scroll-other-window-down)
- ("M-<up>" . +scroll-other-window-down)
-
- ("C-v" . +scroll-window-down)
- ("M-v" . +scroll-window))
-
+  (ultra-scroll-mode 1))
 
 (use-package display-line-numbers
   :straight nil

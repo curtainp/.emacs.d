@@ -74,12 +74,6 @@
 (add-hook 'window-setup-hook '+setup-fonts)
 (add-hook 'server-after-make-frame-hook '+setup-fonts)
 
-;; Smooth Scroll (less "jumpy" than defaults)
-(when (display-graphic-p)
-  (setq mouse-wheel-scroll-amount '(2 ((shift) . hscroll) ((control) . nil))
-        mouse-wheel-scroll-amount-horizontal 1
-        mouse-wheel-progressive-speed nil))
-
 (use-package pulsar
   :straight t
   :config

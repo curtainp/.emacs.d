@@ -5,7 +5,7 @@
   (message
    "Emacs loaded in %s with %d garbage collections."
    (format
-    "%0.2f seconds"
+    "%0.3f seconds"
     (float-time
      (time-subtract after-init-time before-init-time)))
    gcs-done))

@@ -172,49 +172,11 @@
         ("C-x o" . curt-simple-other-window)
         ("C-x k" . curt-simple-kill-buffer-current)))
 
-(use-package curt-pair
-  :disabled
-  :straight nil
-  :bind
-  (("C-'" . curt-pair-insert)
-   ("M-'" . curt-pair-insert)
-   ("M-\\" . curt-pair-delete)))
-
-(use-package fingertip
-  :straight (:host github :repo "manateelazycat/fingertip")
-  :hook ((rust-mode rust-ts-mode python-mode python-ts-mode c-mode c-ts-mode c++-mode
-                    c++-ts-mode conf-toml-mode js-mode js-ts-mode toml-ts-mode) . fingertip-mode)
-  :bind
-  (:map fingertip-mode-map
-        ;; move
-        ("M-n" . fingertip-jump-left)
-        ("M-p" . fingertip-jump-right)
-        ;; insert
-        ("%" . fingertip-match-paren)
-        ("(" . fingertip-open-round)
-        ("[" . fingertip-open-bracket)
-        ("{" . fingertip-open-curly)
-        (")" . fingertip-close-round)
-        ("]" . fingertip-close-bracket)
-        ("}" . fingertip-close-curly)
-        ("\"" . fingertip-double-quote)
-        ("'" . fingertip-single-quote)
-        ("=" . fingertip-equal)
-        ("SPC" . fingertip-space)
-        ("RET" . fingertip-newline)
-        ;; delete
-        ("M-o" . fingertip-backward-delete)
-        ("C-d" . fingertip-forward-delete)
-        ("C-k" . fingertip-kill)
-        ;; around
-        ("M-\"" . fingertip-wrap-double-quote)
-        ("M-'" . fingertip-wrap-single-quote)
-        ("M-[" . fingertip-wrap-bracket)
-        ("M-{" . fingertip-wrap-curly)
-        ("M-(" . fingertip-wrap-round)
-        ("M-)" . fingertip-unwrap)
-        ("M-:" . fingertip-jump-out-pair-and-newline)
-        ("C-j" . fingertip-jump-up)))
+(use-package smartparens
+  :straight t
+  :hook (prog-mode text-mode markdown-mode)
+  :config
+  (require 'smartparens-config))
  
 ;;; [recentf] recently visited files
 (use-package recentf

@@ -17,6 +17,17 @@
      (dedicated . t) ;; Close when finished
      (window-width . 76))))
 
+(use-package ascii
+  :straight t
+  :commands (ascii-on ascii-off)
+  :preface
+  (defun ascii-toggle()
+    (interactive)
+    (if ascii-display
+        (ascii-off)
+      (ascii-on))))
+
+
 (use-package helpful
   :straight t
   :defer 3

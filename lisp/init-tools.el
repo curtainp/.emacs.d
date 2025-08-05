@@ -160,6 +160,7 @@
 
 
 (use-package vterm
+  :disabled
   :straight t
   :bind (:map vterm-mode-map ([return] . vterm-send-return))
   :custom

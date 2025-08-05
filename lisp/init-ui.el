@@ -26,7 +26,7 @@
 			   "segoe ui emoji"
                "symbola"
 			   ))
-(defconst cs/default-font "Iosevka Nerd Font 15")
+(defconst cs/default-font "Iosevka Nerd Font 13")
 (defconst cs/variable-pitch-font "Segoe Print")
 (defconst cs/fixed-pitch-font "JetBrainsMono Nerd Font")
 (defconst cs/zh-default-font "lxgw wenkai")
@@ -46,16 +46,16 @@
   ;; 分布比较散，所以还是先设置 'unicode 后再设置 cjk 比较靠谱。
   ;; 特例：'emoji 就会导致 ⛈️ fallback 到 ⛈
   ;; https://emacs-china.org/t/emacs/15676/34
-  ;; (cl-loop for font in cs/emoji-fonts
-  ;;          when (find-font (font-spec :name font))
-  ;;          return (set-fontset-font
-  ;;                  t
-  ;;                  'unicode
-  ;;                  (font-spec :family font
-  ;;                             :size
-  ;;                             (cond ((eq system-type 'darwin) 12)
-  ;;                                   ((eq system-type 'gnu/linux) 25)))
-  ;;                  nil 'prepend))
+  (cl-loop for font in cs/emoji-fonts
+           when (find-font (font-spec :name font))
+           return (set-fontset-font
+                   t
+                   'unicode
+                   (font-spec :family font
+                              :size
+                              (cond ((eq system-type 'darwin) 12)
+                                    ((eq system-type 'gnu/linux) 25)))
+                   nil 'prepend))
   ;; set chinese font
   ;; do not use 'unicode charset, it will cause the english font setting invalid
   (when (display-graphic-p)

@@ -16,7 +16,7 @@
   ;; sh -c 'printf "%s" "$PATH"' > .env
   (condition-case err
       (let ((path (with-temp-buffer
-                    (insert-file-contents-literally "~/.emacs.d/.env")
+                    (insert-file-contents-literally "~/.emacs.d/.macos_exec_path")
                     (buffer-string))))
         (setenv "PATH" path)
         (setq exec-path (append (parse-colon-path path) (list exec-directory))))

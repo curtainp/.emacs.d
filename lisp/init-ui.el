@@ -26,7 +26,8 @@
 			   "segoe ui emoji"
                "symbola"
 			   ))
-(defconst cs/default-font "Iosevka Nerd Font 13")
+(defconst cs/default-font "Iosevka Nerd Font")
+(defconst cs/default-font-size "11")
 (defconst cs/variable-pitch-font "Segoe Print")
 (defconst cs/fixed-pitch-font "JetBrainsMono Nerd Font")
 (defconst cs/zh-default-font "lxgw wenkai")
@@ -35,7 +36,7 @@
 (defun +setup-fonts ()
   "setup fonts."
   ;; setting the default
-  (set-face-attribute 'default nil :font cs/default-font :weight 'normal)
+  (set-frame-font (format "%s-%s" (eval cs/default-font) (eval cs/default-font-size)))
   (set-face-attribute 'variable-pitch nil :font cs/variable-pitch-font :weight 'normal)
   (set-face-attribute 'fixed-pitch nil :font cs/fixed-pitch-font :weight 'normal)
 

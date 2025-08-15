@@ -11,6 +11,8 @@
   :bind (("M-j" . avy-goto-char-timer)))
 
 (use-package color-rg
-  :straight (:host github :repo "manateelazycat/color-rg"))
+  :straight (:host github :repo "manateelazycat/color-rg")
+  :custom
+  (color-rg-mac-load-path-from-shell nil))
 
 (provide 'init-nav)

@@ -82,13 +82,14 @@
           pulsar-delay 0.055
           pulsar-iterations 10
           pulsar-face 'pulsar-yellow
-          pulsar-highlight-face 'pulsar-magenta)
+          pulsar-highlight-face 'pulsar-magenta
+          pulsar-region-change-face 'pulsar-red)
 
-  (add-to-list 'pulsar-pulse-functions 'evil-yank)
-  (add-to-list 'pulsar-pulse-functions 'evil-yank-line)
-  (add-to-list 'pulsar-pulse-functions 'evil-delete)
-  (add-to-list 'pulsar-pulse-functions 'evil-delete-line)
-  (add-to-list 'pulsar-pulse-functions 'evil-jump-item)
+  (with-eval-after-load 'evil
+    (cl-callf append pulsar-pulse-functions
+      '(evil-yank evil-yank-line evil-delete evil-delete-line evil-jump-item
+                  evil-paste-after evil-paste-before evil-goto-last-change evil-goto-last-change-reverse)))
+
   (pulsar-global-mode 1)
   :hook
   ((next-error . (pulsar-pulse-line-red pulsar-recenter-top pulsar-reveal-entry))
@@ -231,9 +232,5 @@
                             "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
                             "\\\\" "://"))
   )
-
-;; (setq frame-title-format
-;;       '((:eval (or buffer-file-truename "%b"))
-;;         (" · Emacs")))
 
 (provide 'init-ui)

@@ -19,6 +19,8 @@
       scroll-bar-mode nil
       ;; prevent modeline from showing at startup.
       mode-line-format nil
+      ;; suppress don't have lexical-binding warnings
+      warning-suppress-types '((files))
       )
 (prefer-coding-system 'utf-8)
 (when (featurep 'ns)

@@ -5,12 +5,6 @@
 (setq user-full-name curtain-full-name
       user-mail-address curtain-email-address)
 
-;; Server-mode
-(use-package server
-  :straight nil
-  :if curtain-server-p
-  :hook (after-init . server-mode))
-
 (when (and (eq system-type 'darwin) (display-graphic-p))
   ;; NOTE: When PATH is changed, run following command to update:
   ;; sh -c 'printf "%s" "$PATH"' > .env

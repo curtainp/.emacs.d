@@ -100,6 +100,7 @@
    ("C-x L" . pulsar-highlight-dwim))) ; override `pulsar-highlight-line'
 
 (use-package doom-themes
+  :disabled
   :straight t
   :init
   (load-theme 'doom-moonlight t)
@@ -108,6 +109,11 @@
         doom-themes-enable-italic t)
   ;; (doom-themes-visual-bell-config)
   (doom-themes-org-config))
+
+(use-package nimbus-theme
+  :straight t
+  :init
+  (load-theme 'nimbus t))
 
 (use-package base16-theme
   :disabled

@@ -55,6 +55,7 @@
              ;; (require 'init-eaf)
              ;; (require 'init-llm)
              (require 'init-dired)
+             (require 'init-latex)
              (require 'init-org)
              (require 'init-notes)
              (require 'init-docs)

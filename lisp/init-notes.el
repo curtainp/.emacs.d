@@ -35,7 +35,6 @@
 
 ;; View and filter Denote files in a tabulated list
 (use-package denote-menu
-  :disabled
   :straight t)
 
 (use-package consult-notes

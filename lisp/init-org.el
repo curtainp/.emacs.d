@@ -1,17 +1,12 @@
 ;;; -*- lexical-binding: t -*-
 
-(use-package org-modern-indent
-  :straight (:host github :repo "jdtsmith/org-modern-indent")
-  :config
-  (add-hook 'org-mode-hook #'org-modern-indent-mode 90))
 
 (use-package org-modern
   :straight t
+  :after org
   :custom
-  ;; (org-modern-star 'replace)
-  ;; (org-modern-replace-stars "♔♙♖♗♘♲")
-  ;; (org-modern-table-vertical 5)
-  ;; (org-modern-table-horizontal 2)
+  (org-modern-table-vertical 5)
+  (org-modern-table-horizontal 2)
   (org-modern-block-fringe nil)
   (org-modern-hide-stars nil)
   (org-modern-list 
@@ -29,6 +24,16 @@
   :straight t
   :after org
   :hook (org-mode . org-appear-mode))
+
+(use-package org-modern-indent
+  :straight (:host github :repo "jdtsmith/org-modern-indent")
+  :hook (org-modern-mode . org-modern-indent-mode))
+
+(use-package org-fragtog
+  :straight t
+  :hook (org-mode . org-fragtog-mode)
+  :custom
+  (org-fragtog-preview-delay 0.2))
 
 (use-package org
   :straight nil

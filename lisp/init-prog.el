@@ -35,6 +35,8 @@
   :straight nil
   :hook (prog-mode . show-paren-local-mode)
   :config
+  (custom-set-faces
+   '(show-paren-match ((t :inherit 'bold))))
   (setq show-paren-style 'parenthesis
         show-paren-when-point-in-periphery nil
         show-paren-when-point-inside-paren nil

@@ -48,11 +48,17 @@
         ("C-c o c" . org-capture)
         )
   :config
+  (with-eval-after-load 'org-src
+    (add-to-list 'org-src-block-faces '("latex" (:inherit default :extend t))))
+  (when (executable-find "dvisvgm")
+    (setopt org-preview-latex-default-process 'dvisvgm))
+  (setopt org-format-latex-options (plist-put org-format-latex-options :background "Transparent"))
   (require 'org-tempo)
   (setq org-ellipsis " ↩"
         ;; hugo support org mode blog
         ;; org-default-notes-file (expand-file-name "all-blogpost.org" curtain-blog-directory)
         org-yank-image-save-method "."
+        org-preview-latex-image-directory (expand-file-name "~/.cache/org/preview/latex-image/")
         org-startup-truncated nil
         org-startup-folded 'show2levels
         org-image-actual-width nil
@@ -137,20 +143,22 @@
         org-link-keep-stored-after-insertion nil
         org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
   ;; code blocks
-  ;; (setq org-confirm-babel-evaluate nil
-  ;;       org-src-window-setup 'current-window
-  ;;       org-edit-src-persistent-message nil
-  ;;       org-src-fontify-natively t
-  ;;       org-src-preserve-indentation t
-  ;;       org-src-tab-acts-natively t
-  ;;       org-edit-src-content-indentation 0)
+  (setq org-confirm-babel-evaluate nil
+        org-src-window-setup 'current-window
+        org-edit-src-persistent-message nil
+        org-src-fontify-natively t
+        org-src-preserve-indentation t
+        org-src-tab-acts-natively t
+        org-edit-src-content-indentation 0)
+  ;; In addition to `org-src-fontify-natively'
+  (add-to-list 'org-src-lang-modes (cons "python" 'python))
   ;; export
-  ;; (setq org-export-with-toc t
-  ;;       org-export-headline-levels 8
-  ;;       org-export-dispatch-use-expert-ui nil
-  ;;       org-html-htmlize-output-type nil
-  ;;       org-html-head-include-default-style nil
-  ;;       org-html-head-include-scripts nil)
+  (setq org-export-with-toc t
+        org-export-headline-levels 8
+        org-export-dispatch-use-expert-ui nil
+        org-html-htmlize-output-type nil
+        org-html-head-include-default-style nil
+        org-html-head-include-scripts nil)
 
   ;; org babel languages
   (org-babel-do-load-languages 'org-babel-load-languages
@@ -226,5 +234,10 @@
   (add-hook 'org-present-mode-hook 'my/org-present-start)
   (add-hook 'org-present-mode-quit-hook 'my/org-present-end)
   (add-hook 'org-present-after-navigate-functions 'my/org-present-prepare-slide))
+
+(use-package ox-latex
+  :straight nil
+  :custom
+  (org-latex-src-block-backend 'engraved))
 
 (provide 'init-org)

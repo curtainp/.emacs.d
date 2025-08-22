@@ -10,7 +10,9 @@
 (setq x-underline-at-descent-line t)
 
 (blink-cursor-mode -1)
-(setq indicate-buffer-boundaries nil
+(setq global-hl-line-sticky-flag t)
+(global-hl-line-mode 1)
+(setq indicate-bufferoundaries nil
       indicate-empty-lines nil)
 
 (setq frame-resize-pixelwise t

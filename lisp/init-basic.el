@@ -33,7 +33,7 @@
  syntax-wholeline-max 1000
 
  ;; Larger process output buffer for LSP module
- read-process-output-max (* 3 1024 1024)
+ read-process-output-max (* 4 1024 1024)
  visible-bell t
  ;; Wrap words at whitespace, rather than in the middle of a word.
  word-wrap t

@@ -27,6 +27,7 @@
 ;;(require 'popweb-dict)
 
 ;; (setq eaf-enable-debug t)
+(setq eaf-pdf-dark-mode "follow")
 (setq eaf-browser-continue-where-left-off t)
 (setq eaf-webengine-pc-user-agent "Mozilla/5.0 (X11; Linux x86_64; rv:136.0) Gecko/20100101 Firefox/136.0")
 (setq eaf-webengine-default-zoom 1.5)

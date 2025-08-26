@@ -52,7 +52,8 @@
   (run-with-idle-timer
    1 nil #'(lambda ()
              ;; (require 'init-popweb)
-             (require 'init-eaf)
+             (when (eq system-type 'gnu/linux)
+                (require 'init-eaf))
              ;; (require 'init-llm)
              (require 'init-dired)
              (require 'init-latex)

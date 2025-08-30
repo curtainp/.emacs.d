@@ -67,7 +67,15 @@
   :straight t
   :hook (prog-mode . rainbow-delimiters-mode))
 
-;;(use-package symbol-overlay)
+(use-package symbol-overlay
+  :straight t
+  :hook ((prog-mode html-mode yaml-mode conf-mode) . symbol-overlay-mode)
+  :bind (:map symbol-overlay-mode-map
+              ("M-i" . symbol-overlay-put)
+              ("M-I" . symbol-overlay-remove-all)
+              ("M-n" . symbol-overlay-jump-next)
+              ("M-p" . symbol-overlay-jump-prev)))
+
 (use-package rainbow-mode
   :straight t
   :hook ((css-mode html-mode sass-mode) . rainbow-mode)

@@ -32,6 +32,7 @@
  large-hscroll-threshold 1000
  syntax-wholeline-max 1000
 
+ column-number-mode t
  ;; Larger process output buffer for LSP module
  read-process-output-max (* 4 1024 1024)
  visible-bell t

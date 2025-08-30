@@ -118,6 +118,7 @@
         ispell-program-name "aspell"))
 
 (use-package jinx
+  :disabled
   :straight t
   :hook (emacs-startup . global-jinx-mode)
   :bind ([remap ispell-word] . jinx-correct)

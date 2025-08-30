@@ -104,7 +104,7 @@
 (use-package doom-themes
   :straight t
   :init
-  (load-theme 'doom-moonlight t)
+  (load-theme 'doom-one t)
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)

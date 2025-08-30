@@ -14,6 +14,7 @@
   :straight (:host github :repo "Spike-Leung/gitmoji")
   :config
   (setq gitmoji-selection-backend '(consult))
+  (setq gitmoji--insert-utf8-emoji t)
   (setq gitmoji--display-utf8-emoji t))
 
 (use-package list-unicode-display

@@ -12,6 +12,7 @@
 
 (use-package gitmoji
   :straight (:host github :repo "Spike-Leung/gitmoji")
+  :hook (git-commit-mode . gitmoji-commit-mode)
   :config
   (setq gitmoji-selection-backend '(consult))
   (setq gitmoji--insert-utf8-emoji t)

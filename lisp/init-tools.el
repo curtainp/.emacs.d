@@ -10,6 +10,9 @@
   :config
   (require 'smartparens-config))
 
+(use-package list-unicode-display
+  :straight t)
+
 (use-package time
   :straight nil
   :commands (world-clock)

@@ -67,6 +67,7 @@
 ;;(use-package symbol-overlay)
 (use-package rainbow-mode
   :straight t
+  :hook ((css-mode html-mode sass-mode) . rainbow-mode)
   :init
   (setq rainbow-ansi-colors nil)
   (setq rainbow-x-colors nil)

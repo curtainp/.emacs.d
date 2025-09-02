@@ -67,6 +67,8 @@
                          "gi" 'lsp-bridge-find-impl
                          "gI" 'lsp-bridge-find-impl-other-window
                          "K"  'lsp-bridge-popup-documentation
+                         (kbd "M-s-n") 'lsp-bridge-popup-documentation-scroll-up
+                         (kbd "M-s-p") 'lsp-bridge-popup-documentation-scroll-down
                          "gp" 'lsp-bridge-peek
                          )
     (dolist (mode '(lsp-bridge-peek-mode lsp-bridge-ref-mode eaf-mode))

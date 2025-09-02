@@ -4,6 +4,12 @@
 
 (setq user-full-name curtain-full-name
       user-mail-address curtain-email-address)
+;; refer https://emacs.stackexchange.com/questions/82010/why-is-emacs-recompiling-some-packages-on-every-startup
+(use-package comp-run
+  :straight nil
+  :config
+  (push "tramp-loaddefs.el.gz" native-comp-jit-compilation-deny-list)
+  (push "cl-loaddefs.el.gz" native-comp-jit-compilation-deny-list))
 
 (when (and (eq system-type 'darwin) (display-graphic-p))
   ;; NOTE: When PATH is changed, run following command to update:

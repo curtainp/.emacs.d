@@ -102,6 +102,7 @@
   :commands (csv-align-mode))
 
 (use-package flyspell
+  :disabled
   :straight nil
   :bind
   (:map flyspell-mode-map

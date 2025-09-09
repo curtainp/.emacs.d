@@ -7,7 +7,7 @@
   (yas-triggers-in-field t))
 
 (use-package lsp-bridge
-  :straight '(:type git :host github :repo "manateelazycat/lsp-bridge"
+  :straight '(:type git :host github :repo "curtainp/lsp-bridge"
                     :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
                     :build (:not compile))
   :custom-face

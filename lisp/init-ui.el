@@ -20,63 +20,6 @@
 
 (setq epg-pinentry-mode 'loopback)
 
-(defconst cs/fallback-fonts '("jigmo" "jigmo2" "jigmo3"))
-(defconst cs/emoji-fonts '(
-               "apple color emoji"
-			   "noto color emoji"
-			   "noto emoji"
-			   "segoe ui emoji"
-               "symbola"
-			   ))
-(defconst cs/default-font "Iosevka Nerd Font")
-(defconst cs/default-font-size "11")
-(defconst cs/variable-pitch-font "Lato")
-(defconst cs/fixed-pitch-font "Iosevka Nerd Font")
-(defconst cs/zh-default-font "lxgw wenkai")
-(defconst cs/symbol-default-font "symbols nerd font mono")
-
-(defun +setup-fonts ()
-  "setup fonts."
-  ;; setting the default
-  (set-frame-font (format "%s-%s" (eval cs/default-font) (eval cs/default-font-size)))
-  (set-face-attribute 'variable-pitch nil :font cs/variable-pitch-font :weight 'normal)
-  (set-face-attribute 'fixed-pitch nil :font cs/fixed-pitch-font :weight 'normal)
-
-  ;; 特殊字符需要安装 symbola 字体 😇
-  ;; https://www.wfonts.com/font/symbola
-  ;; "emacs 28 now has 'emoji . before, emoji is part of 'symbol"
-  ;; 根据上面这句话应该写成 'emoji 就可以了，但是由于 emoji 本身
-  ;; 分布比较散，所以还是先设置 'unicode 后再设置 cjk 比较靠谱。
-  ;; 特例：'emoji 就会导致 ⛈️ fallback 到 ⛈
-  ;; https://emacs-china.org/t/emacs/15676/34
-  (cl-loop for font in cs/emoji-fonts
-           when (find-font (font-spec :name font))
-           return (set-fontset-font
-                   t
-                   'unicode
-                   (font-spec :family font
-                              :size
-                              (cond ((eq system-type 'darwin) 12)
-                                    ((eq system-type 'gnu/linux) 25)))
-                   nil 'prepend))
-  ;; set chinese font
-  ;; do not use 'unicode charset, it will cause the english font setting invalid
-  (when (display-graphic-p)
-    (dolist (charset '(kana han symbol cjk-misc bopomofo))
-      (set-fontset-font (frame-parameter nil 'font) charset
-                        (font-spec :family cs/zh-default-font))))
-  ;; setting fall-back fonts
-  ;; https://idiocy.org/emacs-fonts-and-fontsets.html
-  (dolist (font cs/fallback-fonts)
-    (when (member font (font-family-list))
-      (set-fontset-font "fontset-default" 'han font nil 'append)))
-  ;; force emacs to search by using font-spec
-  (set-fontset-font t 'han (font-spec :script 'han) nil 'append)
-  (set-fontset-font t '(#xe000 . #xf8ff) cs/symbol-default-font))
-
-(add-hook 'window-setup-hook '+setup-fonts)
-(add-hook 'server-after-make-frame-hook '+setup-fonts)
-
 (use-package pulsar
   :straight t
   :config
@@ -102,6 +45,7 @@
    ("C-x L" . pulsar-highlight-dwim))) ; override `pulsar-highlight-line'
 
 (use-package doom-themes
+  :disabled
   :straight t
   :init
   (load-theme 'doom-one t)
@@ -149,6 +93,92 @@
         modus-themes-prompt '(bold))
   (setq modus-themes-common-palette-overrides nil)
   (modus-themes-load-theme (cadr modus-themes-to-toggle)))
+
+(use-package ef-themes
+  :straight t
+  :bind ("C-c t" . ef-themes-toggle)
+  :init
+  (setq ef-themes-headings
+        '((0 . (bold 1))
+          (1 . (bold 1))
+          (2 . (rainbow bold 1))
+          (3 . (rainbow bold 1))
+          (4 . (rainbow bold 1))
+          (t . (rainbow bold 1))))
+  (mapc #'disable-theme custom-enabled-themes)
+  (if (display-graphic-p)
+      (ef-themes-load-random)
+    (ef-themes-load-random 'dark)))
+
+(use-package fontaine
+  :straight t
+  :demand t
+  :config
+  (setq fontaine-latest-state-file
+        (locate-user-emacs-file "fontaine-latest-state.eld"))
+  (setq fontaine-presets
+        '((regular
+           :default-height 120
+           :default-weight regular
+           :fixed-pitch-height 1.0
+           :variable-pitch-height 1.0)
+          (large
+           :default-height 180
+           :default-weight normal
+           :fixed-pitch-height 1.0
+           :variable-pitch-height 1.05)
+          (t
+           :default-family "Iosevka Nerd Font"
+           :fixed-pitch-family "Iosevka Nerd Font"
+           :variable-pitch-family "Lato"
+           :italic-family "Iosevka Nerd Font"
+           :variable-pitch-weight normal
+           :bold-weight normal
+           :italic-slant italic
+           :line-spacing 0.1)))
+  (fontaine-set-preset 'regular)
+  (set-fontset-font t 'emoji
+                    (cond
+                     ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
+                     ((member "Symbola" (font-family-list)) "Symbola")
+                     ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji")
+                     ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
+                     ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")))
+  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+    (set-fontset-font
+     (frame-parameter nil 'font)
+     charset
+     (font-spec :family
+                (cond
+                 ((eq system-type 'darwin)
+                  (cond
+                   ((member "LXGW WenKai Mono" (font-family-list)) "LXGW WenKai Mono")
+                   ((member "PingFang SC" (font-family-list)) "PingFang SC")
+                   ((member "WenQuanYi Zen Hei" (font-family-list)) "WenQuanYi Zen Hei")
+                   ((member "Microsoft YaHei" (font-family-list)) "Microsoft YaHei")
+                   ))
+                 ((eq system-type 'gnu/linux)
+                  (cond
+                   ((member "LXGW WenKai Mono" (font-family-list)) "LXGW WenKai Mono")
+                   ((member "WenQuanYi Micro Hei" (font-family-list)) "WenQuanYi Micro Hei")
+                   ((member "WenQuanYi Zen Hei" (font-family-list)) "WenQuanYi Zen Hei")
+                   ((member "Microsoft YaHei" (font-family-list)) "Microsoft YaHei")
+                   ))
+                 (t
+                  (cond
+                   ((member "LXGW WenKai Mono" (font-family-list)) "LXGW WenKai Mono")
+                   ((member "WenQuanYi Micro Hei" (font-family-list)) "WenQuanYi Micro Hei")
+                   ))
+                 ))))
+  (setq face-font-rescale-alist `(
+                                  ("Symbola"             . 1.3)
+                                  ("Microsoft YaHei"     . 1.2)
+                                  ("WenQuanYi Zen Hei"   . 1.2)
+                                  ("LXGW WenKai Mono"    . 1.2)
+                                  ("PingFang SC"         . 1.16)
+                                  ("Apple Color Emoji"   . 0.91)
+                                  ))
+  )
 
 (use-package nerd-icons
   :straight t)
@@ -220,7 +250,6 @@
 
 ;; [ligature] ligature support for Emacs
 (use-package ligature
-  :disabled
   :straight t
   :hook ((prog-mode markdown-mode) . ligature-mode)
   :config

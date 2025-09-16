@@ -45,7 +45,7 @@
   (org-fold-catch-invisible-edits 'smart)
   (org-insert-heading-respect-content nil)
   (org-image-actual-width nil)
-  (org-yank-image-save-method ".")
+  (org-yank-image-save-method "imgs")
   (org-return-follows-link nil) 
   (org-use-sub-superscripts '{})        ;; use {} 包裹上下标
   (org-clone-delete-id t)

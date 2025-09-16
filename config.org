@@ -1,0 +1,299 @@
+#+title: Configuration Emacs with Org
+#+author: Curtain
+#+date: 2025-09-10
+#+startup: overview
+
+* early-init.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle early-init.el
+:END:
+
+#+begin_src emacs-lisp
+;;; early-init.el --- Emacs pre-initialization load this -*- lexical-binding: t -*-
+;;; Commentary:
+
+;;; Code:
+;; Better garbage collection settings, no GCMH required, See: https://zenodo.org/records/10518083
+(setq gc-cons-threshold (* 100 1000 1000)
+      gc-cons-percentage 0.2
+      package-enable-at-startup nil
+      ;; `use-package' is built-in from 29, so we need set it before loading `use-package'
+      use-package-enable-imenu-support t
+      load-prefer-newer t
+      default-frame-alist '((tool-bar-lines . 0)
+                            (menu-bar-lines . 0)
+                            (vertical-scroll-bars)
+                            (undecorated-round . t)
+                            (internal-border-width . 0)
+                            (fullscreen . maximized))
+      tool-bar-mode nil
+      menu-bar-mode nil
+      scroll-bar-mode nil
+      ;; prevent modeline from showing at startup.
+      mode-line-format nil
+      ;; suppress don't have lexical-binding warnings
+      warning-suppress-types '((files))
+      )
+(prefer-coding-system 'utf-8)
+(when (featurep 'ns)
+  (push '(ns-transparent-titlebar . t) default-frame-alist))
+(setq frame-inhibit-implied-resize t)
+
+;; reduce rendering scan work for non-focused window
+(setq-default cursor-in-non-selected-windows nil)
+(setq highlight-nonselected-windows nil)
+
+;; disable warnings from the legacy advice API
+(setq ad-redefinition-action 'accept)
+
+;; FIXME: Emacs updates its ui more often that it needs to ?
+(setq idle-update-delay 1.0)
+(setq inhibit-compacting-font-caches t)
+;; Disable [bidirectional text] scanning for a modest performance
+;; Will improve long line display performance
+(setq bidi-inhibit-bpa t)
+(setq-default bidi-paragraph-direction 'left-to-right
+              bidi-display-reordering 'left-to-right)
+
+;; startup screen
+(setq inhibit-startup-screen t
+      inhibit-startup-echo-area-message t
+      inhibit-startup-message t
+      inhibit-startup-buffer-menu t
+      inhibit-x-resources t
+      inhibit-default-init t
+      initial-scratch-message nil
+      initial-major-mode 'fundamental-mode)
+(advice-add #'display-startup-echo-area-message :override #'ignore)
+(advice-add #'display-startup-screen :override #'ignore)
+(setq use-file-dialog nil
+      use-dialog-box nil)
+
+(setq-default inhibit-redisplay t
+	      inhibit-message t)
+
+(add-hook 'window-setup-hook
+	  (lambda ()
+	    (setq-default inhibit-redisplay nil
+			  inhibit-message nil)
+	    (redraw-frame)))
+
+(setq auto-mode-case-fold nil)
+
+;; `file-name-handler-alist' is consulted on each call to `require', `load', or various file/io functions
+(unless (or (daemonp) noninteractive init-file-debug)
+  (let ((old-value file-name-handler-alist))
+    (setq file-name-handler-alist nil)
+    (add-hook 'emacs-startup-hook
+              (lambda ()
+                "Recover file name handlers."
+                (setq file-name-handler-alist
+                      (delete-dups (append file-name-handler-alist
+                                           old-value)))))))
+#+end_src
+
+* init.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle init.el
+:END:
+** Preamble
+#+begin_src emacs-lisp
+;;; init.el --- the main init entry for Emacs -*- lexical-binding: t -*-
+;;; Commentary:
+
+;;; Code:
+#+end_src
+** Native Comp Tune
+#+begin_src emacs-lisp
+(when (native-comp-available-p)
+  (setq native-comp-async-report-warnings-errors 'silent ; Emacs 28 with native compilation
+        native-compile-prune-cache t
+        native-comp-jit-compilation t))
+#+end_src
+** Push module path to ~load-path~ 
+#+begin_src emacs-lisp
+(mapc
+ (lambda (path)
+   (add-to-list 'load-path (locate-user-emacs-file path)))
+ '("lisp" "modules"))
+#+end_src
+** Load modules
+#+begin_src emacs-lisp
+(with-temp-message ""
+  (require 'init-straight)
+  (require 'init-basic)
+  (require 'init-ui)
+  (require 'init-modeline)
+  (require 'init-completion)
+  (require 'init-lsp-bridge)
+  (require 'init-nav)
+  (require 'init-evil)
+  ;;(require 'init-search)
+  (require 'init-prog)
+  ;;(require 'init-emigo)
+
+  (run-with-idle-timer
+   1 nil #'(lambda ()
+             ;; (require 'init-popweb)
+             (when (eq system-type 'gnu/linux)
+                (require 'init-eaf))
+             ;; (require 'init-llm)
+             (require 'init-dired)
+             (require 'init-latex)
+             (require 'init-org)
+             (require 'init-notes)
+             (require 'init-docs)
+             (require 'init-tools)
+             (require 'init-rime)
+             (require 'init-vc)
+             ))
+  )
+#+end_src
+** Postamble
+#+begin_src emacs-lisp
+(provide 'init)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; init.el ends here
+#+end_src
+
+* init-straight.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-straight.el :mkdirp yes
+:END:
+
+Use [[https://github.com/radian-software/straight.el][straight.el]] as package manager, which have following features:
+- Installing package from specific sources, or doing local development on them.
+- With reproducibility, install from specific branch or local repo.
+  #+begin_src emacs-lisp :tangle no
+  (straight-use-package '(rg :type git :host github :repo "xxxxx/rg.el" :branch "unicode-on-windows"))
+  #+end_src
+
+#+begin_src emacs-lisp
+;;; init-straight.el --- Package Manager with reproducibility -*- lexical-binding: t -*-
+;;; Commentary:
+
+;;; Code:
+
+(defvar straight-check-for-modifications)
+
+(setq straight-check-for-modifications '(check-on-save find-when-checking)                   ; skip modification at startup, checking on demand
+      comp-deferred-compilation-deny-list ()                 ; config native comp
+      warning-suppress-log-types '((comp))                   ; Don't display comp warnings
+      straight-repository-branch "develop"
+      straight-disable-native-compile (not (and (fboundp 'native-comp-available-p)
+                                                (native-comp-available-p))))
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+;; HACK+PERF: Reduce installation time and disk usage using "--filter=tree:0",
+;; this cuts the size of the "repos" directory by more than half (from 807M to
+;; 362M) while keeping it possible to download older commits on-demand (unlike
+;; "--depth=N"). The parameter is injected in `straight--process-run' which is
+;; called from `straight-vc-git--clone-internal'
+(advice-add
+ 'straight--process-run :around
+ (lambda (fn &rest a)
+   (apply fn (if (equal (list (car a) (cadr a)) '("git" "clone")) `(,(car a) ,(cadr a) "--filter=tree:0" ,@(cddr a)) a))))
+
+(cl-callf append straight-built-in-pseudo-packages
+  '(org ; Otherwise, `straight' will try to install it as a dependency
+    treesit ; Some packages like `ts-movement' depends on it
+    ))
+
+(setq use-package-always-demand (daemonp)
+      use-package-always-defer (not (daemonp))
+      use-package-expand-minimally t
+      use-package-enable-imenu-support t)
+
+;; HACK+FIX: We need to install a new version, otherwise, `magit' and `forge'
+;; can cause problems. This needs to be done early before the builtin
+;; `transient' gets loaded.
+(use-package transient
+  :straight t
+  :config
+  (setq transient-show-popup 0.5))
+
+(provide 'init-straight)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; init-straight.el ends here
+#+end_src
+
+* init-basic.el
+:PROPERTIES:
+:HEADER-ARGS: :tangle lisp/init-basic.el
+:END:
+#+begin_src emacs-lisp
+;;; init-basic.el --- Basical Configuration -*- lexical-binding: t -*-
+;;; Commentary:
+
+;;; Code:
+#+end_src
+** disable recompile =tramp-loaddefs.el.gz= everytime when Emacs startup
+#+begin_src emacs-lisp
+;; refer https://emacs.stackexchange.com/questions/82010/why-is-emacs-recompiling-some-packages-on-every-startup
+(use-package comp-run
+  :straight nil
+  :config
+  (push "tramp-loaddefs.el.gz" native-comp-jit-compilation-deny-list)
+  (push "cl-loaddefs.el.gz" native-comp-jit-compilation-deny-list))
+#+end_src
+** load ~exec-path~ for Macos
+#+begin_src emacs-lisp
+(when (and (eq system-type 'darwin) (display-graphic-p))
+  ;; NOTE: When PATH is changed, run following command to update:
+  ;; sh -c 'printf "%s" "$PATH"' > .env
+  (condition-case err
+      (let ((path (with-temp-buffer
+                    (insert-file-contents-literally "~/.emacs.d/.macos_exec_path")
+                    (buffer-string))))
+        (setenv "PATH" path)
+        (setq exec-path (append (parse-colon-path path) (list exec-directory))))
+    (error (warn "%s" (error-message-string err)))))
+
+#+end_src
+** ~savehist-mode~ config
+#+begin_src emacs-lisp
+(use-package savehist
+  :straight nil
+  :hook (after-init . savehist-mode)
+  :config
+  (setq history-length 1000)
+  (setq history-delete-duplicates t)
+  (setq savehist-additional-variables '(mark-ring
+                                        global-mark-ring
+                                        search-ring
+                                        regexp-search-ring
+                                        extended-command-history))
+  (setq savehist-autosave-interval 300))
+#+end_src
+** ~recentf-mode~ config
+#+BEGIN_SRC emacs-lisp
+(use-package recentf
+  :straight nil
+  :hook (after-init . recentf-mode)
+  :config
+  (setq recentf-auto-cleanup nil
+        recentf-max-saved-items 100
+        recentf-max-menu-items 25
+        recentf-save-file-modes nil
+        recentf-initialize-file-name-history nil
+        recentf-filename-handlers nil
+        recentf-show-file-shortcuts-flag nil
+        recentf-exclude (list "\\.?cache" ".cask" "url" "COMMIT_EDITMSG\\'" "bookmarks"
+		                      "\\.?ido\\.last$" "\\.revive$" "/G?TAGS$" "/.elfeed/"
+		                      "^/tmp/" "^/var/folders/.+$" "^/ssh:" "/persp-confs/"
+		                      (lambda (file) (file-in-directory-p file package-user-dir))
+		                      (expand-file-name recentf-save-file))
+        recentf-keep nil))
+#+END_SRC
+** 

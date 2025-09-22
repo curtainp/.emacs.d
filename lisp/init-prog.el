@@ -15,7 +15,6 @@
 
 (use-package emacs
   :straight nil
-  :demand t
   :config
   (setq tab-always-indent 'complete) ; try indent first, if indent already, try complete
   (setq tab-first-completion 'word-or-paren-or-punct)
@@ -155,7 +154,6 @@
 (use-package pyvenv
   :disabled
   :straight t
-  :demand t
   :hook (pyvenv-post-activate . (lambda ()
                                   (setq python-shell-interpreter (concat pyvenv-virtual-env "bin/python3"))))
   :hook (pyvenv-post-deactivate . (lambda ()
@@ -166,7 +164,6 @@
 (use-package pyvenv-auto
   :disabled
   :straight t
-  :demand t
   :hook (python-mode . pyvenv-auto-mode))
 
 (use-package envrc
@@ -183,7 +180,6 @@
 (use-package kdl-ts-mode
   :disabled
   :straight (:type git :host github :repo "merrickluo/kdl-ts-mode")
-  :demand t
   :config
   (setq kdl-ts-mode-indent-offset 4))
 

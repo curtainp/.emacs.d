@@ -131,7 +131,6 @@
 
 (use-package minibuffer
   :straight nil
-  :demand t
   :config
   (setq completions-format 'one-column)
   (setq completion-show-help nil)

@@ -93,7 +93,6 @@
 (use-package evil-collection
   :straight t
   :after evil
-  :demand t
   :custom
   (evil-collection-want-find-usages-bindings nil)
   (evil-collection-term-state-and-mode-p nil)

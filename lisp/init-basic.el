@@ -138,7 +138,6 @@
 
 (use-package emacs
   :straight nil
-  :demand t
   :bind
   (:map global-map
         ("<insert>" . nil)
@@ -162,7 +161,6 @@
 
 (use-package curt-simple
   :straight nil
-  :demand t
   :config
   (curt-simple-override-mode 1)
   :bind

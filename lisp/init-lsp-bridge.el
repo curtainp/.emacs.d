@@ -39,8 +39,6 @@
 	  (("html") . "html_tailwindcss")
 	  (("css")  . "css_tailwindcss")))
   :init
-  (when (eq system-type 'darwin)
-    (setq lsp-bridge-python-command "/opt/homebrew/bin/python3"))
   (global-lsp-bridge-mode))
 
 (provide 'init-lsp-bridge)

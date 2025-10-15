@@ -118,7 +118,7 @@
         (locate-user-emacs-file "fontaine-latest-state.eld"))
   (setq fontaine-presets
         '((regular
-           :default-height 100
+           :default-height 120
            :default-weight regular
            :fixed-pitch-height 1.0
            :variable-pitch-height 1.0)

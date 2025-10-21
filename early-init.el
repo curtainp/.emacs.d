@@ -1,10 +1,14 @@
 ;;; -*- lexical-binding: t  -*-
 ;;; Mainly for speeding up startup time
 
-;; Better garbage collection settings, no GCMH required, See: https://zenodo.org/records/10518083
-(setq gc-cons-threshold (* 100 1000 1000)
-      gc-cons-percentage 0.2
-      package-enable-at-startup nil
+(setq gc-cons-threshold most-positive-fixnum
+      gc-cons-percentage 0.5)
+
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq gc-cons-threshold (* 30 1024 1024))))
+
+(setq package-enable-at-startup nil
       ;; `use-package' is built-in from 29, so we need set it before loading `use-package'
       use-package-enable-imenu-support t
       load-prefer-newer t
@@ -34,7 +38,12 @@
 ;; disable warnings from the legacy advice API
 (setq ad-redefinition-action 'accept)
 
-;; FIXME: Emacs updates its ui more often that it needs to ?
+;; ignore warnings about "existing variables being aliased"
+(setq warning-suppress-types '((defvaralias) (lexical-binding)))
+
+;; don't ping things that look like domain names
+(setq ffap-machine-p-known 'reject)
+
 (setq idle-update-delay 1.0)
 (setq inhibit-compacting-font-caches t)
 ;; Disable [bidirectional text] scanning for a modest performance

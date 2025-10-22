@@ -1,6 +1,12 @@
 ;;; -*- lexical-binding: t  -*-
 ;;; Mainly for speeding up startup time
 
+(if (eq system-type 'darwin)
+    (progn
+      (setq ns-use-srgb-colorspace nil)
+      (setq default-frame-alist
+            '((ns-transparent-titlebar .  t)))))
+
 (setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.5)
 

@@ -5,6 +5,7 @@
   :hook (after-init . evil-mode)
   :init
   (setq evil-want-C-u-scroll t
+        evil-want-C-i-jump nil
         evil-want-keybinding nil
         evil-undo-system 'undo-redo
         evil-spilt-window-below t

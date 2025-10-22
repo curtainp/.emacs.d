@@ -8,27 +8,6 @@
           (lambda ()
             (setq gc-cons-threshold (* 30 1024 1024))))
 
-(setq package-enable-at-startup nil
-      ;; `use-package' is built-in from 29, so we need set it before loading `use-package'
-      use-package-enable-imenu-support t
-      load-prefer-newer t
-      default-frame-alist '((tool-bar-lines . 0)
-                            (menu-bar-lines . 0)
-                            (vertical-scroll-bars)
-                            (undecorated-round . t)
-                            (internal-border-width . 0)
-                            (fullscreen . maximized))
-      tool-bar-mode nil
-      menu-bar-mode nil
-      scroll-bar-mode nil
-      ;; prevent modeline from showing at startup.
-      mode-line-format nil
-      ;; suppress don't have lexical-binding warnings
-      warning-suppress-types '((files))
-      )
-(prefer-coding-system 'utf-8)
-(when (featurep 'ns)
-  (push '(ns-transparent-titlebar . t) default-frame-alist))
 (setq frame-inhibit-implied-resize t)
 
 ;; reduce rendering scan work for non-focused window
@@ -51,6 +30,24 @@
 (setq bidi-inhibit-bpa t)
 (setq-default bidi-paragraph-direction 'left-to-right
               bidi-display-reordering 'left-to-right)
+
+;; Don't want a mode line while loading init
+(setq-default mode-line-format nil)
+
+;; No scrollbar by default
+(when (fboundp 'scroll-bar-mode)
+  (scroll-bar-mode -1))
+
+;; No menubar by default
+(when (fboundp 'menu-bar-mode)
+  (menu-bar-mode -1))
+
+;; No toolbar by default
+(when (fboundp 'tool-bar-mode)
+  (tool-bar-mode -1))
+
+;; No alarms by default
+(setq ring-bell-function 'ignore)
 
 ;; startup screen
 (setq inhibit-startup-screen t

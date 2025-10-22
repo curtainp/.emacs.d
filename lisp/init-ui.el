@@ -107,7 +107,7 @@
           (t . (rainbow bold 1))))
   (mapc #'disable-theme custom-enabled-themes)
   (if (display-graphic-p)
-      (ef-themes-load-random)
+      (load-theme 'ef-arbutus t)
     (ef-themes-load-random 'dark)))
 
 (use-package fontaine
@@ -118,7 +118,7 @@
         (locate-user-emacs-file "fontaine-latest-state.eld"))
   (setq fontaine-presets
         '((regular
-           :default-height 120
+           :default-height 140
            :default-weight regular
            :fixed-pitch-height 1.0
            :variable-pitch-height 1.0)
@@ -128,7 +128,7 @@
            :fixed-pitch-height 1.0
            :variable-pitch-height 1.05)
           (t
-           :default-family "Iosevka Nerd Font"
+           :default-family "JetBrainsMono Nerd Font"
            :fixed-pitch-family "Iosevka Nerd Font"
            :variable-pitch-family "Lato"
            :italic-family "Iosevka Nerd Font"
@@ -184,6 +184,7 @@
   :straight t)
 
 (use-package centaur-tabs
+  :disabled
   :straight t
   :demand t
   :hook

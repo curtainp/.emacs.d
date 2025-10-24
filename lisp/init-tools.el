@@ -74,7 +74,7 @@
 
 (use-package rainbow-delimiters
   :straight t
-  :hook (prog-mode . rainbow-delimiters-mode))
+  :hook (prog-mode))
 
 (use-package symbol-overlay
   :straight t
@@ -87,7 +87,7 @@
 
 (use-package rainbow-mode
   :straight t
-  :hook ((css-mode html-mode sass-mode) . rainbow-mode)
+  :hook (css-mode html-mode sass-mode)
   :init
   (setq rainbow-ansi-colors nil)
   (setq rainbow-x-colors nil)

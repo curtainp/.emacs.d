@@ -1,7 +1,7 @@
 ;;; init-evil.el -*- lexical-binding: t -*-
 
 (use-package evil
-  :straight t
+  :straight (:host github :repo "curtainp/evil")
   :hook (after-init . evil-mode)
   :init
   (setq evil-want-C-u-scroll t

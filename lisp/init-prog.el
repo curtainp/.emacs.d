@@ -8,8 +8,6 @@
   :custom
   (treesit-auto-install 'prompt)
   (treesit-auto-langs custom-auto-langs)
-  :init
-  (setq treesit-auto-install 'prompt)
   :config
   (treesit-auto-add-to-auto-mode-alist custom-auto-langs))
 

@@ -11,6 +11,7 @@
   (require 'smartparens-config))
 
 (use-package gitmoji
+  :disabled
   :straight (:host github :repo "Spike-Leung/gitmoji")
   :hook (git-commit-mode . gitmoji-commit-mode)
   :config

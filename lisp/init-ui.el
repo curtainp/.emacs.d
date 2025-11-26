@@ -95,20 +95,13 @@
   (modus-themes-load-theme (cadr modus-themes-to-toggle)))
 
 (use-package ef-themes
-  :straight t
-  :bind ("C-c t" . ef-themes-toggle)
+  :straight (:type git :host github :repo "protesilaos/ef-themes")
   :init
-  (setq ef-themes-headings
-        '((0 . (bold 1))
-          (1 . (bold 1))
-          (2 . (rainbow bold 1))
-          (3 . (rainbow bold 1))
-          (4 . (rainbow bold 1))
-          (t . (rainbow bold 1))))
-  (mapc #'disable-theme custom-enabled-themes)
-  (if (display-graphic-p)
-      (load-theme 'ef-arbutus t)
-    (ef-themes-load-random 'dark)))
+  (ef-themes-take-over-modus-themes-mode 1)
+  :config
+  (setq modus-themes-mixed-fonts t)
+  (setq modus-themes-italic-constructs t)
+  (modus-themes-load-theme 'ef-arbutus))
 
 (use-package fontaine
   :straight t

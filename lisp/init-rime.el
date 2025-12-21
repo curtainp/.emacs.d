@@ -8,7 +8,9 @@
   (default-input-method "rime")
   :config
   (setq rime-user-data-dir (expand-file-name "~/.config/fcitx/rime")
-        rime-show-candidate 'posframe))
-
+        rime-show-candidate 'minibuffer)
+  (when (eq system-type 'darwin)
+    (setq rime-librime-root "/opt/homebrew"))
+  )
 
 (provide 'init-rime)

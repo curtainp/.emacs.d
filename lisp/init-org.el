@@ -166,7 +166,8 @@
   (org-modern-star 'replace)
   (org-modern-replace-stars "◉○✸✳◈◇✿❀✜")
   (setq-default line-spacing 0.1)       ;; 0.1 indicate 10% for extra line spacing
-  (org-modern-table-horizontal 0)
+  (org-modern-table nil)
+  ;; (org-modern-table-horizontal 0)
   (org-modern-label-border 1)
   (org-modern-block-fringe t)
   (org-modern-block-name nil)           ;; use `prettify-symbols-mode' instead
@@ -416,5 +417,9 @@
                               (css             . t)
                               ))
   )
+
+(use-package valign
+  :straight (:host github :repo "casouri/valign")
+  :hook (org-mode . valign-mode))
 
 (provide 'init-org)

@@ -69,6 +69,8 @@
 (setq use-file-dialog nil
       use-dialog-box nil)
 
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
 (setq-default inhibit-redisplay t
 	      inhibit-message t)
 

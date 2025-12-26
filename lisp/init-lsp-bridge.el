@@ -26,7 +26,7 @@
   (setq acm-enable-lsp-workspace-symbol t)
   (setq lsp-bridge-semantic-tokens t)
   (setq-default lsp-bridge-semantic-tokens-ignore-modifier-limit-types ["variable"])
-  ;; (lsp-bridge-enable-inlay-hint t)
+  (setq lsp-bridge-enable-inlay-hint t)
   ;; (lsp-bridge-get-language-id 'get-tailwindcss-language-id-in-react)
   (setq lsp-bridge-user-langserver-dir (concat (expand-file-name user-emacs-directory) "langserver"))
   (setq lsp-bridge-user-multiserver-dir (concat (expand-file-name user-emacs-directory) "multiserver"))

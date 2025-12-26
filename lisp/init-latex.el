@@ -3,7 +3,7 @@
 (use-package latex
   :straight auctex
   :hook ((LaTeX-mode . prettify-symbols-mode))
-  :bind (:map latex-mode-map
+  :bind (:map LaTex-mode-map
               ("C-S-e" . latex-math-from-calc))
   :config
   ;; Format math as a Latex string with `calc'

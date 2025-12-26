@@ -185,7 +185,8 @@
         recentf-show-file-shortcuts-flag nil
         recentf-exclude (list "\\.?cache" ".cask" "url" "COMMIT_EDITMSG\\'" "bookmarks"
 		                      "\\.?ido\\.last$" "\\.revive$" "/G?TAGS$" "/.elfeed/"
-		                      "^/tmp/" "^/var/folders/.+$" "^/ssh:" "/persp-confs/"
+		                      "^/tmp/" "^/var/folders/.+$" "/persp-confs/"
+                              "^/ssh:" "^/scp:" "^/sudo:" "^/rsync:" "^/ftp:" "^/sftp:"
 		                      (lambda (file) (file-in-directory-p file package-user-dir))
 		                      (expand-file-name recentf-save-file))
         recentf-keep nil)

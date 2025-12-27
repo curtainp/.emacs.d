@@ -155,6 +155,31 @@
   (when (executable-find "dvisvgm")
     (setopt org-preview-latex-default-process 'dvisvgm)
     (setq org-preview-latex-image-directory (expand-file-name "~/.cache/org/preview/latex-image/")))
+  (setq org-capture-templates
+        '(("b" "Hugo Blog Post"
+           plain
+           (file (lambda ()
+                   (let* ((title (read-string "Title: "))
+                          (tags (read-string "Tags: "))
+                          (categories (read-string "Categories: "))
+                          (slug (downcase (replace-regexp-in-string " " "-" title)))
+                          (dir (expand-file-name (concat "~/Documents/site/blog/content/posts/" slug))))
+                    (unless (file-exists-p dir)
+                     (make-directory dir t))
+                    (plist-put org-capture-plist :hugo-title title)
+                    (plist-put org-capture-plist :hugo-tags tags)
+                    (plist-put org-capture-plist :hugo-categories categories)
+                    (expand-file-name "index.org" dir))))
+           "#+title: %(plist-get org-capture-plist :hugo-title)
+#+author: %(user-full-name)
+#+date: %<%Y-%m-%d>
+#+draft: false
+#+tags[]: %(plist-get org-capture-plist :hugo-tags)
+#+categories[]: %(plist-get org-capture-plist :hugo-categories)
+
+"
+           :empty-lines-after 1
+           :unnarrowed t)))
   )
 
 (use-package org-modern

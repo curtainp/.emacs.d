@@ -1,5 +1,4 @@
 ;;; -*- lexical-binding: t  -*-
-;;; Mainly for speeding up startup time
 
 (if (eq system-type 'darwin)
     (progn
@@ -14,6 +13,8 @@
           (lambda ()
             (setq gc-cons-threshold (* 30 1024 1024))))
 
+;; Prefer loading newer compiled files
+(setq load-prefer-newer t)
 (setq frame-inhibit-implied-resize t)
 
 ;; reduce rendering scan work for non-focused window

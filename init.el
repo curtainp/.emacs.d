@@ -12,6 +12,9 @@
 
 (add-hook 'emacs-startup-hook #'cw/display-startup-time)
 
+;; Don't show logging level beyond :emergency, but also record with warnings buffer
+(setq warning-minimum-level :emergency)
+
 ;; Make native compilation silent and prune its cache.
 (when (native-comp-available-p)
   (setq native-comp-async-report-warnings-errors 'silent ; Emacs 28 with native compilation
@@ -42,7 +45,9 @@
   (require 'init-ui)
   (require 'init-modeline)
   (require 'init-completion)
-  (require 'init-lsp-bridge)
+  ;; TODO: wait for tty-child-frame stable
+  (when (display-graphic-p)
+    (require 'init-lsp-bridge))
   (require 'init-nav)
   (require 'init-evil)
   ;;(require 'init-search)

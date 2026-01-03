@@ -15,9 +15,7 @@
 (setq straight-check-for-modifications '(check-on-save find-when-checking)                   ; skip modification at startup, checking on demand
       comp-deferred-compilation-deny-list ()                 ; config native comp
       warning-suppress-log-types '((comp))                   ; Don't display comp warnings
-      straight-repository-branch "develop"
-      straight-disable-native-compile (not (and (fboundp 'native-comp-available-p)
-                                                (native-comp-available-p))))
+      straight-repository-branch "develop")
 
 ;; Installation
 (defvar bootstrap-version)

@@ -151,10 +151,6 @@
                     )))
     (setq prettify-symbols-unprettify-at-point t)
     (prettify-symbols-mode))
-  ;; (plist-put org-format-latex-options :scale 1.8)
-  (when (executable-find "dvisvgm")
-    (setopt org-preview-latex-default-process 'dvisvgm)
-    (setq org-preview-latex-image-directory (expand-file-name "~/.cache/org/preview/latex-image/")))
   (setq org-capture-templates
         '(("b" "Hugo Blog Post"
            plain
@@ -216,7 +212,13 @@
 ;; preview and edit latex in org elegantly
 (use-package org-fragtog
   :straight t
-  :hook (org-mode . org-fragtog-mode))
+  :hook (org-mode . org-fragtog-mode)
+  :config
+  (plist-put org-format-latex-options :scale 2.4)
+  (when (executable-find "dvisvgm")
+    (setq org-preview-latex-default-process 'dvisvgm)
+    (setq org-preview-latex-image-directory (expand-file-name "~/.cache/org/preview/latex-image/")))
+  )
 
 (use-package org-present
   :straight t

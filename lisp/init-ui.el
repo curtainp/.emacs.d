@@ -105,6 +105,7 @@
 
 (use-package fontaine
   :straight t
+  :if (display-graphic-p)               ;; TODO: wait for tty-child-frame stable
   :demand t
   :config
   (setq fontaine-latest-state-file

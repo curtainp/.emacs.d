@@ -60,7 +60,8 @@
              (when (eq system-type 'gnu/linux)
                 (require 'init-eaf))
              ;; (require 'init-llm)
-             (require 'init-dired)
+             ;; (require 'init-dired)
+             (require 'init-grease)     ;; oil.nvim like file manager, which is the replacement of dired
              (require 'init-latex)
              (require 'init-org)
              (require 'init-notes)

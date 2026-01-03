@@ -101,7 +101,7 @@
   :config
   (setq modus-themes-mixed-fonts t)
   (setq modus-themes-italic-constructs t)
-  (modus-themes-load-theme 'ef-arbutus))
+  (modus-themes-load-theme 'ef-dream))  ;; ef-arbutus for light theme
 
 (use-package fontaine
   :straight t
@@ -112,17 +112,17 @@
         (locate-user-emacs-file "fontaine-latest-state.eld"))
   (setq fontaine-presets
         '((regular
-           :default-height 140
+           :default-height 160
            :default-weight regular
-           :fixed-pitch-height 1.0
-           :variable-pitch-height 1.0)
+           :fixed-pitch-height 1.2
+           :variable-pitch-height 1.2)
           (large
-           :default-height 180
+           :default-height 200
            :default-weight normal
            :fixed-pitch-height 1.0
            :variable-pitch-height 1.05)
           (t
-           :default-family "JetBrainsMono Nerd Font"
+           :default-family "Iosevka Nerd Font"
            :fixed-pitch-family "Iosevka Nerd Font"
            :variable-pitch-family "Lato"
            :italic-family "Iosevka Nerd Font"

@@ -21,6 +21,8 @@
         native-compile-prune-cache t
         native-comp-jit-compilation t))
 
+(setq custom-file (locate-user-emacs-file "custom.el"))
+
 ;; Enable default disabled command
 (mapc
  (lambda (command)
@@ -53,6 +55,9 @@
   ;;(require 'init-search)
   (require 'init-prog)
   ;;(require 'init-emigo)
+
+  (when (file-exists-p custom-file)
+    (load custom-file))
 
   (run-with-idle-timer
    1 nil #'(lambda ()

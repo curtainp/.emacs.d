@@ -124,11 +124,9 @@
           (t
            :default-family "Iosevka Nerd Font"
            :fixed-pitch-family "Iosevka Nerd Font"
+           ;; :variable-pitch-family "Roboto"
+           ;; :variable-pitch-family "Georgia"
            :variable-pitch-family "Lato"
-           :italic-family "Iosevka Nerd Font"
-           :variable-pitch-weight normal
-           :bold-weight normal
-           :italic-slant italic
            :line-spacing 0.1)))
   (fontaine-set-preset 'regular)
   (set-fontset-font t 'emoji

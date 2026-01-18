@@ -255,4 +255,12 @@
   (with-eval-after-load 'savehist
     (add-to-list 'savehist-additional-variables 'compile-history)))
 
+(dolist (hook '(org-mode-hook
+                markdown-mode-hook
+                Info-mode-hook
+                help-mode-hook
+                helpful-mode-hook
+                eww-mode-hook))
+  (add-hook hook 'variable-pitch-mode))
+
 (provide 'init-basic)

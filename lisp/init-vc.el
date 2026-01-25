@@ -21,15 +21,30 @@
   ;; Automatically refresh Magit after save
   (add-hook 'after-save-hook 'magit-after-save-refresh-status))
 
-(use-package git-commit
-  :straight nil
-  :after magit
-  :commands (global-git-commit-mode)
+(when (< emacs-major-version 30)
+  (use-package git-commit
+    :straight nil
+    :after magit
+    :commands (global-git-commit-mode)
+    :custom
+    (git-commit-summary-max-length 80) ; defaults to Github's max commit message length
+    (git-commit-style-convention-checks '(overlong-summary-line non-empty-second-line))
+    :init
+    (global-git-commit-mode 1)))
+
+(use-package igist
+  :straight (:repo "KarimAziev/igist" :host github)
+  :commands (igist-create-new-gist igist-list-gists)
   :custom
-  (git-commit-summary-max-length 80) ; defaults to Github's max commit message length
-  (git-commit-style-convention-checks '(overlong-summary-line non-empty-second-line))
-  :init
-  (global-git-commit-mode 1))
+  (igist-current-user-name "curtainp")
+  (igist-list-format (igist-pick-from-alist
+                      '(description
+                        public
+                        updated_at
+                        comments
+                        files)
+                      (copy-tree igist-default-formats)))
+  )             ;; code snippets for Github Gists
 
 ;; Show source files' TODOs (and FIXMEs, etc) in Magit status buffer
 (use-package magit-todos

@@ -34,8 +34,9 @@
   (org-highlight-latex-and-related '(native script entities))
   (org-startup-indented t)
   (org-adapt-indentation t)
-  ;; (org-startup-with-inline-images t)
-  (org-startup-folded 'overview)
+  (org-startup-with-inline-images (display-graphic-p))
+  (org-image-actual-width 500)
+  (org-startup-folded 'show2levels)
   (org-list-allow-alphabetical t)
   (org-list-demote-modify-bullet '(     ;; sublist bullet config
                                    ("-" . "+")
@@ -44,27 +45,23 @@
                                    ))
   (org-fold-catch-invisible-edits 'smart)
   (org-insert-heading-respect-content nil)
-  (org-image-actual-width nil)
   (org-yank-image-save-method "imgs")
-  (org-return-follows-link nil) 
+  (org-return-follows-link t) 
   (org-use-sub-superscripts '{})        ;; use {} 包裹上下标
   (org-clone-delete-id t)
   (org-yank-adjusted-subtrees t)
-  (org-todo-keywords '((sequence "TODO(t)" "HOLD(h!)" "|" "DONE(d!)" "CANCELLED(c@/!)")
-                       (sequence "REPEAT(r)" "BUG(b)" "|" "FIXED(f!)")))
-  (org-todo-keyword-faces '(("TODO"       :foreground "#7c7c75" :weight bold)
-                            ("HOLD"       :foreground "#feb24c" :weight bold)
-                            ("DONE"       :foreground "#50a14f" :weight bold)
-                            ("CANCELLED"  :foreground "#ff6480" :weight bold)
-                            ("REPORT"     :foreground "magenta" :weight bold)
-                            ("BUG"        :foreground "red"     :weight bold)
-                            ("FIXED"      :foreground "green"   :weight bold)))
-  (org-todo-state-tags-triggers
-   (quote (("CANCELLED" ("CANCELLED" . t))
-           ("HOLD" ("HOLD" . t))
-           (done ("HOLD"))
-           ("TODO" ("CANCELLED") ("HOLD"))
-           ("DONE" ("CANCELLED") ("HOLD")))))
+  (org-todo-keywords '((sequence
+                        "TODO(t)"
+                        "WAITING(w)"    ;; use @/! to log note and timestamp
+                        "|"
+                        "DONE(d)"
+                        "OBSOLETE(o)"
+                        "CANCELLED(c)")))
+  (org-todo-keyword-faces '(("TODO"       :foreground "red" :weight bold)
+                            ("WAITING"    :foreground "yellow" :weight bold)
+                            ("DONE"       :foreground "green" :weight bold)
+                            ("CANCELLED"  :foreground "gray" :weight bold)
+                            ("OBSOLETE"   :foreground "blue"   :weight bold)))
   (org-use-fast-todo-selection 'expert)
   (org-enforce-todo-dependencies t)
   (org-enforce-todo-checkbox-dependencies t)

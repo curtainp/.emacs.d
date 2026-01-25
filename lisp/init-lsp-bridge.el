@@ -2,7 +2,7 @@
 
 (use-package yasnippet
   :straight t
-  :hook ((text-mode prog-mode conf-mode markdown-mode) . yas-minor-mode)
+  :hook ((prog-mode conf-mode markdown-mode) . yas-minor-mode)
   :custom
   (yas-triggers-in-field t))
 
@@ -17,7 +17,7 @@
   (setq lsp-bridge-signature-show-function 'lsp-bridge-signature-show-with-frame)
   (setq lsp-bridge-python-multi-lsp-server 'basedpyright_ruff)
   (setq lsp-bridge-enable-hover-diagnostic t)
-  (setq acm-enable-capf t)
+  (setq acm-enable-capf nil)
   (setq acm-enable-icon t)
   (setq acm-enable-tabnine nil)
   (setq acm-enable-codeium nil)

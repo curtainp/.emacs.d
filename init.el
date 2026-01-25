@@ -10,6 +10,16 @@
      (time-subtract after-init-time before-init-time)))
    gcs-done))
 
+(defun cw/macos-transparent-frame ()    ;; this functionality need frame-transparency patch for emacs-31
+  (progn
+    (set-frame-parameter nil 'ns-alpha-elements '(ns-alpha-all))
+    (set-frame-parameter nil 'alpha-background 0.5)
+    (set-frame-parameter nil 'ns-background-blur 20)
+    ))
+
+(when (and (eq system-type 'darwin) (display-graphic-p))
+  (add-hook 'emacs-startup-hook #'cw/macos-transparent-frame))
+
 (add-hook 'emacs-startup-hook #'cw/display-startup-time)
 
 ;; Don't show logging level beyond :emergency, but also record with warnings buffer

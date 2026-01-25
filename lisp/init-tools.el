@@ -167,8 +167,25 @@
 
 (use-package projectile
   :straight t
+  :defer
+  :ensure-system-package fd
+  :custom
+  (projectile-dynamic-mode-line nil)
+  (projectile-enable-caching t)
+  (projectile-project-root-functions
+   '(projectile-root-local
+     projectile-root-bottom-up))
   :config
-  (projectile-mode +1))
+  (when (executable-find "fd")
+    (let ((fd-command "fd . --print0"))
+      (setq projectile-hg-command fd-command)
+      (setq projectile-git-command fd-command)
+      (setq projectile-fossil-command fd-command)
+      (setq projectile-bzr-command fd-command)
+      (setq projectile-darcs-command fd-command)
+      (setq projectile-svn-command fd-command)
+      (setq projectile-generic-command fd-command)))
+  (projectile-mode))
 
 (use-package vterm-toggle
   :disabled

@@ -15,6 +15,14 @@
 ;; Don't show logging level beyond :emergency, but also record with warnings buffer
 (setq warning-minimum-level :emergency)
 
+;; PERF: `tty-run-terminal-initialization' is slow
+(unless (daemonp)
+  (advice-add #'tty-run-terminal-initialization :override #'ignore)
+  (add-hook 'window-setup-hook
+            (defun doom-init-tty-h ()
+              (advice-remove #'tty-run-terminal-initialization #'ignore)
+              (tty-run-terminal-initialization (selected-frame) nil t))))
+
 ;; Make native compilation silent and prune its cache.
 (when (native-comp-available-p)
   (setq native-comp-async-report-warnings-errors 'silent ; Emacs 28 with native compilation
@@ -52,7 +60,7 @@
     (require 'init-lsp-bridge))
   (require 'init-nav)
   (require 'init-evil)
-  ;;(require 'init-search)
+  (require 'init-search)
   (require 'init-prog)
   ;;(require 'init-emigo)
 

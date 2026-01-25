@@ -2,11 +2,19 @@
 
 (use-package dired
   :straight nil
+  :defer
+  :hook ((dired-mode . dired-hide-details-mode)
+         (dired-after-readin . cw/hide-detail-include-all-subdir-paths))
+  :bind (:map dired-mode-map
+              ("^" . cw/goto-parent-dir)
+              ("i" . dired-hide-details-mode)
+              )
   :config
   (setq
    ;; Always delete and copy recursively
    dired-recursive-deletes 'top
    dired-recursive-copies 'always
+   delete-by-moving-to-trash t
    ;; Move between two dired buffer quickly
    dired-dwim-target t
    ;; Ask whether destination dirs should get created when copying/removing files.
@@ -23,10 +31,24 @@
      ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open")
      (".*" "xdg-open"))
    dired-mouse-drag-files t)
+  (defun cw/hide-detail-include-all-subdir-paths ()
+    (save-excursion
+      (goto-char (point-min))
+      (while (re-search-forward dired-subdir-regexp nil t)
+        (let* ((match-bounds (cons (match-beginning 1) (match-end 1)))
+               (path (file-name-directory (buffer-substring (car match-bounds) (cdr match-bounds))))
+               (path-start (car match-bounds))
+               (path-end (+ (car match-bounds) (length path)))
+               (inhibit-read-only t))
+          (put-text-property path-start path-end 'invisible 'dired-hide-details-information)))))
 
-  ;;(add-hook 'dired-mode-hook #'dired-hide-details-mode)
-  (add-hook 'dired-mode-hook #'hl-line-mode)
-  (define-key dired-jump-map (kbd "j") nil)
+  (defun cw/goto-parent-dir ()
+    (interactive)
+    (find-file ".."))
+
+  (defun cw/dired-mark-all ()
+    (interactive)
+    (dired-mark-files-regexp ""))
 
   (when (eq system-type 'darwin)
     (if (executable-find "gls")
@@ -41,6 +63,7 @@
   )
 
 (use-package nerd-icons-dired
+  :disabled
   :straight t
   :hook (dired-mode . nerd-icons-dired-mode))
 
@@ -55,7 +78,7 @@
   :hook (after-init . dired-preview-global-mode)
   :bind
   (:map dired-mode-map
-        ("V" . dired-preview-mode))
+        ("P" . dired-preview-mode))
   :config
   (setq dired-preview-max-size (* (expt 2 20) 10))
   (setq dired-preview-delay 0.5)
@@ -77,7 +100,21 @@
   :config
   (cl-callf append diredfl-compressed-extensions '(".zst" ".rar" ".7z" ".cab" ".arc" ".zoo")))
 
+(use-package dwim-shell-command
+  :straight t
+  :defer 30
+  :bind (([remap shell-command] . dwim-shell-command)
+         :map dired-mode-map
+         ([remap dired-do-async-shell-command] . dwim-shell-command)
+         ([remap dired-do-shell-command] . dwim-shell-command)
+         ([remap dired-smart-shell-command] . dwim-shell-command)
+         ("C-x C-d" . dwim-shell-command-duplicate))
+  :config
+  (use-package dwim-shell-commands
+    :demand t))
+
 (use-package sudo-edit
+  :disabled
   :straight t
   :hook (after-init . sudo-edit-indicator-mode))
 

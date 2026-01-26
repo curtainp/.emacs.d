@@ -58,6 +58,8 @@
  read-buffer-completion-ignore-case t
  read-file-name-completion-ignore-case t
 
+ ;; FIX: emacs-plus@31 will cause bug with lsp-bridge acm
+ alter-fullscreen-frames nil
  ;; disable [bell] completely
  ring-bell-function 'ignore
 

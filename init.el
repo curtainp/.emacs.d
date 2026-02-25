@@ -80,8 +80,8 @@
   (run-with-idle-timer
    1 nil #'(lambda ()
              ;; (require 'init-popweb)
-             (when (and (eq system-type 'gnu/linux) (display-graphic-p))
-                (require 'init-eaf))
+             ;; (when (and (eq system-type 'gnu/linux) (display-graphic-p))
+             ;;    (require 'init-eaf))
              ;; (require 'init-llm)
              (require 'init-dired)
              ;; (require 'init-grease)     ;; oil.nvim like file manager, which is the replacement of dired

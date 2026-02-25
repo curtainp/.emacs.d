@@ -20,12 +20,12 @@
   :group 'curtain
   :type 'string)
 
-(defcustom curtain-org-directory (expand-file-name "~/Dropbox/org")
+(defcustom curtain-org-directory (expand-file-name "~/Documents/org")
   "Set org directory."
   :group 'curtain
   :type 'string)
 
-(defcustom curtain-blog-directory (expand-file-name "~/Documents/site/blog/content-org")
+(defcustom curtain-blog-directory (expand-file-name "~/Documents/blog/content/posts/")
   "Set org blog directory."
   :group 'curtain
   :type 'string)

@@ -157,7 +157,7 @@
                           (description (read-string "Description: "))
                           (categories (read-string "Categories: "))
                           (slug (downcase (replace-regexp-in-string " " "-" title)))
-                          (dir (expand-file-name (concat "~/Documents/site/blog/content/posts/" slug))))
+                          (dir (expand-file-name (concat curtain-blog-directory slug))))
                     (unless (file-exists-p dir)
                      (make-directory dir t))
                     (plist-put org-capture-plist :hugo-title title)

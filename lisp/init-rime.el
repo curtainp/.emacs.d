@@ -7,7 +7,7 @@
   :custom
   (default-input-method "rime")
   :config
-  (setq rime-user-data-dir (expand-file-name "~/.config/fcitx/rime")
+  (setq rime-user-data-dir (expand-file-name "~/.local/share/fcitx5/rime")
         rime-show-candidate 'minibuffer)
   (when (eq system-type 'darwin)
     (setq rime-librime-root "/opt/homebrew"))

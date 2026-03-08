@@ -1,5 +1,8 @@
 ;;; -*- lexical-binding: t -*-
 
+(use-package majutsu
+  :straight (:host github :repo "0WD0/majutsu"))
+
 (use-package magit
   :straight t
   :custom

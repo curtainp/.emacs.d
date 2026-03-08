@@ -36,7 +36,7 @@
   (org-adapt-indentation t)
   (org-startup-with-inline-images (display-graphic-p))
   (org-image-actual-width 500)
-  (org-startup-folded 'show2levels)
+  (org-startup-folded 'fold)
   (org-list-allow-alphabetical t)
   (org-list-demote-modify-bullet '(     ;; sublist bullet config
                                    ("-" . "+")

@@ -243,7 +243,7 @@
 
 (use-package compile
   :straight nil
-  :hook (compilation-filter . ansi-color-compilation-filter) ; Enable ANSI colors in compilation buffer
+  :hook (compilation-filter . +compilation-colorize-filter-h)
   :hook (shell-mode . compilation-shell-minor-mode)
   :bind ("C-;" . compile)
   :custom
@@ -252,6 +252,27 @@
   (compilation-skip-visited t) ; Skip visited messages on compilation motion commands
   (compilation-window-height 12) ; Keep it readable  :init
   :config
+  (defconst +compilation-extra-escape-sequences-regexp
+    (concat "\e"
+            (regexp-opt-charset '(?\( ?\) ?* ?+ ?- ?. ?/))
+            "[\x30-\x7E]")
+    "Regexp matching ISO-2022 escape sequences unsupported by `ansi-color'.")
+
+  (defun +compilation--strip-extra-escape-sequences (start end)
+    (save-excursion
+      (save-match-data
+        (let ((end-marker (copy-marker end))
+              (start-pos (if (markerp start) (marker-position start) start)))
+          (goto-char (max (point-min) (- start-pos 2)))
+          (while (re-search-forward +compilation-extra-escape-sequences-regexp end-marker t)
+            (replace-match "" t t))))))
+
+  (defun +compilation-colorize-filter-h ()
+    "Strip unsupported terminal escape sequences before ANSI colorizing."
+    (let ((inhibit-read-only t))
+      (+compilation--strip-extra-escape-sequences compilation-filter-start (point))
+      (ansi-color-compilation-filter)))
+
   (add-to-list 'compilation-environment "TERM=xterm-256color")
   ;; Integration of `compile' with `savehist'
   (with-eval-after-load 'savehist

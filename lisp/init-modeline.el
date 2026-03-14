@@ -37,25 +37,6 @@
   :config
   (awesome-tray-mode 1))
 
-(use-package doom-modeline
-  :straight t
-  :hook (after-init . doom-modeline-mode)
-  :custom
-  (doom-modeline-irc nil)
-  (doom-modeline-mu4e nil)
-  (doom-modeline-gnus nil)
-  (doom-modeline-github nil)
-  (doom-modeline-buffer-file-name-style 'truncate-upto-root)
-  (doom-modeline-persp-name nil)
-  ; (doom-modeline-time-icon nil)
-  ; (doom-modeline-buffer-encoding 'nondefault)
-  (doom-modeline-unicode-fallback t)
-  ; (doom-modeline-total-line-number t)
-  (doom-modeline-enable-word-count nil)
-  ;; (doom-modeline-hud t)
-  ;; (doom-modeline-hud-min-height 1)
-  ; (doom-modeline-continuous-word-count-modes '(markdown-mode markdown-ts-mode gfm-mode org-mode rst-mode latex-mode tex-mode))
-  )
 
 (use-package minions
   :straight t

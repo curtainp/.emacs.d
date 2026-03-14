@@ -50,7 +50,6 @@
   (require 'init-straight)
   (require 'init-basic)
   (require 'init-ui)
-  (require 'init-modeline)
   (require 'init-completion)
   ;; TODO: wait for tty-child-frame stable
   (when (display-graphic-p)

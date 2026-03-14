@@ -112,7 +112,7 @@
         (locate-user-emacs-file "fontaine-latest-state.eld"))
   (setq fontaine-presets
         '((regular
-           :default-height 160
+           :default-height 140
            :default-weight regular
            :fixed-pitch-height 1.2
            :variable-pitch-height 1.2)
@@ -126,7 +126,7 @@
            :fixed-pitch-family "Iosevka Nerd Font"
            ;; :variable-pitch-family "Roboto"
            ;; :variable-pitch-family "Georgia"
-           :variable-pitch-family "Lato"
+           :variable-pitch-family "Bookerly"
            :line-spacing 0.1)))
   (fontaine-set-preset 'regular)
   (set-fontset-font t 'emoji
@@ -173,7 +173,30 @@
   )
 
 (use-package nerd-icons
-  :straight t)
+  :straight t
+  :config
+  (when (not (find-font (font-spec :name nerd-icons-font-family)))
+    (nerd-icons-install-fonts t)))
+
+(use-package doom-modeline
+  :straight t
+  :hook (after-init . doom-modeline-mode)
+  :custom
+  (doom-modeline-irc nil)
+  (doom-modeline-mu4e nil)
+  (doom-modeline-gnus nil)
+  (doom-modeline-github nil)
+  (doom-modeline-buffer-file-name-style 'truncate-upto-root)
+  (doom-modeline-persp-name nil)
+  ; (doom-modeline-time-icon nil)
+  ; (doom-modeline-buffer-encoding 'nondefault)
+  (doom-modeline-unicode-fallback t)
+  ; (doom-modeline-total-line-number t)
+  (doom-modeline-enable-word-count nil)
+  ;; (doom-modeline-hud t)
+  ;; (doom-modeline-hud-min-height 1)
+  ; (doom-modeline-continuous-word-count-modes '(markdown-mode markdown-ts-mode gfm-mode org-mode rst-mode latex-mode tex-mode))
+  )
 
 (use-package centaur-tabs
   :disabled
@@ -194,8 +217,12 @@
   ;; (centaur-tabs-headline-match)
   (centaur-tabs-mode t))
 
+(use-package default-text-scale
+  :straight t
+  :hook (after-init . default-text-scale-mode))
 
 (use-package face-remap
+  :disabled
   :straight nil
   :bind
   (("C-x C-=" . global-text-scale-adjust)
@@ -243,6 +270,7 @@
 
 ;; [ligature] ligature support for Emacs
 (use-package ligature
+  :disabled
   :straight t
   :hook ((prog-mode markdown-mode) . ligature-mode)
   :config

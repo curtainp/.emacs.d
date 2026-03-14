@@ -1,9 +1,5 @@
 ;;; -*- lexical-binding: t -*-
 
-(require 'init-funcs)
-
-(setq user-full-name curtain-full-name
-      user-mail-address curtain-email-address)
 ;; refer https://emacs.stackexchange.com/questions/82010/why-is-emacs-recompiling-some-packages-on-every-startup
 (use-package comp-run
   :straight nil

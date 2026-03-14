@@ -214,43 +214,6 @@
      (when (and (not completion-in-region-mode) (boundp 'corfu-popupinfo--hide))
        (corfu-popupinfo--hide)))))
 
-(use-package consult
-  :disabled
-  :hook (completion-list-mode . consult-preview-at-point-mode)
-  :bind
-  ( :map global-map
-    ("M-K" . consult-keep-lines) ; M-S-k is similar to M-S-5 (M-%)
-    ("M-F" . consult-focus-lines) ; same principle
-    ("M-s b" . consult-buffer)
-    ("M-s f" . consult-find)
-    ("M-s r" . consult-ripgrep)
-    ("M-s h" . consult-history)
-    ("M-s i" . consult-imenu)
-    ("M-s l" . consult-line)
-    ("M-s m" . consult-mark)
-    ("M-s y" . consult-yank-pop)
-    ("M-s s" . consult-outline)
-    :map consult-narrow-map
-    ("?" . consult-narrow-help))
-  :config
-  (setq consult-line-numbers-widen t)
-  ;; (setq completion-in-region-function #'consult-completion-in-region)
-  (setq consult-async-min-input 3)
-  (setq consult-async-input-debounce 0.5)
-  (setq consult-async-input-throttle 0.8)
-  (setq consult-narrow-key nil)
-  (setq consult-find-args
-        (concat "find . -not ( "
-                "-path */.git* -prune "
-                "-or -path */.cache* -prune )"))
-  (setq consult-preview-key 'any)
-  (setq consult-project-function nil) ; always work from the current directory (use `cd' to switch directory)
-
-  (add-to-list 'consult-mode-histories '(vc-git-log-edit-mode . log-edit-comment-ring))
-
-  (require 'consult-imenu) ; the `imenu' extension is in its own file
-  )
-
 (use-package embark
   :disabled
   :defer 1

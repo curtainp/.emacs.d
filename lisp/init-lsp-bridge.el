@@ -3,8 +3,9 @@
 (use-package yasnippet
   :straight t
   :hook ((prog-mode conf-mode markdown-mode) . yas-minor-mode)
-  :custom
-  (yas-triggers-in-field t))
+  :config
+  (setq yas-triggers-in-field t
+        yas-verbosity 0))
 
 (use-package lsp-bridge
   :straight '(:type git :host github :repo "curtainp/lsp-bridge"
@@ -15,7 +16,6 @@
   :config
   ;; (lsp-bridge-enable-in-minibuffer t)
   (setq lsp-bridge-signature-show-function 'lsp-bridge-signature-show-with-frame)
-  (setq lsp-bridge-python-multi-lsp-server 'basedpyright_ruff)
   (setq lsp-bridge-enable-hover-diagnostic t)
   (setq acm-enable-capf nil)
   (setq acm-enable-icon t)

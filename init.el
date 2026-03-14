@@ -41,24 +41,11 @@
 
 (setq custom-file (locate-user-emacs-file "custom.el"))
 
-;; Enable default disabled command
-(mapc
- (lambda (command)
-   (put command 'disabled nil))
- '(list-timers list-threads narrow-to-page narrow-to-defun narrow-to-region upcase-region downcase-region))
-
-;; Disable default enabled command
-(mapc
- (lambda (command)
-   (put command 'disabled t))
- '(eshell project-eshell overwrite-mode iconify-frame diary))
-
 (mapc
  (lambda (path)
    (add-to-list 'load-path (locate-user-emacs-file path)))
  '("lisp" "modules"))
 
-;;(require 'init-package)
 (with-temp-message ""
   (require 'init-straight)
   (require 'init-basic)

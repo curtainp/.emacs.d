@@ -42,7 +42,6 @@
     "fr" 'recentf
     "ss" 'consult-line
     "pf" 'project-find-file
-    "og" 'grease-toggle
     )
   ;; color-rg integration with evil
   (evil-define-key nil space-leader-map

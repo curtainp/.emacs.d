@@ -50,7 +50,7 @@
       "sb" 'color-rg-search-input-in-current-file)
   (evil-define-key '(normal visual) 'global
     "g*" 'color-rg-search-symbol)
-  (dolist (mode '(dired-mode diredfl-mode helpful-mode color-rg-mode color-rg-search-mode color-rg-switch-to-edit-mode color-rg-switch-to-view-mode))
+  (dolist (mode '(text-mode dired-mode diredfl-mode helpful-mode color-rg-mode color-rg-search-mode color-rg-switch-to-edit-mode color-rg-switch-to-view-mode))
     (evil-set-initial-state mode 'emacs))
 
   (evil-define-key '(normal insert) 'global

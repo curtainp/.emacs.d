@@ -113,9 +113,4 @@
   (use-package dwim-shell-commands
     :demand t))
 
-(use-package sudo-edit
-  :disabled
-  :straight t
-  :hook (after-init . sudo-edit-indicator-mode))
-
 (provide 'init-dired)

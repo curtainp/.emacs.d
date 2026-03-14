@@ -1,5 +1,11 @@
 ;;; -*- lexical-binding: t -*-
 
+(use-package web-mode
+  :straight t
+  :config
+  (setq web-mode-markup-indent-offset 2
+        web-mode-code-indent-offset 2))
+
 (defvar custom-auto-langs '(bash c cpp css dockerfile html javascript json latex make org python rust sql toml
                              tsx typescript yaml xml markdown markdown-inline elisp))
 (use-package treesit-auto

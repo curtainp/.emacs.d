@@ -64,10 +64,11 @@
 			  inhibit-message nil)
 	    (redraw-frame)))
 
-(push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
+(push '(menu-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)
-(push '(horizontal-scroll-bars) default-frame-alist)
+(when (featurep 'ns)
+  (push '(ns-transparent-titlebar . t) default-frame-alist))
 (push '(undecorated-round . t) default-frame-alist)
 (setq auto-mode-case-fold nil)
 

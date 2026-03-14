@@ -58,21 +58,15 @@
   (require 'init-evil)
   (require 'init-search)
   (require 'init-prog)
-  ;;(require 'init-emigo)
 
   (when (file-exists-p custom-file)
     (load custom-file))
 
   (run-with-idle-timer
    1 nil #'(lambda ()
-             ;; (require 'init-popweb)
-             ;; (when (and (eq system-type 'gnu/linux) (display-graphic-p))
-             ;;    (require 'init-eaf))
-             ;; (require 'init-llm)
              (require 'init-dired)
-             ;; (require 'init-grease)     ;; oil.nvim like file manager, which is the replacement of dired
-             (require 'init-latex)
              (require 'init-org)
+             (require 'init-latex)
              (require 'init-notes)
              (require 'init-docs)
              (require 'init-tools)

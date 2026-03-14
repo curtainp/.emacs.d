@@ -36,18 +36,6 @@
 ;; Don't want a mode line while loading init
 (setq-default mode-line-format nil)
 
-;; No scrollbar by default
-(when (fboundp 'scroll-bar-mode)
-  (scroll-bar-mode -1))
-
-;; No menubar by default
-(when (fboundp 'menu-bar-mode)
-  (menu-bar-mode -1))
-
-;; No toolbar by default
-(when (fboundp 'tool-bar-mode)
-  (tool-bar-mode -1))
-
 ;; No alarms by default
 (setq ring-bell-function 'ignore)
 
@@ -76,7 +64,15 @@
 			  inhibit-message nil)
 	    (redraw-frame)))
 
+(push '(menu-bar-lines . 0) default-frame-alist)
+(push '(tool-bar-lines . 0) default-frame-alist)
+(push '(vertical-scroll-bars) default-frame-alist)
+(push '(horizontal-scroll-bars) default-frame-alist)
+(push '(undecorated-round . t) default-frame-alist)
 (setq auto-mode-case-fold nil)
+
+(setq tool-bar-mode nil
+      scroll-bar-mode nil)
 
 ;; `file-name-handler-alist' is consulted on each call to `require', `load', or various file/io functions
 (unless (or (daemonp) noninteractive init-file-debug)

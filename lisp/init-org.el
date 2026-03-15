@@ -2,8 +2,7 @@
 
 
 (use-package org
-  ;; :straight nil
-  :mode ("\\.org\\'" . org-mode)
+  :straight t
   :hook ((org-mode . my/org-prettify-symbols))
   :custom-face
   ;; 设置Org mode标题以及每级标题行的大小
@@ -14,12 +13,6 @@
   (org-level-4 ((t (:height 1.05 :weight bold))))
   (org-level-5 ((t (:height 1.0 :weight bold))))
   (org-level-6 ((t (:height 1.0 :weight bold))))
-  (org-level-7 ((t (:height 1.0 :weight bold))))
-  (org-level-8 ((t (:height 1.0 :weight bold))))
-  (org-level-9 ((t (:height 1.0 :weight bold))))
-  ;; 设置代码块用上下边线包裹
-  ;; (org-block-begin-line ((t (:underline t :background unspecified))))
-  ;; (org-block-end-line ((t (:overline t :underline nil :background unspecified))))
   :custom
   (org-directory curtain-org-directory)
   (org-imenu-depth 4)
@@ -34,8 +27,9 @@
   (org-highlight-latex-and-related '(native script entities))
   (org-startup-indented t)
   (org-adapt-indentation t)
-  (org-startup-with-inline-images (display-graphic-p))
-  (org-image-actual-width 500)
+  (org-startup-with-inline-images t)
+  (org-footnote-auto-adjust t)
+  (org-image-actual-width '(500))       ;; first try get from ATTR html
   (org-startup-folded 'fold)
   (org-list-allow-alphabetical t)
   (org-list-demote-modify-bullet '(     ;; sublist bullet config
@@ -115,14 +109,33 @@
     (setq prettify-symbols-alist
           (mapcan (lambda (x) (list x (cons (upcase (car x)) (cdr x))))
                   '(
-                    ;; ("[ ]"              . 9744)         ; ☐
-					;; ("[X]"              . 9745)         ; ☑
-					;; ("[-]"              . 8863)         ; ⊟
-					("#+begin_src"      . 9998)         ; ✎
-					("#+end_src"        . 9633)         ; □
-					("#+begin_example"  . 129083)       ; 🠻
-					("#+end_example"    . 129081)       ; 🠹
-					("#+results:"       . 9776)         ; ☰
+                    ("[ ]" . "☐")
+                    ("[-]" . "🝕")
+                    ("[X]" . "🗹")
+                    ("#+BEGIN_SRC" . "✎")
+                    ("#+END_SRC" . "□")
+                    ("#+begin_src" . "✎")
+                    ("#+end_src" . "□")
+                    ("#+RESULTS:" . "⟾")
+                    ("#+begin_quote" . "»")
+                    ("#+end_quote" . "□")
+                    ("#+begin_verse" . "ζ")
+                    ("#+end_verse" . "□")
+                    ("#+begin_example" . "⟝")
+                    ("#+end_example" . "□")
+                    ("#+begin_export" . "🙵")
+                    ("#+end_export" . "□")
+                    ("#+BEGIN_QUOTE" . "»")
+                    ("#+END_QUOTE" . "□")
+                    ("#+BEGIN_VERSE" . "ζ")
+                    ("#+END_VERSE" . "□")
+                    ("#+BEGIN_EXAMPLE" . "⟝")
+                    ("#+END_EXAMPLE" . "□")
+                    ("#+BEGIN_EXPORT" . "🙵")
+                    ("#+END_EXPORT" . "□")
+                    ("#+END:" . "□")
+                    ("#+BEGIN:" . "✎")
+                    ("#+CAPTION:" . "✑")
 					("#+attr_latex:"    . "🄛")
 					("#+attr_html:"     . "🄗")
 					("#+attr_org:"      . "🄞")
@@ -138,13 +151,6 @@
                     ;; ("#+draft:"         . "🚧")
                     ;; ("#+tags[]:"        . "📌")
                     ;; ("#+categories[]:"  . "🔖")
-					("#+subtitle:"      . 11146)        ; ⮊
-					("#+downloaded:"    . 8650)         ; ⇊
-					("#+language:"      . 128441)       ; 🖹
-					("#+begin_quote"    . 187)          ; »
-					("#+end_quote"      . 171)          ; «
-                    ("#+begin_results"  . 8943)         ; ⋯
-                    ("#+end_results"    . 8943)         ; ⋯
                     )))
     (setq prettify-symbols-unprettify-at-point t)
     (prettify-symbols-mode))
@@ -194,11 +200,6 @@
   (org-modern-block-fringe t)
   (org-modern-block-name nil)           ;; use `prettify-symbols-mode' instead
   (org-modern-keyword nil)
-  ;; 复选框美化
-  (setq org-modern-checkbox
-        '((?X . #("▢✓" 0 2 (composition ((2)))))
-          (?- . #("▢–" 0 2 (composition ((2)))))
-          (?\s . #("▢" 0 1 (composition ((1)))))))
   ;; 列表符号美化
   (setq org-modern-list
         '((?- . "•")
@@ -210,8 +211,16 @@
   :after org
   :hook (org-mode . org-appear-mode))
 
+(use-package mixed-pitch
+  :straight t
+  :hook (org-mode . mixed-pitch-mode)
+  :config
+  (setq mixed-pitch-variable-pitch-cursor 'box
+        mixed-pitch-set-height t))
+
 ;; preview and edit latex in org elegantly
 (use-package org-fragtog
+  :disabled
   :straight t
   :hook (org-mode . org-fragtog-mode)
   :config
@@ -221,56 +230,10 @@
     (setq org-preview-latex-image-directory (expand-file-name "~/.cache/org/preview/latex-image/")))
   )
 
-(use-package org-present
-  :straight t
-  :config
-  (defun my/org-present-prepare-slide (buffer-name heading)
-    (org-overview)  ; 仅显示顶层标题Show only top-level headlines
-    (org-show-entry); 展开当前标题Unfold the current entry
-    (org-show-children))   ; 显示当前子标题
-
-  (defun my/org-present-start () ; 开始幻灯片的设置
-    (turn-off-evil-mode)
-    (setq visual-fill-column-width 110
-          visual-fill-column-center-text t) ; 调整显示界面
-    ;; 调整字体大小
-    (setq-local face-remapping-alist '((default (:height 1.5) variable-pitch)
-                                       (header-line (:height 4.0) variable-pitch)
-                                       (org-document-title (:height 1.75) org-document-title)
-                                       (org-code (:height 1.55) org-code)
-                                       (org-verbatim (:height 1.55) org-verbatim)
-                                       (org-block (:height 1.25) org-block)
-                                       (org-block-begin-line (:height 0.7) org-block)))
-    (setq header-line-format " ") ; 在标题前加入空行
-    (display-line-numbers-mode 0)
-    (org-display-inline-images) ; 显示图片
-    (read-only-mode 1)) ; 只读模式
-
-  (defun my/org-present-end () ; 重置上述设置
-    (setq-local face-remapping-alist 
-                '((default variable-pitch default)))      
-    (setq header-line-format nil) 
-    (org-remove-inline-images)
-    (org-present-small)
-    (read-only-mode 0)
-    (display-line-numbers-mode 1)
-    (turn-on-evil-mode))
-
-
-  (add-hook 'org-present-mode-hook 'my/org-present-start)
-  (add-hook 'org-present-mode-quit-hook 'my/org-present-end)
-  (add-hook 'org-present-after-navigate-functions 'my/org-present-prepare-slide))
-
-(use-package ox-latex
-  :straight nil
-  :custom
-  (org-latex-src-block-backend 'engraved))
-
 (use-package org-src
   :straight nil
   :hook (org-babel-after-execute . org-redisplay-inline-images)
-  :bind (("s-l" . show-line-number-in-src-block)
-         :map org-src-mode-map
+  :bind (:map org-src-mode-map
          ("C-c C-c" . org-edit-src-exit))
   :init
   ;; 设置代码块的默认头参数
@@ -294,39 +257,6 @@
   (defun display-ansi-colors ()
     (ansi-color-apply-on-region (point-min) (point-max)))
   (add-hook 'org-babel-after-execute-hook #'display-ansi-colors)
-
-  ;; ==============================================
-  ;; 通过overlay在代码块里显示行号，s-l显示，任意键关闭
-  ;; ==============================================
-  (defvar number-line-overlays '()
-    "List of overlays for line numbers.")
-
-  (defun show-line-number-in-src-block ()
-    (interactive)
-    (save-excursion
-      (let* ((src-block (org-element-context))
-             (nlines (- (length
-                         (s-split
-                          "\n"
-                          (org-element-property :value src-block)))
-                        1)))
-        (goto-char (org-element-property :begin src-block))
-        (re-search-forward (regexp-quote (org-element-property :value src-block)))
-        (goto-char (match-beginning 0))
-
-        (cl-loop for i from 1 to nlines
-                 do
-                 (beginning-of-line)
-                 (let (ov)
-                   (setq ov (make-overlay (point) (point)))
-                   (overlay-put ov 'before-string (format "%3s | " (number-to-string i)))
-                   (add-to-list 'number-line-overlays ov))
-                 (next-line))))
-
-    ;; now read a char to clear them
-    (read-key "Press a key to clear numbers.")
-    (mapc 'delete-overlay number-line-overlays)
-    (setq number-line-overlays '()))
 
   ;; =================================================
   ;; 执行结果后，如果结果所在的文件夹不存在将自动创建
@@ -437,14 +367,21 @@
   (org-babel-load-languages '((python          . t)
                               (awk             . t)
                               (C               . t)
-                              (calc            . t)
+                              (latex           . t)
                               (emacs-lisp      . t)
                               (eshell          . t)
                               (shell           . t)
+                              (js              . t)
                               (sql             . t)
                               (css             . t)
                               ))
   )
+
+(use-package ox
+  :straight nil
+  :config
+  (setq org-html-html5-fancy t
+        org-html-doctype "html5"))
 
 (use-package valign
   :straight (:host github :repo "casouri/valign")

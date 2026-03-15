@@ -106,7 +106,6 @@
 (use-package fontaine
   :straight t
   :if (display-graphic-p)               ;; TODO: wait for tty-child-frame stable
-  :demand t
   :config
   (setq fontaine-latest-state-file
         (locate-user-emacs-file "fontaine-latest-state.eld"))
@@ -128,40 +127,6 @@
            ;; :variable-pitch-family "Georgia"
            :variable-pitch-family "Bookerly"
            :line-spacing 0.1)))
-  (fontaine-set-preset 'regular)
-  (set-fontset-font t 'emoji
-                    (cond
-                     ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
-                     ((member "Symbola" (font-family-list)) "Symbola")
-                     ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji")
-                     ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
-                     ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")))
-  (dolist (charset '(kana han symbol cjk-misc bopomofo))
-    (set-fontset-font
-     (frame-parameter nil 'font)
-     charset
-     (font-spec :family
-                (cond
-                 ((eq system-type 'darwin)
-                  (cond
-                   ((member "LXGW WenKai Mono" (font-family-list)) "LXGW WenKai Mono")
-                   ((member "PingFang SC" (font-family-list)) "PingFang SC")
-                   ((member "WenQuanYi Zen Hei" (font-family-list)) "WenQuanYi Zen Hei")
-                   ((member "Microsoft YaHei" (font-family-list)) "Microsoft YaHei")
-                   ))
-                 ((eq system-type 'gnu/linux)
-                  (cond
-                   ((member "LXGW WenKai Mono" (font-family-list)) "LXGW WenKai Mono")
-                   ((member "WenQuanYi Micro Hei" (font-family-list)) "WenQuanYi Micro Hei")
-                   ((member "WenQuanYi Zen Hei" (font-family-list)) "WenQuanYi Zen Hei")
-                   ((member "Microsoft YaHei" (font-family-list)) "Microsoft YaHei")
-                   ))
-                 (t
-                  (cond
-                   ((member "LXGW WenKai Mono" (font-family-list)) "LXGW WenKai Mono")
-                   ((member "WenQuanYi Micro Hei" (font-family-list)) "WenQuanYi Micro Hei")
-                   ))
-                 ))))
   (setq face-font-rescale-alist `(
                                   ("Symbola"             . 1.3)
                                   ("Microsoft YaHei"     . 1.2)
@@ -170,6 +135,42 @@
                                   ("PingFang SC"         . 1.16)
                                   ("Apple Color Emoji"   . 0.91)
                                   ))
+  :hook
+  (after-init . (lambda ()
+                  (fontaine-set-preset 'regular)
+                  (set-fontset-font t 'emoji
+                                    (cond
+                                     ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
+                                     ((member "Symbola" (font-family-list)) "Symbola")
+                                     ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji")
+                                     ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
+                                     ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")))
+                  (dolist (charset '(kana han symbol cjk-misc bopomofo))
+                    (set-fontset-font
+                     (frame-parameter nil 'font)
+                     charset
+                     (font-spec :family
+                                (cond
+                                 ((eq system-type 'darwin)
+                                  (cond
+                                   ((member "LXGW WenKai Mono" (font-family-list)) "LXGW WenKai Mono")
+                                   ((member "PingFang SC" (font-family-list)) "PingFang SC")
+                                   ((member "WenQuanYi Zen Hei" (font-family-list)) "WenQuanYi Zen Hei")
+                                   ((member "Microsoft YaHei" (font-family-list)) "Microsoft YaHei")
+                                   ))
+                                 ((eq system-type 'gnu/linux)
+                                  (cond
+                                   ((member "LXGW WenKai" (font-family-list)) "LXGW WenKai")
+                                   ((member "WenQuanYi Micro Hei" (font-family-list)) "WenQuanYi Micro Hei")
+                                   ((member "WenQuanYi Zen Hei" (font-family-list)) "WenQuanYi Zen Hei")
+                                   ((member "Microsoft YaHei" (font-family-list)) "Microsoft YaHei")
+                                   ))
+                                 (t
+                                  (cond
+                                   ((member "LXGW WenKai Mono" (font-family-list)) "LXGW WenKai Mono")
+                                   ((member "WenQuanYi Micro Hei" (font-family-list)) "WenQuanYi Micro Hei")
+                                   ))
+                                 ))))))
   )
 
 (use-package nerd-icons

@@ -111,6 +111,6 @@
          ("C-x C-d" . dwim-shell-command-duplicate))
   :config
   (use-package dwim-shell-commands
-    :demand t))
+    :after dwim-shell-command))
 
 (provide 'init-dired)

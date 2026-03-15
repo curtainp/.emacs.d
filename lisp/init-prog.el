@@ -4,7 +4,19 @@
   :straight t
   :config
   (setq web-mode-markup-indent-offset 2
-        web-mode-code-indent-offset 2))
+        web-mode-code-indent-offset 2
+	    web-mode-css-indent-offset 2))
+
+(use-package css-mode
+  :straight nil
+  :config
+  (setq css-indent-offset 2))
+
+(use-package js
+  :straight nil
+  :config
+  (setq js-indent-level 2))
+
 
 (defvar custom-auto-langs '(bash c cpp css dockerfile html javascript json latex make org python rust sql toml
                              tsx typescript yaml xml markdown markdown-inline elisp))

@@ -274,7 +274,7 @@
   (with-eval-after-load 'savehist
     (add-to-list 'savehist-additional-variables 'compile-history)))
 
-(dolist (hook '(org-mode-hook
+(dolist (hook '(
                 markdown-mode-hook
                 Info-mode-hook
                 help-mode-hook

@@ -4,6 +4,8 @@
 (use-package org
   :straight t
   :hook ((org-mode . my/org-prettify-symbols))
+  :bind (:map org-mode-map
+         ("C-c C-q" . my/org-set-tags-command))
   :custom-face
   ;; 设置Org mode标题以及每级标题行的大小
   (org-document-title ((t (:height 1.75 :weight bold))))
@@ -91,6 +93,55 @@
                    (:endgroup)))
 
   :config
+  (defun my/org--format-filetags (tags)
+    "Return a #+FILETAGS string for TAGS."
+    (if (null tags)
+        ""
+      (concat ":" (mapconcat #'identity tags ":") ":")))
+
+  (defun my/org--set-filetags-line (tagstr)
+    "Insert or update #+FILETAGS line with TAGSTR."
+    (save-excursion
+      (goto-char (point-min))
+      (let ((case-fold-search t))
+        (if (re-search-forward "^#\\+FILETAGS:.*$" nil t)
+            (replace-match (concat "#+FILETAGS: " tagstr) t t)
+          (let ((insert-pos (point-min)))
+            (goto-char (point-min))
+            (while (and (not (eobp))
+                        (looking-at "^#\\+\\w+:"))
+              (setq insert-pos (line-end-position))
+              (forward-line 1))
+            (goto-char insert-pos)
+            (when (not (bolp)) (insert "\n"))
+            (insert "#+FILETAGS: " tagstr "\n"))))))
+
+  (defun my/org-set-filetags ()
+    "Set #+FILETAGS for the current buffer."
+    (interactive)
+    (org-set-regexps-and-options)
+    (let* ((current (mapcar #'substring-no-properties org-file-tags))
+           (table (delete-dups
+                   (append (mapcar #'car (org-get-buffer-tags))
+                           (mapcar #'car org-tag-persistent-alist))))
+           (selected (completing-read-multiple
+                      "File tags (comma/space separated): "
+                      table nil nil
+                      (mapconcat #'identity current ",")))
+           (tagstr (my/org--format-filetags selected)))
+      (my/org--set-filetags-line tagstr)
+      (org-set-regexps-and-options)
+      (message "File tags set: %s" tagstr)))
+
+  (defun my/org-set-tags-command (&optional arg)
+    "Set tags for current heading or file.
+If before first heading, set #+FILETAGS.  Otherwise delegate to
+`org-set-tags-command'."
+    (interactive "P")
+    (if (org-before-first-heading-p)
+        (my/org-set-filetags)
+      (org-set-tags-command arg)))
+
   (defun my/org-prettify-symbols ()
     (setq prettify-symbols-alist
           (mapcan (lambda (x) (list x (cons (upcase (car x)) (cdr x))))

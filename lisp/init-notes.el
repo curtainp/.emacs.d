@@ -814,7 +814,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
                      (new-link (org-link-make-string
                                 (replace-regexp-in-string old-file new-file raw-link))))
                 (unless (file-exists-p new-file)
-                  (rename-file old-file new-file t)
+                  (copy-file old-file new-file)
                   (push (list (copy-marker beg)
                               (copy-marker end)
                               new-link)

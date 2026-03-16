@@ -285,8 +285,7 @@ DIR is the location of the output."
     (let* ((tags-path (expand-file-name "tags.org" cw/blog-base-dir))
            (filter-css-lines
             (append
-             (list "<style>"
-                   ".content:has([value=\"all\"]:checked) li{display: list-item;}")
+             (list "<style>")
              (mapcar
               (lambda (tag)
                 (format ".content:has([value=\"%s\"]:checked) li:has([data-tags~=\"%s\"]){display: list-item;}"
@@ -295,21 +294,19 @@ DIR is the location of the output."
              (list "</style>")))
            (filter-html
             (format "<section class=\"filter\">\n%s\n%s</section>"
-                    "<label class=\"category\">
-<input type=\"radio\" name=\"tag\" value=\"all\" checked/>
-<span>All</span>
-</label>"
-                     (mapconcat
+                    (mapconcat
                      (lambda (tag)
                        (format "<label class=\"category\">
 <input type=\"radio\" name=\"tag\" value=\"%s\"/>
 <span>%s</span>
 </label>"
                                tag tag))
-                     cw/blog-tags "\n"))))
+                     cw/blog-tags "\n")
+                    "")))
       (with-temp-file tags-path
         (insert "#+TITLE: " title "\n"
                 "#+DATE: 2026-03-12\n"
+                "#+OPTIONS: title:nil\n"
                 "#+OPTIONS: ^:nil\n"
                 (mapconcat (lambda (line)
                              (concat "#+HTML_HEAD_EXTRA: " line))
@@ -647,7 +644,8 @@ INFO is a plist holding contextual information.  See
 
   (defun cw/blog-build-article-status (info)
     (let ((input-file (file-name-nondirectory (plist-get info :input-file))))
-      (unless (string-equal input-file cw/blog-sitemap)
+      (unless (or (string-equal input-file cw/blog-sitemap)
+                  (string-equal input-file "tags.org"))
         (let ((spec (org-html-format-spec info)))
           (concat
            "<div class=\"post-status\">"
@@ -673,7 +671,8 @@ INFO is a plist holding contextual information.  See
 
   (defun cw/blog-build-giscus (info)
     (let ((input-file (file-name-nondirectory (plist-get info :input-file))))
-      (unless (string-equal input-file cw/blog-sitemap)
+      (unless (or (string-equal input-file cw/blog-sitemap)
+                  (string-equal input-file "tags.org"))
         cw/blog-giscus-script)))
 
   (defun cw/blog-template (contents info)

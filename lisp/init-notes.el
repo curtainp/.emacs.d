@@ -280,37 +280,54 @@ DIR is the location of the output."
       (org-publish-org-to
        'rss filename (concat "." org-rss-extension) plist dir)))
 
-  (defun cw/blog-publish-sitemap (title list)
-    "Generate the sitemap with title."
-    (setq org-html-head-extra
-          (format "<style>\n%s\n%s\n</style>"
-                  ".content:has([value=\"all\"]:checked) li{display: list-item;}\n"
-                  (mapconcat
-                   (lambda (tag)
-                     (format ".content:has([value=\"%s\"]:checked)
- li:has([data-tags~=\"%s\"]){display: list-item;}"
-                             tag (concat "#" tag)))
-                   cw/blog-tags "\n")))
-    (concat "#+TITLE: " title
-            "\n"
-            "#+DATE: 2026-03-12"
-            "\n"
-            (format "#+BEGIN_EXPORT html
-<section class=\"filter\">\n%s\n%s</section>
-#+END_EXPORT"
+  (defun cw/blog-write-tags-page (title list)
+    "Generate tags.org in the blog base directory."
+    (let* ((tags-path (expand-file-name "tags.org" cw/blog-base-dir))
+           (filter-css-lines
+            (append
+             (list "<style>"
+                   ".content:has([value=\"all\"]:checked) li{display: list-item;}")
+             (mapcar
+              (lambda (tag)
+                (format ".content:has([value=\"%s\"]:checked) li:has([data-tags~=\"%s\"]){display: list-item;}"
+                        tag (concat "#" tag)))
+              cw/blog-tags)
+             (list "</style>")))
+           (filter-html
+            (format "<section class=\"filter\">\n%s\n%s</section>"
                     "<label class=\"category\">
 <input type=\"radio\" name=\"tag\" value=\"all\" checked/>
 <span>All</span>
 </label>"
-                    (mapconcat
+                     (mapconcat
                      (lambda (tag)
                        (format "<label class=\"category\">
 <input type=\"radio\" name=\"tag\" value=\"%s\"/>
 <span>%s</span>
 </label>"
                                tag tag))
-                     cw/blog-tags "\n"))
+                     cw/blog-tags "\n"))))
+      (with-temp-file tags-path
+        (insert "#+TITLE: " title "\n"
+                "#+DATE: 2026-03-12\n"
+                "#+OPTIONS: ^:nil\n"
+                (mapconcat (lambda (line)
+                             (concat "#+HTML_HEAD_EXTRA: " line))
+                           filter-css-lines "\n")
+                "\n"
+                "#+BEGIN_EXPORT html\n"
+                filter-html "\n"
+                "#+END_EXPORT\n"
+                (org-list-to-org list)))))
+
+  (defun cw/blog-publish-sitemap (title list)
+    "Generate the sitemap with title."
+    (cw/blog-write-tags-page "Tags" list)
+    (concat "#+TITLE: " title
             "\n"
+            "#+DATE: 2026-03-12"
+            "\n"
+            "#+HTML_HEAD_EXTRA: <style>.content li:has(.tags){display: list-item;}</style>\n"
             (org-list-to-org list)))
 
   (defun cw/org-blog-add-noweb-ref (data backend _info)
@@ -856,6 +873,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 "
         cw/blog-preamble '(("en" "<nav class=\"nav\">
   <a href=\"/index.html\" class=\"button\">Home</a>
+  <a href=\"/tags.html\" class=\"button\">Tags</a>
   <a href=\"/rss.xml\" class=\"button\">RSS</a>
 </nav>
 <hr>"))
@@ -872,7 +890,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
            :htmlized-source t
            :headline-levels 4
            :publishing-function cw/blog-publish-to-html
-           :exclude "rss.org"
+           :exclude "rss.org\\|tags.org"
            :auto-sitemap t
            :preparation-function cw/kill-sitemap-buffer
            :completion-function cw/blog-publish-completion
@@ -881,6 +899,24 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
            :sitemap-sort-files anti-chronologically
            :sitemap-function cw/blog-publish-sitemap
            :sitemap-format-entry cw/blog-publish-sitemap-dated-entry
+           :html-head ,cw/blog-head
+           :html-preamble t
+           :html-preamble-format ,cw/blog-preamble
+           :html-postamble t
+           :author  "curtain"
+           :email "Y3VydGFpbndrQHByb3Rvbi5tZQo="
+           :html-postamble-format ,cw/blog-postamble
+           :with-creator nil)
+          ("blog tags"
+           :base-directory ,cw/blog-base-dir
+           :publishing-directory ,cw/blog-publish-dir
+           :base-extension "none"
+           :recursive nil
+           :htmlized-source t
+           :headline-levels 4
+           :publishing-function cw/blog-publish-to-html
+           :include ("tags.org")
+           :exclude ".*"
            :html-head ,cw/blog-head
            :html-preamble t
            :html-preamble-format ,cw/blog-preamble
@@ -910,7 +946,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
            :sitemap-sort-files anti-chronologically
            :sitemap-format-entry cw/blog-publish-rss-entry)
           ("Curtain's Blog"
-           :components ("blog articles" "blog rss"))
+           :components ("blog articles" "blog tags" "blog rss"))
           ))
   (when (require 'ox)
     (add-to-list 'org-export-global-macros

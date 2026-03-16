@@ -89,20 +89,6 @@
                    ("ignore"   . ?i)
                    ("toc"      . ?t)
                    (:endgroup)))
-  (org-structure-template-alist
-             '(("s" . "src")
-               ("e" . "src emacs-lisp")
-               ("p" . "src python :results output")
-               ("E" . "src emacs-lisp :results value code :lexical t")
-               ("t" . "src emacs-lisp :tangle FILENAME")
-               ("T" . "src emacs-lisp :tangle FILENAME :mkdirp yes")
-               ("x" . "example")
-               ("d" . "details")
-               ("u" . "summary")
-               ("m" . "mark")
-               ("r" . "raw")
-               ("X" . "export")
-               ("q" . "quote")))
 
   :config
   (defun my/org-prettify-symbols ()
@@ -154,35 +140,6 @@
                     )))
     (setq prettify-symbols-unprettify-at-point t)
     (prettify-symbols-mode))
-  (setq org-capture-templates
-        '(("b" "Hugo Blog Post"
-           plain
-           (file (lambda ()
-                   (let* ((title (read-string "Title: "))
-                          (tags (read-string "Tags: "))
-                          (description (read-string "Description: "))
-                          (categories (read-string "Categories: "))
-                          (slug (downcase (replace-regexp-in-string " " "-" title)))
-                          (dir (expand-file-name (concat curtain-blog-directory slug))))
-                    (unless (file-exists-p dir)
-                     (make-directory dir t))
-                    (plist-put org-capture-plist :hugo-title title)
-                    (plist-put org-capture-plist :hugo-tags tags)
-                    (plist-put org-capture-plist :hugo-description description)
-                    (plist-put org-capture-plist :hugo-categories categories)
-                    (expand-file-name "index.org" dir))))
-           "#+title: %(plist-get org-capture-plist :hugo-title)
-#+author: %(user-full-name)
-#+date: %<%Y-%m-%d>
-#+draft: false
-#+tags[]: %(plist-get org-capture-plist :hugo-tags)
-#+keywords: %(plist-get org-capture-plist :hugo-tags)
-#+description: %(plist-get org-capture-plist :hugo-description)
-#+categories[]: %(plist-get org-capture-plist :hugo-categories)
-
-"
-           :empty-lines-after 1
-           :unnarrowed t)))
   )
 
 (use-package org-modern

@@ -34,11 +34,6 @@
   (org-image-actual-width '(500))       ;; first try get from ATTR html
   (org-startup-folded 'fold)
   (org-list-allow-alphabetical t)
-  (org-list-demote-modify-bullet '(     ;; sublist bullet config
-                                   ("-" . "+")
-                                   ("+" . "1.")
-                                   ("1." . "a.")
-                                   ))
   (org-fold-catch-invisible-edits 'smart)
   (org-insert-heading-respect-content nil)
   (org-yank-image-save-method "imgs")
@@ -146,9 +141,6 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
     (setq prettify-symbols-alist
           (mapcan (lambda (x) (list x (cons (upcase (car x)) (cdr x))))
                   '(
-                    ("[ ]" . "☐")
-                    ("[-]" . "🝕")
-                    ("[X]" . "🗹")
                     ("#+BEGIN_SRC" . "✎")
                     ("#+END_SRC" . "□")
                     ("#+begin_src" . "✎")
@@ -198,6 +190,10 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
   :after org
   :hook (org-mode . org-modern-mode)
   :custom
+  (org-modern-checkbox
+   '((?X . "☑")
+     (?- . "◪")
+     (?\s . "☐")))
   (org-modern-table-vertical 2)
   (org-modern-star 'replace)
   (org-modern-replace-stars "◉○✸✳◈◇✿❀✜")
@@ -209,10 +205,15 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
   (org-modern-block-name nil)           ;; use `prettify-symbols-mode' instead
   (org-modern-keyword nil)
   ;; 列表符号美化
-  (setq org-modern-list
+  (org-modern-list
         '((?- . "•")
-          (?+ . "◦")
-          (?* . "▹"))))
+          (?+ . "◌")
+          (?* . "✦")))
+  :config
+  (set-face-attribute 'org-modern-symbol nil
+                      :family "Iosevka Nerd Font"
+                      :height 1.4
+                      :foreground "#8a8f98"))
 
 (use-package org-appear
   :straight t

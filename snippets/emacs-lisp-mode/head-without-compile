@@ -1,0 +1,6 @@
+# -*- mode: snippet; -*-
+# contributor: curtain
+# name: head-without-compile
+# key: head-nocompile
+# --
+;;; ${1:FILENAME}.el --- ${2:DESCRIPTION} -*- no-byte-compile: t; lexical-binding: t; -*-

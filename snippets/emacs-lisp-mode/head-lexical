@@ -1,0 +1,6 @@
+# -*- mode: snippet; -*-
+# contributor: curtain
+# name: head-lexical-bind
+# key: head
+# --
+;;; ${1:FILENAME}.el --- ${2:DESCRIPTION} -*- lexical-binding: t; -*-

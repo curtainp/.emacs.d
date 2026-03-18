@@ -8,7 +8,7 @@
 
 (use-package avy
   :straight t
-  :bind (("M-j" . avy-goto-char-timer)))
+  :bind (("M-j" . avy-goto-word-or-subword-1)))
 
 (use-package color-rg
   :straight (:host github :repo "manateelazycat/color-rg")

@@ -1,4 +1,4 @@
-;;; -*- lexical-binding: t  -*-
+;;; -*- no-byte-compile: t; lexical-binding: t;  -*-
 
 (setq package-enable-at-startup nil)
 (setq gc-cons-threshold most-positive-fixnum
@@ -6,7 +6,8 @@
 
 (add-hook 'emacs-startup-hook
           (lambda ()
-            (setq gc-cons-threshold (* 30 1024 1024))))
+            (setq gc-cons-threshold (* 32 1024 1024))) 105)
+                                        ; make gc-restore at the end of `emacs-startup-hook'
 
 ;; Prefer loading newer compiled files
 (setq load-prefer-newer t)

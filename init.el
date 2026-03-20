@@ -51,9 +51,7 @@
   (require 'init-basic)
   (require 'init-ui)
   (require 'init-completion)
-  ;; TODO: wait for tty-child-frame stable
-  (when (display-graphic-p)
-    (require 'init-lsp-bridge))
+  (require 'init-lsp-bridge)
   (require 'init-nav)
   (require 'init-evil)
   (require 'init-search)

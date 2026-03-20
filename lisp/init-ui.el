@@ -105,7 +105,6 @@
 
 (use-package fontaine
   :straight t
-  :if (display-graphic-p)               ;; TODO: wait for tty-child-frame stable
   :config
   (setq fontaine-latest-state-file
         (locate-user-emacs-file "fontaine-latest-state.eld"))
@@ -121,11 +120,11 @@
            :fixed-pitch-height 1.0
            :variable-pitch-height 1.05)
           (t
-           :default-family "Iosevka Nerd Font"
-           :fixed-pitch-family "Iosevka Nerd Font"
+           :default-family "Iosevka Term"
+           :fixed-pitch-family "Iosevka Term"
            ;; :variable-pitch-family "Roboto"
            ;; :variable-pitch-family "Georgia"
-           :variable-pitch-family "Bookerly"
+           :variable-pitch-family "Lato"
            :line-spacing 0.1)))
   (setq face-font-rescale-alist `(
                                   ("Symbola"             . 1.3)

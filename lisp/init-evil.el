@@ -101,9 +101,4 @@
   :config
   (evil-collection-init))
 
-(use-package evil-surround
-  :straight t
-  :config
-  (global-evil-surround-mode 1))
-
 (provide 'init-evil)

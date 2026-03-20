@@ -193,6 +193,12 @@
   ;; Don't emit warning
   (python-indent-guess-indent-offset-verbose nil))
 
+(use-package aggressive-indent
+  :straight t
+  :commands (aggressive-indent-mode aggressive-indent-global-mode)
+  :hook
+  (lisp-mode . aggressive-indent-mode))
+
 (use-package kdl-ts-mode
   :disabled
   :straight (:type git :host github :repo "merrickluo/kdl-ts-mode")

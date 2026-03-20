@@ -85,6 +85,7 @@
   :config
   (setq org-export-with-priority t
         org-export-with-toc 4
+        org-export-time-stamp-file nil  ;; Don't generate timestamp comment
         org-export-with-section-numbers nil
         org-export-with-planning t
         org-export-with-special-strings nil))
@@ -127,6 +128,55 @@
   :straight t
   :config
   (defvar cw/blog-tags nil)
+  (defconst cw/blog-draft-tag "draft")
+  (defconst cw/blog-draft-truthy-values '("t" "true" "yes"))
+
+  (defun cw/blog--draft-value-p (value)
+    "Return non-nil when VALUE should mark a post as draft."
+    (and (stringp value)
+         (not (null (member (downcase (string-trim value))
+                            cw/blog-draft-truthy-values)))))
+
+  (defun cw/blog--filetags-from-keywords (values)
+    "Extract document tags from FILETAGS keyword VALUES."
+    (cl-loop for value in values
+             append (split-string value "[:[:space:]]+" t)))
+
+  (defun cw/blog--compute-draft-p (file)
+    "Return non-nil when FILE is marked as a draft."
+    (when (and (file-readable-p file) (not (directory-name-p file)))
+      (let ((org-inhibit-startup t))
+        (org-with-file-buffer file
+          (let* ((keywords (org-collect-keywords '("DRAFT" "FILETAGS")))
+                 (draft-values (cdr (assoc "DRAFT" keywords)))
+                 (filetags (cdr (assoc "FILETAGS" keywords))))
+            (or (cl-some #'cw/blog--draft-value-p draft-values)
+                (cl-some
+                 (lambda (tag)
+                   (string-equal (downcase tag) cw/blog-draft-tag))
+                 (cw/blog--filetags-from-keywords filetags))))))))
+
+  (defun cw/blog-draft-p (file project)
+    "Return non-nil when FILE in PROJECT should be skipped from publishing."
+    (let* ((file (org-publish--expand-file-name file project))
+           (project-name (car project))
+           (missing (make-symbol "cw/blog-draft-missing"))
+           (cached (org-publish-cache-get-file-property
+                    file :cw-draft missing t project-name)))
+      (if (eq cached missing)
+          (org-publish-cache-set-file-property
+           file :cw-draft (cw/blog--compute-draft-p file) project-name)
+        cached)))
+
+  (defun cw/org-publish-get-base-files (orig-fun project)
+    "Filter draft posts from PROJECT before publishing."
+    (let ((files (funcall orig-fun project)))
+      (if (org-publish-property :cw-exclude-drafts project)
+          (cl-remove-if (lambda (file)
+                          (cw/blog-draft-p file project))
+                        files)
+        files)))
+
   (defun cw/blog-publish-sitemap-dated-entry (entry _style project)
     (let* ((file (org-publish--expand-file-name entry project))
            (parsed-title (org-publish-find-property file :title project))
@@ -146,7 +196,9 @@
       (if (= (length title) 0)
           (format "%s*" entry)
         (format "{{{timestamp(%s)}}}    [[file:%s][%s]] {{{tags(%s)}}}"
-                (car (org-publish-find-property file :date project))
+                (format-time-string
+                 org-html-metadata-timestamp-format
+                 (cw/org-publish-find-date file project))
                 (concat "articles/" entry)
                 title
                 tags-string))))
@@ -177,11 +229,36 @@ time in `current-time' format."
                       (file-attribute-modification-time (file-attributes file)))
                      (t (error "No such file: \"%s\"" file)))))))))
 
+  (defun cw/blog-source-file-for-html (file)
+    "Return the Org source file for published article FILE, or nil."
+    (let ((articles-dir (expand-file-name "articles" cw/blog-publish-dir)))
+      (when (file-in-directory-p file articles-dir)
+        (expand-file-name
+         (concat (file-name-sans-extension
+                  (file-relative-name file articles-dir))
+                 ".org")
+         cw/blog-base-dir))))
+
+  (defun cw/blog-draft-html-p (file)
+    "Return non-nil when published article FILE was generated from a draft post."
+    (when-let* ((project (assoc "blog articles" org-publish-project-alist))
+                (source-file (cw/blog-source-file-for-html file))
+                ((file-readable-p source-file)))
+      (cw/blog-draft-p source-file project)))
+
+  (defun cw/blog-lastmod-time-for-html (file)
+    "Return the timestamp to use as sitemap lastmod for FILE."
+    (if-let* ((source-file (cw/blog-source-file-for-html file))
+              ((file-readable-p source-file)))
+        (file-attribute-modification-time (file-attributes source-file))
+      (file-attribute-modification-time (file-attributes file))))
+
   (defun cw/blog-generate-sitemap (&optional _project)
     "Generate a sitemap.xml file for PROJTCT."
     (let* ((sitemap-path (file-name-concat cw/blog-publish-dir "sitemap.xml"))
            (base-url "https://thefuzzdog.top/")
-           (files (directory-files-recursively cw/blog-publish-dir  ".html"))
+           (files (cl-remove-if #'cw/blog-draft-html-p
+                                (directory-files-recursively cw/blog-publish-dir ".html")))
            (sitemap-buffer (generate-new-buffer "*sitemap*")))
       (with-current-buffer sitemap-buffer
         (insert "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
@@ -192,8 +269,7 @@ time in `current-time' format."
            (format "<url>\n<loc>%s</loc>\n<lastmod>%s</lastmod>\n</url>\n"
                    (concat base-url (file-relative-name file cw/blog-publish-dir))
                    (format-time-string "%Y-%m-%dT%H:%M:%S+08:00"
-                                       (file-attribute-modification-time
-                                        (file-attributes file))))))
+                                       (cw/blog-lastmod-time-for-html file)))))
         (insert "</urlset>")
 
         (write-region (point-min) (point-max) sitemap-path nil 3)
@@ -251,7 +327,9 @@ project."
          (link (concat
                 "articles/"
                 (file-name-sans-extension entry) ".html"))
-         (pubdate (car (org-publish-find-property file :date project))))
+         (pubdate (format-time-string
+                   (cdr org-time-stamp-formats)
+                   (cw/org-publish-find-date file project))))
     (org-publish-cache-set-file-property file :title title)
     (format "%s
 :properties:
@@ -885,6 +963,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
            :base-directory ,cw/blog-base-dir
            :publishing-directory ,(expand-file-name "articles" cw/blog-publish-dir)
            :base-extension "org"
+           :cw-exclude-drafts t
            :recursive nil
            :htmlized-source t
            :headline-levels 4
@@ -930,6 +1009,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
            :base-directory ,cw/blog-base-dir
            :rss-extension "xml"
            :base-extension "org"
+           :cw-exclude-drafts t
            :html-link-home "https://thefuzzdog.top/"
            :html-link-use-abs-url t
            :html-link-org-files-as-html t
@@ -960,6 +1040,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
                          (footnote-reference . cw/blog-footnote-reference)
                          (template . cw/blog-template)
                          (link . cw/blog-link))))
+  (advice-add #'org-publish-get-base-files :around #'cw/org-publish-get-base-files)
   (advice-add #'org-publish-find-date :override #'cw/org-publish-find-date)
   (add-hook 'org-export-before-processing-functions 'cw/org-export-src-babel-duplicate)
   (add-hook 'org-export-before-processing-functions 'cw/org-export-add-custom-id)
@@ -985,7 +1066,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
   (let ((auto-revert-stop-on-user-input nil))
     (global-auto-revert-mode -1)
     (unwind-protect
-        (org-publish "Curtain's Blog" t)
+        (org-publish "Curtain's Blog" nil)
       (global-auto-revert-mode 1))))
 
 (provide 'init-notes)

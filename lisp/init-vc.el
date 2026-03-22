@@ -1,6 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
 (use-package majutsu
+  :disabled                             ;; TODO: need to familar with
   :straight (:host github :repo "0WD0/majutsu"))
 
 (use-package magit
@@ -24,16 +25,6 @@
   ;; Automatically refresh Magit after save
   (add-hook 'after-save-hook 'magit-after-save-refresh-status))
 
-(when (< emacs-major-version 30)
-  (use-package git-commit
-    :straight nil
-    :after magit
-    :commands (global-git-commit-mode)
-    :custom
-    (git-commit-summary-max-length 80) ; defaults to Github's max commit message length
-    (git-commit-style-convention-checks '(overlong-summary-line non-empty-second-line))
-    :init
-    (global-git-commit-mode 1)))
 
 (use-package igist
   :straight (:repo "KarimAziev/igist" :host github)

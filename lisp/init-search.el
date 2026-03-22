@@ -1,33 +1,21 @@
 ;;; -*- lexical-binding: t -*-
 
-(use-package isearch
-  :straight nil
-  :config
-  (setq search-whitespace-regexp ".*?" ; one `setq' here to make it obvious they are a bundle
-        isearch-lax-whitespace t
-        isearch-regexp-lax-whitespace nil))
+(setq search-whitespace-regexp ".*?" ; one `setq' here to make it obvious they are a bundle
+    isearch-lax-whitespace t
+    isearch-regexp-lax-whitespace nil)
 
-(use-package isearch
-  :straight nil
-  :config
-  (setq search-highlight t)
-  (setq isearch-lazy-highlight t)
-  (setq lazy-highlight-initial-delay 0)
-  (setq lazy-highlight-no-delay-length 4))
+(setq search-highlight t)
+(setq isearch-lazy-highlight t)
+(setq lazy-highlight-initial-delay 0)
+(setq lazy-highlight-no-delay-length 4)
 
 
-(use-package isearch
-  :straight nil
-  :config
-  (setq isearch-lazy-count t)
-  (setq lazy-count-prefix-format "(%s/%s) ")
-  (setq lazy-count-suffix-format nil))
+(setq isearch-lazy-count t)
+(setq lazy-count-prefix-format "(%s/%s) ")
+(setq lazy-count-suffix-format nil)
 
-(use-package isearch
-  :straight nil
-  :config
-  (setq list-matching-lines-jump-to-current-line nil) ; do not jump to current line in `*occur*' buffers
-  (add-hook 'occur-mode-hook #'hl-line-mode))
+(setq list-matching-lines-jump-to-current-line nil) ; do not jump to current line in `*occur*' buffers
+(add-hook 'occur-mode-hook #'hl-line-mode)
 
 (use-package isearch
   :straight nil

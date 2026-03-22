@@ -2,6 +2,7 @@
 
 (use-package yasnippet
   :straight t
+  :commands yas-global-mode
   :hook (after-init . yas-global-mode)
   :config
   (setq yas-triggers-in-field t
@@ -11,6 +12,7 @@
   :straight '(:type git :host github :repo "curtainp/lsp-bridge"
                     :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
                     :build (:not compile))
+  :commands global-lsp-bridge-mode
   :custom-face
   (lsp-bridge-inlay-hint-face ((t (:foreground "#5B6268"))))
   :config

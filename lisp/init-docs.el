@@ -4,6 +4,7 @@
 ;; An Emacs major mode to read and browse RFC documents
 (use-package rfc-mode
   :straight t
+  :commands rfc-mode
   :custom
   (rfc-mode-directory (concat user-emacs-directory "rfc"))
   :init
@@ -16,16 +17,6 @@
      (side . right)
      (dedicated . t) ;; Close when finished
      (window-width . 76))))
-
-(use-package ascii
-  :straight t
-  :commands (ascii-on ascii-off)
-  :preface
-  (defun ascii-toggle()
-    (interactive)
-    (if ascii-display
-        (ascii-off)
-      (ascii-on))))
 
 
 (use-package helpful

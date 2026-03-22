@@ -14,6 +14,7 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 ;; (setq straight-check-for-modifications t) ;; the default is more reliable, but has a minor cost to startup time
+(setq use-package-always-defer t)
 (setq straight-use-package-by-default t)
 
 (mapc

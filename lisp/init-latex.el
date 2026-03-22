@@ -2,6 +2,7 @@
 
 (use-package ox-latex
   :straight nil
+  :after org
   :config
   (setq
    org-entities-user '(("ws" "\\ " nil " " " " " " " "))
@@ -88,6 +89,7 @@
 
 (use-package cdlatex
   :straight t
+  :commands (org-cdlatex-mode turn-on-org-cdlatex)
   :hook (LaTeX-mode . turn-on-org-cdlatex)
   :hook (org-mode . org-cdlatex-mode)
   :bind (:map cdlatex-mode-map

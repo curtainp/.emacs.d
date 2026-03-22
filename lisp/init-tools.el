@@ -1,15 +1,5 @@
 ;;; init-tools.el -*- lexical-binding: t -*-
 
-(use-package ialign
-  :disabled
-  :bind (("C-x l" . ialign)))
-
-(use-package smartparens
-  :straight t
-  :hook (prog-mode text-mode markdown-mode)
-  :config
-  (require 'smartparens-config))
-
 (use-package apheleia
   :straight t
   :commands (apheleia-format-buffer)
@@ -22,18 +12,6 @@
   (setf (alist-get 'css-mode apheleia-mode-alist) 'prettier)
   (setf (alist-get 'typescript-ts-mode apheleia-mode-alist) 'prettier)
   (setf (alist-get 'js-ts-mode apheleia-mode-alist) 'prettier))
-
-(use-package gitmoji
-  :disabled
-  :straight (:host github :repo "Spike-Leung/gitmoji")
-  :hook (git-commit-mode . gitmoji-commit-mode)
-  :config
-  (setq gitmoji-selection-backend '(consult))
-  (setq gitmoji--insert-utf8-emoji t)
-  (setq gitmoji--display-utf8-emoji t))
-
-(use-package list-unicode-display
-  :straight t)
 
 (use-package time
   :straight nil
@@ -87,10 +65,12 @@
 
 (use-package rainbow-delimiters
   :straight t
-  :hook (prog-mode))
+  :commands rainbow-delimiters-mode
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package symbol-overlay
   :straight t
+  :commands symbol-overlay-mode
   :hook ((prog-mode html-mode yaml-mode conf-mode) . symbol-overlay-mode)
   :bind (:map symbol-overlay-mode-map
               ("M-i" . symbol-overlay-put)
@@ -98,14 +78,16 @@
               ("M-n" . symbol-overlay-jump-next)
               ("M-p" . symbol-overlay-jump-prev)))
 
-(use-package rainbow-mode
+(use-package colorful-mode
   :straight t
-  :hook (css-mode html-mode sass-mode)
-  :init
-  (setq rainbow-ansi-colors nil)
-  (setq rainbow-x-colors nil)
-  :bind (:map ctl-x-x-map
-              ("c" . rainbow-mode)))
+  :commands (colorful-mode global-colorful-mode)
+  :custom
+  (colorful-use-prefix t)
+  (colorful-only-strings 'only-prog)
+  (css-fontify-colors nil)
+  :config
+  (global-colorful-mode t)
+  (add-to-list 'global-colorful-modes 'helpful-mode))
 
 (use-package sort-tab
   :disabled
@@ -114,35 +96,6 @@
   :config
   (sort-tab-mode))
 
-(use-package holo-layer
-  :disabled
-  :straight '(:type git :host github :repo "manateelazycat/holo-layer"
-                    :files (:defaults "*.el" "*.py" "icon_cache" "plugin" "resources")
-                    :build (:not compile))
-  :demand t
-  :custom
-  (holo-layer-enable-cursor-animation nil)
-  (holo-layer-enable-window-border nil)
-  (holo-layer-sort-tab-ui nil)
-  (holo-layer-hide-mode-line t)
-  :config
-  (holo-layer-enable))
-
-
-(use-package hungry-delete
-  :disabled
-  :straight t
-  :hook (after-init . global-hungry-delete-mode)
-  :init (setq hungry-delete-chars-to-skip " \t\f\v"
-              hungry-delete-except-modes
-              '(help-mode minibuffer-mode minibuffer-inactive-mode calc-mode)))
-
-(use-package eee
-  :disabled
-  :bind-keymap
-  ("C-c e" . ee-keymap)
-  :config
-  (setq ee-terminal-command "st"))
 
 (use-package multiple-cursors
   :disabled
@@ -177,28 +130,6 @@
     "% 2(mc/num-cursors) cursor%s(if (> (mc/num-cursors) 1) \"s\" \"\")"
 	(("0" mc/insert-numbers "insert numbers" :exit t)
 	 ("A" mc/insert-letters "insert letters" :exit t)))))
-
-(use-package projectile
-  :straight t
-  :defer
-  :ensure-system-package fd
-  :custom
-  (projectile-dynamic-mode-line nil)
-  (projectile-enable-caching t)
-  (projectile-project-root-functions
-   '(projectile-root-local
-     projectile-root-bottom-up))
-  :config
-  (when (executable-find "fd")
-    (let ((fd-command "fd . --print0"))
-      (setq projectile-hg-command fd-command)
-      (setq projectile-git-command fd-command)
-      (setq projectile-fossil-command fd-command)
-      (setq projectile-bzr-command fd-command)
-      (setq projectile-darcs-command fd-command)
-      (setq projectile-svn-command fd-command)
-      (setq projectile-generic-command fd-command)))
-  (projectile-mode))
 
 (use-package vterm-toggle
   :disabled

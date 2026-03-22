@@ -3,6 +3,7 @@
 
 (use-package org
   :straight t
+  :commands (org-mode org-version)
   :hook ((org-mode . my/org-prettify-symbols))
   :bind (:map org-mode-map
          ("C-c C-q" . my/org-set-tags-command))
@@ -37,7 +38,7 @@
   (org-fold-catch-invisible-edits 'smart)
   (org-insert-heading-respect-content nil)
   (org-yank-image-save-method "imgs")
-  (org-return-follows-link t) 
+  (org-return-follows-link t)
   (org-use-sub-superscripts '{})        ;; use {} 包裹上下标
   (org-clone-delete-id t)
   (org-yank-adjusted-subtrees t)
@@ -187,7 +188,7 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
 
 (use-package org-modern
   :straight t
-  :after org
+  :commands org-modern-mode
   :hook (org-mode . org-modern-mode)
   :custom
   (org-modern-checkbox
@@ -217,11 +218,12 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
 
 (use-package org-appear
   :straight t
-  :after org
+  :commands org-appear-mode
   :hook (org-mode . org-appear-mode))
 
 (use-package mixed-pitch
   :straight t
+  :commands mixed-pitch-mode
   :hook (org-mode . mixed-pitch-mode)
   :config
   (setq mixed-pitch-variable-pitch-cursor 'box
@@ -394,6 +396,7 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
 
 (use-package valign
   :straight (:host github :repo "casouri/valign")
+  :commands valign-mode
   :hook (org-mode . valign-mode))
 
 (provide 'init-org)

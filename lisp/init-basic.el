@@ -14,6 +14,12 @@
 ;;   :config
 ;;   (push "tramp-loaddefs.el.gz" native-comp-jit-compilation-deny-list)
 ;;   (push "cl-loaddefs.el.gz" native-comp-jit-compilation-deny-list))
+
+
+(setq tab-always-indent 'complete) ; try indent first, if indent already, try complete
+(setq tab-first-completion 'word-or-paren-or-punct)
+(setq-default tab-width 4
+              indent-tabs-mode nil)
 (setq default-input-method nil)
 
 (setq native-comp-async-query-on-exit t)

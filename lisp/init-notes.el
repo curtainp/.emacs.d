@@ -74,12 +74,6 @@
   (setq-default org-download-heading-lvl nil
                 org-download-image-dir "."))
 
-(use-package ox-hugo
-  :straight t
-  :after ox
-  :config
-  (add-to-list 'org-hugo-special-block-type-properties '("raw" . (:raw t))))
-
 (use-package ox
   :straight nil
   :config

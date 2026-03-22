@@ -95,12 +95,12 @@
 
 (use-package evil-collection
   :straight t
-  :after evil
+  :commands (evil-collection-init)
   :custom
   (evil-collection-calendar-want-org-bindings t)
   (evil-collection-want-find-usages-bindings nil)
   (evil-collection-want-unimpaired-p nil)
-  :config
+  :init
   (evil-collection-init))
 
 (provide 'init-evil)

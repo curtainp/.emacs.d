@@ -2,12 +2,9 @@
 
 (use-package dired
   :straight nil
+  :commands dired-hide-details-mode
   :hook ((dired-mode . dired-hide-details-mode)
          (dired-after-readin . cw/hide-detail-include-all-subdir-paths))
-  :bind (:map dired-mode-map
-              ("^" . cw/goto-parent-dir)
-              ("i" . dired-hide-details-mode)
-              )
   :config
   (setq
    ;; Always delete and copy recursively
@@ -43,14 +40,6 @@
                (inhibit-read-only t))
           (put-text-property path-start path-end 'invisible 'dired-hide-details-information)))))
 
-  (defun cw/goto-parent-dir ()
-    (interactive)
-    (find-file ".."))
-
-  (defun cw/dired-mark-all ()
-    (interactive)
-    (dired-mark-files-regexp ""))
-
   (when (eq system-type 'darwin)
     (if (executable-find "gls")
         (setq insert-directory-program "gls") ; Use GNU ls as `gls' from `coreutils' if available.
@@ -75,6 +64,7 @@
   (setq wdired-create-parent-directories t))
 
 (use-package dired-preview
+  :disabled
   :straight t
   :hook (after-init . dired-preview-global-mode)
   :bind

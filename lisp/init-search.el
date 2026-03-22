@@ -12,7 +12,7 @@
   :config
   (setq search-highlight t)
   (setq isearch-lazy-highlight t)
-  (setq lazy-highlight-initial-delay 0.5)
+  (setq lazy-highlight-initial-delay 0)
   (setq lazy-highlight-no-delay-length 4))
 
 

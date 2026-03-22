@@ -13,6 +13,8 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
+;; (setq straight-check-for-modifications t) ;; the default is more reliable, but has a minor cost to startup time
+(setq straight-use-package-by-default t)
 
 (mapc
  (lambda (path)

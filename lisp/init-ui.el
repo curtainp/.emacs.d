@@ -4,38 +4,28 @@
   (require 'init-const)
   (require 'init-custom))
 
-(setq
- redisplay-skip-fontification-on-input t)
-
-(setq x-underline-at-descent-line t)
-
-(blink-cursor-mode -1)
-(setq global-hl-line-sticky-flag t)
 (global-hl-line-mode 1)
-(setq indicate-bufferoundaries nil
-      indicate-empty-lines nil)
 
 (setq frame-resize-pixelwise t
       window-resize-pixelwise t)
 
-(setq epg-pinentry-mode 'loopback)
-
 (use-package pulsar
   :straight t
+  :commands pulsar-global-mode
+  :init
+  (pulsar-global-mode 1)
   :config
-  (setopt pulsar-pulse t
-          pulsar-delay 0.055
-          pulsar-iterations 10
-          pulsar-face 'pulsar-yellow
-          pulsar-highlight-face 'pulsar-magenta
-          pulsar-region-change-face 'pulsar-red)
+  (setq pulsar-delay 0.055
+        pulsar-iterations 10
+        pulsar-face 'pulsar-yellow
+        pulsar-highlight-face 'pulsar-magenta
+        pulsar-region-change-face 'pulsar-red)
 
   (with-eval-after-load 'evil
     (cl-callf append pulsar-pulse-functions
       '(evil-yank evil-yank-line evil-delete evil-delete-line evil-jump-item
                   evil-paste-after evil-paste-before evil-goto-last-change evil-goto-last-change-reverse)))
 
-  (pulsar-global-mode 1)
   :hook
   ((next-error . (pulsar-pulse-line-red pulsar-recenter-top pulsar-reveal-entry))
    (minibuffer-setup . pulsar-pulse-line-yellow))
@@ -55,47 +45,9 @@
   ;; (doom-themes-visual-bell-config)
   (doom-themes-org-config))
 
-(use-package nimbus-theme
-  :disabled
-  :straight t
-  :init
-  (load-theme 'nimbus t))
-
-(use-package base16-theme
-  :disabled
-  :straight t
-  :init
-  (load-theme 'base16-gruvbox-dark-hard t))
-
-
-(use-package gruvbox-theme
-  :disabled
-  :straight t
-  :config
-  (load-theme 'gruvbox-dark-medium t))
-
-(use-package modus-themes
-  :disabled
-  :straight t
-  :demand t
-  :bind (("<f5>" . modus-themes-toggle)
-         ("C-<f5>" . modus-themes-select)
-         ("M-<f5>" . modus-themes-rotate))
-  :config
-  (setq modus-themes-custom-auto-reload nil
-        modus-themes-to-toggle '(modus-operandi modus-vivendi)
-        modus-themes-to-rotate modus-themes-items
-        modus-themes-mixed-fonts t
-        modus-themes-variable-pitch-ui t
-        modus-themes-italic-constructs t
-        modus-themes-bold-constructs t
-        modus-themes-completions '((t . (bold)))
-        modus-themes-prompt '(bold))
-  (setq modus-themes-common-palette-overrides nil)
-  (modus-themes-load-theme (cadr modus-themes-to-toggle)))
-
 (use-package ef-themes
   :straight (:type git :host github :repo "protesilaos/ef-themes")
+  :commands ef-themes-take-over-modus-themes-mode
   :init
   (ef-themes-take-over-modus-themes-mode 1)
   :config

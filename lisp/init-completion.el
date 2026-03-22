@@ -146,16 +146,6 @@
   (setq completions-sort 'historical)
   )
 
-(use-package savehist
-  :straight nil
-  :hook (after-init . savehist-mode)
-  :config
-  (setq savehist-file (locate-user-emacs-file "savehist"))
-  (setq history-length 100)
-  (setq history-delete-duplicates t)
-  (setq savehist-save-minibuffer-history t)
-  (add-to-list 'savehist-additional-variables 'kill-ring))
-
 ;; Corfu enhances in-buffer completion with a small completion popup
 (use-package corfu
   :disabled

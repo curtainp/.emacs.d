@@ -53,8 +53,8 @@
   (custom-set-faces
    '(show-paren-match ((t :inherit 'bold))))
   (setq show-paren-style 'parenthesis
-        show-paren-when-point-in-periphery nil
-        show-paren-when-point-inside-paren nil
+        show-paren-when-point-in-periphery t
+        show-paren-when-point-inside-paren t
         show-paren-context-when-offscreen 'overlay))
 
 (use-package elisp-plus

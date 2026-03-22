@@ -2,7 +2,6 @@
 
 (use-package dired
   :straight nil
-  :defer
   :hook ((dired-mode . dired-hide-details-mode)
          (dired-after-readin . cw/hide-detail-include-all-subdir-paths))
   :bind (:map dired-mode-map
@@ -13,14 +12,16 @@
   (setq
    ;; Always delete and copy recursively
    dired-recursive-deletes 'top
+   dired-deletion-confirmer 'y-or-n-p
    dired-recursive-copies 'always
    delete-by-moving-to-trash t
+   dired-vc-rename-file t
    ;; Move between two dired buffer quickly
    dired-dwim-target t
-   ;; Ask whether destination dirs should get created when copying/removing files.
    dired-create-destination-dirs 'ask
    ;; don't prompt to revert, just do it
    dired-auto-revert-buffer #'dired-buffer-stale-p
+   dired-clean-confirm-killing-deleted-buffers nil
    ;; symlink
    dired-hide-details-hide-symlink-targets nil
    dired-auto-revert-buffer #'dired-directory-changed-p

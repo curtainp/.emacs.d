@@ -6,7 +6,9 @@
   :init
   (setq evil-want-C-u-scroll t
         evil-want-C-i-jump nil
+        ;; This two variable is needed for evil-collections
         evil-want-keybinding nil
+        evil-want-integration t
         evil-undo-system 'undo-redo
         evil-spilt-window-below t
         evil-symbol-word-search t
@@ -39,7 +41,7 @@
     "bd" 'evil-delete-buffer
     "br" 'revert-buffer
     "ff" 'find-file
-    "fr" 'recentf
+    "fr" 'consult-recent-file
     "ss" 'consult-line
     "pf" 'project-find-file
     )
@@ -79,11 +81,12 @@
     ;;   "M-j" 'lsp-bridge-peek-list-next-line
     ;;   "M-k" 'lsp-bridge-peek-list-prev-line)
     )
-  (with-eval-after-load 'eaf
-    (evil-define-key '(normal visual insert) 'global
-      (kbd "C-x C-j") 'eaf-open-in-file-manager
-      ;; (kbd "C-x p s") 'eaf-open-pyqterminal
-      ))
+  (with-eval-after-load "evil"
+    (evil-define-operator my-evil-comment-or-uncomment (beg end)
+      "Toggle comment for the region between BEG and END."
+      (interactive "<r>")
+      (comment-or-uncomment-region beg end))
+    (evil-define-key 'normal 'global (kbd "gc") 'my-evil-comment-or-uncomment))
   ;; centaur-tabs
   (with-eval-after-load 'centaur-tabs
     (evil-define-key '(normal visual) 'global

@@ -2,6 +2,7 @@
 
 (use-package evil
   :straight (:host github :repo "curtainp/evil")
+  :commands (evil-mode evil-define-key)
   :hook (after-init . evil-mode)
   :init
   (setq evil-want-C-u-scroll t
@@ -52,8 +53,6 @@
       "sb" 'color-rg-search-input-in-current-file)
   (evil-define-key '(normal visual) 'global
     "g*" 'color-rg-search-symbol)
-  (dolist (mode '(dired-mode diredfl-mode helpful-mode color-rg-mode color-rg-search-mode color-rg-switch-to-edit-mode color-rg-switch-to-view-mode))
-    (evil-set-initial-state mode 'emacs))
 
   (evil-define-key '(normal insert) 'global
         (kbd "C-x C-p")  'yank-from-kill-ring) ;; NOTE: original bind with mark-page
@@ -98,8 +97,8 @@
   :straight t
   :after evil
   :custom
+  (evil-collection-calendar-want-org-bindings t)
   (evil-collection-want-find-usages-bindings nil)
-  (evil-collection-term-state-and-mode-p nil)
   (evil-collection-want-unimpaired-p nil)
   :config
   (evil-collection-init))

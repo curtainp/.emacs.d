@@ -1,29 +1,18 @@
 ;;; -*- lexical-binding: t -*-
 
-;; startup time hook
-(defun cw/display-startup-time ()
-  (message
-   "Emacs loaded in %s with %d garbage collections."
-   (format
-    "%0.3f seconds"
-    (float-time
-     (time-subtract after-init-time before-init-time)))
-   gcs-done))
-
-(defun cw/macos-transparent-frame ()    ;; this functionality need frame-transparency patch for emacs-31
-  (progn
-    (set-frame-parameter nil 'ns-alpha-elements '(ns-alpha-all))
-    (set-frame-parameter nil 'alpha-background 0.5)
-    (set-frame-parameter nil 'ns-background-blur 20)
-    ))
-
-(when (and (eq system-type 'darwin) (display-graphic-p))
-  (add-hook 'emacs-startup-hook #'cw/macos-transparent-frame))
-
-(add-hook 'emacs-startup-hook #'cw/display-startup-time)
-
-;; Don't show logging level beyond :emergency, but also record with warnings buffer
-(setq warning-minimum-level :emergency)
+(setq straight-vc-git-default-clone-depth 1)
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
 ;; PERF: `tty-run-terminal-initialization' is slow
 (unless (daemonp)
@@ -33,21 +22,12 @@
               (advice-remove #'tty-run-terminal-initialization #'ignore)
               (tty-run-terminal-initialization (selected-frame) nil t))))
 
-;; Make native compilation silent and prune its cache.
-(when (native-comp-available-p)
-  (setq native-comp-async-report-warnings-errors 'silent ; Emacs 28 with native compilation
-        native-compile-prune-cache t
-        native-comp-jit-compilation t))
-
-(setq custom-file (locate-user-emacs-file "custom.el"))
-
 (mapc
  (lambda (path)
    (add-to-list 'load-path (locate-user-emacs-file path)))
  '("lisp" "modules"))
 
 (with-temp-message ""
-  (require 'init-straight)
   (require 'init-basic)
   (require 'init-ui)
   (require 'init-completion)
@@ -56,9 +36,6 @@
   (require 'init-evil)
   (require 'init-search)
   (require 'init-prog)
-
-  (when (file-exists-p custom-file)
-    (load custom-file))
 
   (run-with-idle-timer
    1 nil #'(lambda ()

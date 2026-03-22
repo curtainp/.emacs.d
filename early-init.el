@@ -1,6 +1,13 @@
 ;;; -*- no-byte-compile: t; lexical-binding: t;  -*-
 
-(setq package-enable-at-startup nil)
+(defun display-startup-time ()
+  "Display the startup time and number of garbage collections."
+  (message "Emacs init loaded in %.2f seconds (Full emacs-startup: %.2fs) with %d garbage collections."
+           (float-time (time-subtract after-init-time before-init-time))
+           (time-to-seconds (time-since before-init-time))
+           gcs-done))
+(add-hook 'emacs-startup-hook #'display-startup-time 100)
+
 (setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.5)
 
@@ -11,78 +18,214 @@
 
 ;; Prefer loading newer compiled files
 (setq load-prefer-newer t)
-(setq frame-inhibit-implied-resize t)
 
-;; reduce rendering scan work for non-focused window
-(setq-default cursor-in-non-selected-windows nil)
-(setq highlight-nonselected-windows nil)
+;; custom variable
+(setq custom-theme-directory
+      (expand-file-name "themes/" user-emacs-directory))
+
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+
+;; Make native compilation silent and prune its cache.
+(when (native-comp-available-p)
+  (setq native-comp-async-report-warnings-errors 'silent
+        native-comp-jit-compilation t))
+;; Disable compress and uncompress output messages
+(setq jka-compr-verbose nil)
+(setq byte-compile-warnings nil
+      byte-compile-verbose nil)
+
+(set-language-environment "UTF-8")
+
+(setq read-process-output-max (* 4 1024 1024))
+
+(setq process-adaptive-read-buffering nil)
+;; don't ping things that look like domain names
+(setq ffap-machine-p-known 'reject)
+
+;; ignore warnings about "existing variables being aliased"
+(setq warning-suppress-types '((defvaralias) (lexical-binding)))
+(setq warning-minimum-level :error)
+
+(when (boundp 'pgtk-wait-for-event-timeout)
+  (setq pgtk-wait-for-event-timeout 0.001))
 
 ;; disable warnings from the legacy advice API
 (setq ad-redefinition-action 'accept)
 
-;; ignore warnings about "existing variables being aliased"
-(setq warning-suppress-types '((defvaralias) (lexical-binding)))
-
-;; don't ping things that look like domain names
-(setq ffap-machine-p-known 'reject)
-
-(setq idle-update-delay 1.0)
 (setq inhibit-compacting-font-caches t)
-;; Disable [bidirectional text] scanning for a modest performance
-;; Will improve long line display performance
-(setq bidi-inhibit-bpa t)
-(setq-default bidi-paragraph-direction 'left-to-right
-              bidi-display-reordering 'left-to-right)
 
-;; Don't want a mode line while loading init
-(setq-default mode-line-format nil)
+(when (not noninteractive)
+  (setq frame-resize-pixelwise t)
+  (setq frame-inhibit-implied-resize t)
+  (setq auto-mode-case-fold nil)
+  ;; startup screen
+  (setq inhibit-startup-screen t
+        inhibit-startup-echo-area-message t
+        inhibit-startup-message t
+        inhibit-startup-buffer-menu t
+        inhibit-x-resources t
+        inhibit-default-init t
+        initial-scratch-message nil
+        initial-major-mode 'fundamental-mode)
+  (advice-add #'display-startup-echo-area-message :override #'ignore)
+  (advice-add #'display-startup-screen :override #'ignore)
+  ;; Disable [bidirectional text] scanning for a modest performance
+  ;; Will improve long line display performance
+  (setq bidi-inhibit-bpa t)
+  (setq-default bidi-paragraph-direction 'left-to-right
+                bidi-display-reordering 'left-to-right)
+  (unless (eq system-type 'darwin)
+    (setq command-line-ns-option-alist nil))
+  (unless (memq initial-window-system '(x pgtk))
+    (setq command-line-ns-option-alist nil)))
 
-;; No alarms by default
-(setq ring-bell-function 'ignore)
+;;; Performance: File-name-handler-alist
 
-;; startup screen
-(setq inhibit-startup-screen t
-      inhibit-startup-echo-area-message t
-      inhibit-startup-message t
-      inhibit-startup-buffer-menu t
-      inhibit-x-resources t
-      inhibit-default-init t
-      initial-scratch-message nil
-      initial-major-mode 'fundamental-mode)
-(advice-add #'display-startup-echo-area-message :override #'ignore)
-(advice-add #'display-startup-screen :override #'ignore)
+(defvar minimal-emacs--old-file-name-handler-alist (default-toplevel-value
+                                                    'file-name-handler-alist))
+
+(defun minimal-emacs--respect-file-handlers (fn args-left)
+  "Respect file handlers.
+FN is the function and ARGS-LEFT is the same argument as `command-line-1'.
+Emacs processes command-line files very early in startup. These files may
+include special paths like TRAMP paths, so restore `file-name-handler-alist' for
+this stage of initialization."
+  (let ((file-name-handler-alist (if args-left
+                                     minimal-emacs--old-file-name-handler-alist
+                                   file-name-handler-alist)))
+    (funcall fn args-left)))
+
+(defun minimal-emacs--restore-file-name-handler-alist ()
+  "Restore `file-name-handler-alist'."
+  (set-default-toplevel-value
+   'file-name-handler-alist
+   ;; Merge instead of overwrite to preserve any changes made since startup.
+   (delete-dups (append file-name-handler-alist
+                        minimal-emacs--old-file-name-handler-alist))))
+
+(progn 
+  ;; Determine the state of bundled libraries using calc-loaddefs.el. If
+  ;; compressed, retain the gzip handler in `file-name-handler-alist`. If
+  ;; compiled or neither, omit the gzip handler during startup for improved
+  ;; startup and package load time.
+  (set-default-toplevel-value
+   'file-name-handler-alist
+   (if (locate-file-internal "calc-loaddefs.el" load-path)
+       nil
+     (list (rassq 'jka-compr-handler
+                  minimal-emacs--old-file-name-handler-alist))))
+
+  ;; Ensure the new value persists through any current let-binding.
+  (put 'file-name-handler-alist 'initial-value
+       minimal-emacs--old-file-name-handler-alist)
+
+  ;; Emacs processes command-line files very early in startup. These files may
+  ;; include special paths TRAMP. Restore `file-name-handler-alist'.
+  (advice-add 'command-line-1 :around #'minimal-emacs--respect-file-handlers)
+
+  (add-hook 'emacs-startup-hook #'minimal-emacs--restore-file-name-handler-alist
+            101))
+
+;;; Performance: Inhibit redisplay
+
+(defun minimal-emacs--reset-inhibit-redisplay ()
+  "Reset inhibit redisplay."
+  (setq-default inhibit-redisplay nil)
+  (remove-hook 'post-command-hook #'minimal-emacs--reset-inhibit-redisplay))
+
+(when (not noninteractive)
+  ;; Suppress redisplay and redraw during startup to avoid delays and
+  ;; prevent flashing an unstyled Emacs frame.
+  (setq-default inhibit-redisplay t)
+  (add-hook 'post-command-hook #'minimal-emacs--reset-inhibit-redisplay -100))
+
+;;; Performance: Inhibit message
+
+(defun minimal-emacs--reset-inhibit-message ()
+  "Reset inhibit message."
+  (setq-default inhibit-message nil)
+  (remove-hook 'post-command-hook #'minimal-emacs--reset-inhibit-message))
+
+(when (not noninteractive)
+  (setq-default inhibit-message t)
+  (add-hook 'post-command-hook #'minimal-emacs--reset-inhibit-message -100))
+
+;;; Performance: Disable mode-line during startup
+
+(defvar-local minimal-emacs--hidden-mode-line nil
+  "Store the buffer-local value of `mode-line-format' during startup.")
+
+(when (not noninteractive)
+  (put 'mode-line-format
+       'initial-value (default-toplevel-value 'mode-line-format))
+  (setq-default mode-line-format nil)
+  (dolist (buf (buffer-list))
+    (with-current-buffer buf
+      (when (local-variable-p 'mode-line-format)
+        (setq minimal-emacs--hidden-mode-line mode-line-format)
+        (setq mode-line-format nil)))))
+
+;;; Restore values
+
+(defun minimal-emacs--startup-load-user-init-file (fn &rest args)
+  "Advice to reset `mode-line-format'. FN and ARGS are the function and args."
+  (unwind-protect
+      ;; Start up as normal
+      (apply fn args)
+    ;; If we don't undo inhibit-{message, redisplay} and there's an error, we'll
+    ;; see nothing but a blank Emacs frame.
+    (setq-default inhibit-message nil)
+    (setq-default inhibit-redisplay nil)
+    ;; Restore the mode-line
+    (unless (default-toplevel-value 'mode-line-format)
+      (setq-default mode-line-format (get 'mode-line-format
+                                          'initial-value))
+      (dolist (buf (buffer-list))
+        (with-current-buffer buf
+          (when (local-variable-p 'minimal-emacs--hidden-mode-line)
+            (setq mode-line-format minimal-emacs--hidden-mode-line)
+            (kill-local-variable 'minimal-emacs--hidden-mode-line)))))))
+
+(advice-add 'startup--load-user-init-file :around
+            #'minimal-emacs--startup-load-user-init-file)
+
 (setq use-file-dialog nil
       use-dialog-box nil)
 
-;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
+(push '(menu-bar-lines . 0) default-frame-alist)
+(unless (memq window-system '(mac ns))
+  (setq menu-bar-mode nil))
 
-(setq-default inhibit-redisplay t
-	      inhibit-message t)
+(defun minimal-emacs--setup-toolbar (&rest _)
+  "Setup the toolbar."
+  (when (fboundp 'tool-bar-setup)
+    (advice-remove 'tool-bar-setup #'ignore)
+    (when (bound-and-true-p tool-bar-mode)
+      (funcall 'tool-bar-setup))))
 
-(add-hook 'window-setup-hook
-	  (lambda ()
-	    (setq-default inhibit-redisplay nil
-			  inhibit-message nil)
-	    (redraw-frame)))
+(unless noninteractive
+  (when (fboundp 'tool-bar-setup)
+    ;; Temporarily override the tool-bar-setup function to prevent it from
+    ;; running during the initial stages of startup
+    (advice-add 'tool-bar-setup :override #'ignore)
+
+    (advice-add 'startup--load-user-init-file :after
+                #'minimal-emacs--setup-toolbar)))
 
 (push '(tool-bar-lines . 0) default-frame-alist)
-(push '(menu-bar-lines . 0) default-frame-alist)
+(setq tool-bar-mode nil)
+(setq default-frame-scroll-bars 'right)
 (push '(vertical-scroll-bars) default-frame-alist)
+(push '(horizontal-scroll-bars) default-frame-alist)
+(setq scroll-bar-mode nil)
+(when (bound-and-true-p tooltip-mode)
+  (tooltip-mode -1))
 (when (featurep 'ns)
   (push '(ns-transparent-titlebar . t) default-frame-alist))
 (push '(undecorated-round . t) default-frame-alist)
-(setq auto-mode-case-fold nil)
 
-(setq tool-bar-mode nil
-      scroll-bar-mode nil)
-
-;; `file-name-handler-alist' is consulted on each call to `require', `load', or various file/io functions
-(unless (or (daemonp) noninteractive init-file-debug)
-  (let ((old-value file-name-handler-alist))
-    (setq file-name-handler-alist nil)
-    (add-hook 'emacs-startup-hook
-              (lambda ()
-                "Recover file name handlers."
-                (setq file-name-handler-alist
-                      (delete-dups (append file-name-handler-alist
-                                           old-value)))))))
+;; This results in a more compact output that emphasizes performance
+(setq use-package-expand-minimally t)
+(setq use-package-minimum-reported-time 0.1)
+(setq use-package-enable-imenu-support t)
+(setq package-enable-at-startup nil)

@@ -132,6 +132,7 @@
 
 (use-package doom-modeline
   :straight t
+  :commands doom-modeline-mode
   :hook (after-init . doom-modeline-mode)
   :custom
   (doom-modeline-irc nil)
@@ -173,58 +174,10 @@
   :straight t
   :hook (after-init . default-text-scale-mode))
 
-(use-package face-remap
-  :disabled
-  :straight nil
-  :bind
-  (("C-x C-=" . global-text-scale-adjust)
-   ("C-x C--" . global-text-scale-adjust)
-   ("C-x C-0" . global-text-scale-adjust)))
-
-;; Child frame
-(use-package posframe
-  :disabled
-  :hook (after-load-theme . posframe-delete-all)
-  :init
-  (defface posframe-border
-    `((t (:inherit region)))
-    "Face used by the `posframe' border."
-    :group 'posframe)
-  (defvar posframe-border-width 2
-    "Default posframe border width.")
-  :config
-  (with-no-warnings
-    (defun my-posframe--prettify-frame (&rest _)
-      (set-face-background 'fringe nil posframe--frame))
-    (advice-add #'posframe--create-posframe :after #'my-posframe--prettify-frame)
-
-    (defun posframe-poshandler-frame-center-near-bottom (info)
-      (cons (/ (- (plist-get info :parent-frame-width)
-                  (plist-get info :posframe-width))
-               2)
-            (/ (+ (plist-get info :parent-frame-height)
-                  (* 2 (plist-get info :font-height)))
-               2)))))
-
-;; Display transient in child frame
-(use-package transient-posframe
-  :disabled
-  :diminish
-  :custom-face
-  (transient-posframe ((t (:inherit tooltip))))
-  (transient-posframe-border ((t (:inherit posframe-border :background unspecified))))
-  :hook (after-init . transient-posframe-mode)
-  :init (setq transient-mode-line-format nil
-              transient-posframe-border-width posframe-border-width
-              transient-posframe-poshandler 'posframe-poshandler-frame-center
-              transient-posframe-parameters '((left-fringe . 8)
-                                              (right-fringe . 8))))
-
-;; [ligature] ligature support for Emacs
 (use-package ligature
-  :disabled
   :straight t
-  :hook ((prog-mode markdown-mode) . ligature-mode)
+  :commands ligature-mode
+  :hook (prog-mode . ligature-mode)
   :config
   ;; Enable all Cascadia Code ligatures in programming modes
   (ligature-set-ligatures '(prog-mode markdown-mode org-mode)

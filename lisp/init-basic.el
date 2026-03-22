@@ -367,15 +367,14 @@
 (use-package super-save
   :straight t
   :commands super-save-mode
+  :hook (after-init . super-save-mode)
   :config
   (setq super-save-remote-files nil)
-  (setq super-save-exclude '("\.gpg\'" "\.asc\'"))
   (setq super-save-silent t)
   (setq super-save-delete-trailing-whitespace t)
   (setq super-save-auto-save-when-idle nil)
   (setq super-save-all-buffers nil)
-  (add-to-list 'super-save-hook-triggers 'find-file-hook)
-  (super-save-mode +1))
+  (add-to-list 'super-save-hook-triggers 'find-file-hook))
 
 (use-package autorevert
   :straight nil

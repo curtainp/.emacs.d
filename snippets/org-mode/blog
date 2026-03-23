@@ -7,6 +7,7 @@
 #+title: $1
 #+date: `(format-time-string "<%Y-%m-%d>" (current-time))`
 #+author: curtain
+#+draft: t
 #+filetags:
 
 $0

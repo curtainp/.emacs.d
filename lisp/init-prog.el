@@ -7,6 +7,13 @@
         web-mode-code-indent-offset 2
         web-mode-css-indent-offset 2))
 
+(use-package embrace
+  :straight t
+  :commands embrace-commander
+  :bind
+  (:map global-map
+        ("C-," . embrace-commander)))
+
 (use-package css-mode
   :straight nil
   :config

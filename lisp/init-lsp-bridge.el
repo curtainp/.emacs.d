@@ -13,6 +13,7 @@
                     :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
                     :build (:not compile))
   :commands global-lsp-bridge-mode
+  :hook (after-init . global-lsp-bridge-mode)
   :custom-face
   (lsp-bridge-inlay-hint-face ((t (:foreground "#5B6268"))))
   :config
@@ -38,8 +39,6 @@
 	  (("tsx")  . "typescriptreact_tailwindcss")
 	  (("jsx")  . "javascriptreact_tailwindcss")
 	  (("html") . "html_tailwindcss")
-	  (("css")  . "css_tailwindcss")))
-  :init
-  (global-lsp-bridge-mode))
+	  (("css")  . "css_tailwindcss"))))
 
 (provide 'init-lsp-bridge)

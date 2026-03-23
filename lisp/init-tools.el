@@ -81,12 +81,11 @@
 (use-package colorful-mode
   :straight t
   :commands (colorful-mode global-colorful-mode)
+  :hook (after-init . global-colorful-mode)
   :custom
   (colorful-use-prefix t)
   (colorful-only-strings 'only-prog)
-  (css-fontify-colors nil)
   :config
-  (global-colorful-mode t)
   (add-to-list 'global-colorful-modes 'helpful-mode))
 
 (use-package sort-tab

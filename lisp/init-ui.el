@@ -104,9 +104,7 @@
 
 (use-package nerd-icons
   :straight t
-  :config
-  (when (not (find-font (font-spec :name nerd-icons-font-family)))
-    (nerd-icons-install-fonts t)))
+  :commands nerd-icons-install-fonts)
 
 (use-package doom-modeline
   :straight t

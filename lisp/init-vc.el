@@ -40,10 +40,6 @@
                       (copy-tree igist-default-formats)))
   )             ;; code snippets for Github Gists
 
-;; Show source files' TODOs (and FIXMEs, etc) in Magit status buffer
-(use-package magit-todos
-  :straight t)
-
 ;; Magit extension for "git-imerge"
 (use-package magit-imerge
   :straight t

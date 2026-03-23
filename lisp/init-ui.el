@@ -73,7 +73,7 @@
            :variable-pitch-height 1.05)
           (t
            :default-family "Iosevka Term"
-           :fixed-pitch-family "Iosevka Term"
+           :fixed-pitch-family "JetBrainsMono Nerd Font"
            ;; :variable-pitch-family "Roboto"
            ;; :variable-pitch-family "Georgia"
            :variable-pitch-family "Lato"
@@ -89,39 +89,17 @@
   :hook
   (after-init . (lambda ()
                   (fontaine-set-preset 'regular)
-                  (set-fontset-font t 'emoji
-                                    (cond
-                                     ((member "Noto Emoji" (font-family-list)) "Noto Emoji")
-                                     ((member "Symbola" (font-family-list)) "Symbola")
-                                     ((member "Apple Color Emoji" (font-family-list)) "Apple Color Emoji")
-                                     ((member "Noto Color Emoji" (font-family-list)) "Noto Color Emoji")
-                                     ((member "Segoe UI Emoji" (font-family-list)) "Segoe UI Emoji")))
+                  ;; Set Symbol Font
+                  (cl-loop for font in cw/symbol-fonts
+                           when (find-font (font-spec :name font))
+                           return (set-fontset-font t 'symbol (font-spec :family font) nil 'prepend))
+                  ;; Set Emoji Font
+                  (cl-loop for font in cw/emoji-fonts
+                           when (find-font (font-spec :name font))
+                           return (set-fontset-font t 'emoji (font-spec :family font) nil 'prepend))
                   (dolist (charset '(kana han symbol cjk-misc bopomofo))
-                    (set-fontset-font
-                     (frame-parameter nil 'font)
-                     charset
-                     (font-spec :family
-                                (cond
-                                 ((eq system-type 'darwin)
-                                  (cond
-                                   ((member "LXGW WenKai Mono" (font-family-list)) "LXGW WenKai Mono")
-                                   ((member "PingFang SC" (font-family-list)) "PingFang SC")
-                                   ((member "WenQuanYi Zen Hei" (font-family-list)) "WenQuanYi Zen Hei")
-                                   ((member "Microsoft YaHei" (font-family-list)) "Microsoft YaHei")
-                                   ))
-                                 ((eq system-type 'gnu/linux)
-                                  (cond
-                                   ((member "LXGW WenKai" (font-family-list)) "LXGW WenKai")
-                                   ((member "WenQuanYi Micro Hei" (font-family-list)) "WenQuanYi Micro Hei")
-                                   ((member "WenQuanYi Zen Hei" (font-family-list)) "WenQuanYi Zen Hei")
-                                   ((member "Microsoft YaHei" (font-family-list)) "Microsoft YaHei")
-                                   ))
-                                 (t
-                                  (cond
-                                   ((member "LXGW WenKai Mono" (font-family-list)) "LXGW WenKai Mono")
-                                   ((member "WenQuanYi Micro Hei" (font-family-list)) "WenQuanYi Micro Hei")
-                                   ))
-                                 ))))))
+                    (set-fontset-font (frame-parameter nil 'font) charset
+                     (font-spec :family cw/zh-font)))))
   )
 
 (use-package nerd-icons

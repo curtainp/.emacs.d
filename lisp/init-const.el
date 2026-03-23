@@ -32,4 +32,16 @@
   (>= emacs-major-version 31)
   "Emacs is 31 or above?")
 
+(defconst cw/emoji-fonts '("Apple Color Emoji"
+                        "Noto Color Emoji"
+                        "Noto Emoji"
+                        "Segoe UI Emoji"))
+
+(defconst cw/symbol-fonts '("Apple Symbols"
+                         "Segoe UI Symbol"
+                         "Symbola"
+                         "Symbol"))
+(defconst cw/zh-font "LXGW WenKai")
+(defconst cw/default-font "Iosevka Term")
+
 (provide 'init-const)

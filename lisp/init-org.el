@@ -89,6 +89,15 @@
                    (:endgroup)))
 
   :config
+  (defun my/org-read-file-name-relative (&optional prompt directory)
+    "Read a file name and return a path relative to the current buffer."
+    (let* ((base-dir (file-name-directory
+                      (or (buffer-file-name) default-directory)))
+           (file (read-file-name (or prompt "File: ")
+                                 (or directory base-dir)
+                                 nil t)))
+      (file-relative-name file base-dir)))
+
   (defun my/org--format-filetags (tags)
     "Return a #+FILETAGS string for TAGS."
     (if (null tags)

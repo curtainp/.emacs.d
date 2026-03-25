@@ -3,4 +3,4 @@
 # key: <img
 # --
 #+caption: ${1:caption of the image}
-[[file:${2:image_path}]]$0
+[[file:`(my/org-read-file-name-relative "Image: ")`]]$0

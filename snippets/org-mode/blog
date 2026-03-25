@@ -1,7 +1,6 @@
 # -*- mode: snippet -*-
 # name: blog
-# key: blog
-# group: blog
+# key: <blog
 # --
 
 #+title: $1
@@ -11,5 +10,3 @@
 #+filetags:
 
 $0
-
-* Summary

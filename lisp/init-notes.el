@@ -1057,6 +1057,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
   "Publish blog with auto-revert-mode temporarily disabled."
   (interactive)
   (cw/blog--ensure-publish-deps)
+  (require 'autorevert)
   (let ((auto-revert-stop-on-user-input nil))
     (global-auto-revert-mode -1)
     (unwind-protect

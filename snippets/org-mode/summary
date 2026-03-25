@@ -1,8 +1,10 @@
 # -*- mode: snippet -*-
-# name: summary
+# name: details summary
 # key: <sum
 # --
 
-#+SUMMARY_BEG: $1
+#+begin_details
+#+html: <summary>${1:summary}</summary>
+
 $0
-#+SUMMARY_END: $1
+#+end_details

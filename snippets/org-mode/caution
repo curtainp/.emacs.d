@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: caution callout
+# key: <cau
+# --
+
+#+begin_caution
+$0
+#+end_caution

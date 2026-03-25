@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: callout
+# key: <cal
+# --
+
+#+begin_${1:note}
+$0
+#+end_$1

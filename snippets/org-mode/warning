@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: warning callout
+# key: <war
+# --
+
+#+begin_warning
+$0
+#+end_warning

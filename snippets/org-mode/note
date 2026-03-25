@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: note callout
+# key: <not
+# --
+
+#+begin_note
+$0
+#+end_note

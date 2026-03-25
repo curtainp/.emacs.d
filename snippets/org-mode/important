@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: important callout
+# key: <imp
+# --
+
+#+begin_important
+$0
+#+end_important

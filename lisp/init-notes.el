@@ -124,12 +124,20 @@
   (defvar cw/blog-tags nil)
   (defconst cw/blog-draft-tag "draft")
   (defconst cw/blog-draft-truthy-values '("t" "true" "yes"))
+  (defconst cw/blog-pinned-truthy-values '("t" "true" "yes" "1"))
+  (defconst cw/blog-pin-macro "{{{pin()}}}")
 
   (defun cw/blog--draft-value-p (value)
     "Return non-nil when VALUE should mark a post as draft."
     (and (stringp value)
          (not (null (member (downcase (string-trim value))
                             cw/blog-draft-truthy-values)))))
+
+  (defun cw/blog--pinned-value-p (value)
+    "Return non-nil when VALUE should mark a post as pinned."
+    (and (stringp value)
+         (not (null (member (downcase (string-trim value))
+                            cw/blog-pinned-truthy-values)))))
 
   (defun cw/blog--filetags-from-keywords (values)
     "Extract document tags from FILETAGS keyword VALUES."
@@ -150,6 +158,15 @@
                    (string-equal (downcase tag) cw/blog-draft-tag))
                  (cw/blog--filetags-from-keywords filetags))))))))
 
+  (defun cw/blog--compute-pinned-p (file)
+    "Return non-nil when FILE is marked as pinned."
+    (when (and (file-readable-p file) (not (directory-name-p file)))
+      (let ((org-inhibit-startup t))
+        (org-with-file-buffer file
+          (let* ((keywords (org-collect-keywords '("PINNED")))
+                 (pinned-values (cdr (assoc "PINNED" keywords))))
+            (cl-some #'cw/blog--pinned-value-p pinned-values))))))
+
   (defun cw/blog-draft-p (file project)
     "Return non-nil when FILE in PROJECT should be skipped from publishing."
     (let* ((file (org-publish--expand-file-name file project))
@@ -160,6 +177,18 @@
       (if (eq cached missing)
           (org-publish-cache-set-file-property
            file :cw-draft (cw/blog--compute-draft-p file) project-name)
+        cached)))
+
+  (defun cw/blog-pinned-p (file project)
+    "Return non-nil when FILE in PROJECT should be pinned on the homepage."
+    (let* ((file (org-publish--expand-file-name file project))
+           (project-name (car project))
+           (missing (make-symbol "cw/blog-pinned-missing"))
+           (cached (org-publish-cache-get-file-property
+                    file :cw-pinned missing t project-name)))
+      (if (eq cached missing)
+          (org-publish-cache-set-file-property
+           file :cw-pinned (cw/blog--compute-pinned-p file) project-name)
         cached)))
 
   (defun cw/org-publish-get-base-files (orig-fun project)
@@ -189,7 +218,10 @@
       (org-publish-cache-set-file-property file :title title)
       (if (= (length title) 0)
           (format "%s*" entry)
-        (format "{{{timestamp(%s)}}}    [[file:%s][%s]] {{{tags(%s)}}}"
+        (format "%s{{{timestamp(%s)}}}    [[file:%s][%s]] {{{tags(%s)}}}"
+                (if (cw/blog-pinned-p file project)
+                    cw/blog-pin-macro
+                  "")
                 (format-time-string
                  org-html-metadata-timestamp-format
                  (cw/org-publish-find-date file project))
@@ -352,6 +384,36 @@ DIR is the location of the output."
       (org-publish-org-to
        'rss filename (concat "." org-rss-extension) plist dir)))
 
+  (defun cw/blog-sitemap-item-pinned-p (item)
+    "Return non-nil when sitemap ITEM is marked as pinned."
+    (let ((text (car-safe item)))
+      (and (stringp text)
+           (string-prefix-p cw/blog-pin-macro text))))
+
+  (defun cw/blog-strip-pin-marker (text)
+    "Remove the pin marker from TEXT."
+    (if (string-prefix-p cw/blog-pin-macro text)
+        (substring text (length cw/blog-pin-macro))
+      text))
+
+  (defun cw/blog-sitemap-strip-pin-markers (node)
+    "Return sitemap NODE without pin markers."
+    (cond
+     ((stringp node) (cw/blog-strip-pin-marker node))
+     ((consp node) (mapcar #'cw/blog-sitemap-strip-pin-markers node))
+     (t node)))
+
+  (defun cw/blog-sitemap-prioritize-pinned-items (list)
+    "Return LIST with pinned entries before regular entries."
+    (let (pinned regular)
+      (dolist (item (cdr list))
+        (if (cw/blog-sitemap-item-pinned-p item)
+            (push item pinned)
+          (push item regular)))
+      (cons (car list)
+            (append (nreverse pinned)
+                    (nreverse regular)))))
+
   (defun cw/blog-write-tags-page (title list)
     "Generate tags.org in the blog base directory."
     (let* ((tags-path (expand-file-name "tags.org" cw/blog-base-dir))
@@ -391,13 +453,15 @@ DIR is the location of the output."
 
   (defun cw/blog-publish-sitemap (title list)
     "Generate the sitemap with title."
-    (cw/blog-write-tags-page "Tags" list)
-    (concat "#+TITLE: " title
-            "\n"
-            "#+DATE: 2026-03-12"
-            "\n"
-            "#+HTML_HEAD_EXTRA: <style>.content li:has(.tags){display: list-item;}</style>\n"
-            (org-list-to-org list)))
+    (let ((homepage-list (cw/blog-sitemap-prioritize-pinned-items list))
+          (tags-list (cw/blog-sitemap-strip-pin-markers list)))
+      (cw/blog-write-tags-page "Tags" tags-list)
+      (concat "#+TITLE: " title
+              "\n"
+              "#+DATE: 2026-03-12"
+              "\n"
+              "#+HTML_HEAD_EXTRA: <style>.content li:has(.tags){display: list-item;}</style>\n"
+              (org-list-to-org homepage-list))))
 
   (defun cw/org-blog-add-noweb-ref (data backend _info)
     (when (eq backend 'blog)
@@ -1027,7 +1091,9 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
     (add-to-list 'org-export-global-macros
                  '("tags" . "@@html:<span class=\"tags\" data-tags=\"$1\"></span>@@"))
     (add-to-list 'org-export-global-macros
-                 '("kbd" . "@@html:<kbd>$1</kbd>@@")))
+                 '("kbd" . "@@html:<kbd>$1</kbd>@@"))
+    (add-to-list 'org-export-global-macros
+                 '("pin" . "@@html:<span class=\"pinned-marker\" aria-hidden=\"true\"><i class=\"bx bxs-pin\"></i></span>@@")))
   (when (require 'ox-html)
     (org-export-define-derived-backend 'blog 'html
       :translate-alist '((src-block . cw/blog-src-block)

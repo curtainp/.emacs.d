@@ -1,9 +1,11 @@
 # -*- mode: snippet -*-
 # name: details
-# key: <det
+# key: <details
 # --
 
 #+begin_details
-#+html: <summary>${0:summary}</summary>
+#+html: <summary>${1:summary}</summary>
 
+#+begin_example
+#+end_example
 #+end_details

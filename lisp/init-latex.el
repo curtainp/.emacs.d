@@ -92,8 +92,21 @@
   :commands (org-cdlatex-mode turn-on-org-cdlatex)
   :hook (LaTeX-mode . turn-on-org-cdlatex)
   :hook (org-mode . org-cdlatex-mode)
+  :hook (org-mode . my/org-latex-input-setup)
   :bind (:map cdlatex-mode-map
               ("<tab>" . cdlatex-tab)))
+
+(defun my/org-tab-expand-snippet-or-latex ()
+  "Handle Org TAB by expanding yas snippets before cdlatex."
+  (or (and (bound-and-true-p yas-minor-mode)
+           (yas-expand))
+      (org-try-cdlatex-tab)))
+
+(defun my/org-latex-input-setup ()
+  "Prefer direct yas expansion in Org over ACM's yas completion."
+  (add-hook 'org-tab-first-hook #'my/org-tab-expand-snippet-or-latex nil t)
+  (when (boundp 'acm-enable-yas)
+    (setq-local acm-enable-yas nil)))
 
 
 (provide 'init-latex)

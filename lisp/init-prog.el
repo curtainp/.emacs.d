@@ -156,6 +156,7 @@
   (lisp-mode . aggressive-indent-mode))
 
 (use-package highlight-defined
+  :straight t
   :commands highlight-defined-mode
   :hook (emacs-lisp-mode . highlight-defined-mode))
 

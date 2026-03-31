@@ -1,21 +1,5 @@
 ;;; -*- lexical-binding: t -*-
 
-;; PERF: `tty-run-terminal-initialization' is slow
-;; (unless (daemonp)
-;;   (advice-add #'tty-run-terminal-initialization :override #'ignore)
-;;   (add-hook 'window-setup-hook
-;;             (defun doom-init-tty-h ()
-;;               (advice-remove #'tty-run-terminal-initialization #'ignore)
-;;               (tty-run-terminal-initialization (selected-frame) nil t))))
-
-;; refer https://emacs.stackexchange.com/questions/82010/why-is-emacs-recompiling-some-packages-on-every-startup
-;; (use-package comp-run
-;;   :straight nil
-;;   :config
-;;   (push "tramp-loaddefs.el.gz" native-comp-jit-compilation-deny-list)
-;;   (push "cl-loaddefs.el.gz" native-comp-jit-compilation-deny-list))
-
-
 (setq tab-always-indent 'complete) ; try indent first, if indent already, try complete
 (setq tab-first-completion 'word-or-paren-or-punct)
 (setq-default tab-width 4

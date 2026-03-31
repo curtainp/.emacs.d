@@ -25,6 +25,9 @@
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
+(setq-default cursor-in-non-selected-windows nil)
+(setq highlight-nonselected-windows nil)
+
 ;; Make native compilation silent and prune its cache.
 (when (native-comp-available-p)
   (setq native-comp-async-report-warnings-errors 'silent
@@ -103,7 +106,7 @@ this stage of initialization."
    (delete-dups (append file-name-handler-alist
                         minimal-emacs--old-file-name-handler-alist))))
 
-(progn 
+(progn
   ;; Determine the state of bundled libraries using calc-loaddefs.el. If
   ;; compressed, retain the gzip handler in `file-name-handler-alist`. If
   ;; compiled or neither, omit the gzip handler during startup for improved
@@ -225,7 +228,4 @@ this stage of initialization."
 (push '(undecorated-round . t) default-frame-alist)
 
 ;; This results in a more compact output that emphasizes performance
-(setq use-package-expand-minimally t)
-(setq use-package-minimum-reported-time 0.1)
-(setq use-package-enable-imenu-support t)
 (setq package-enable-at-startup nil)

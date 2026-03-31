@@ -1,9 +1,13 @@
 ;;; -*- lexical-binding: t -*-
 
-(setq straight-vc-git-default-clone-depth 1)
+(setq straight-repository-branch "develop")
+(setq straight-check-for-modifications '(check-on-save find-when-checking))
 (defvar bootstrap-version)
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
       (bootstrap-version 7))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
@@ -13,9 +17,6 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-;; (setq straight-check-for-modifications t) ;; the default is more reliable, but has a minor cost to startup time
-(setq use-package-always-defer t)
-(setq straight-use-package-by-default t)
 
 (mapc
  (lambda (path)

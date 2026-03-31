@@ -180,6 +180,7 @@
   :commands doom-modeline-mode
   :hook (after-init . doom-modeline-mode)
   :custom
+  (doom-modeline-height 20)
   (doom-modeline-irc nil)
   (doom-modeline-mu4e nil)
   (doom-modeline-gnus nil)
@@ -196,24 +197,6 @@
   ; (doom-modeline-continuous-word-count-modes '(markdown-mode markdown-ts-mode gfm-mode org-mode rst-mode latex-mode tex-mode))
   )
 
-(use-package centaur-tabs
-  :disabled
-  :straight t
-  :demand t
-  :hook
-  (calendar-mode . centaur-tabs-local-mode)
-  (org-agenda-mode . centaur-tabs-local-mode)
-  :custom
-  (centaur-tabs-icon-type 'nerd-icons)
-  (centaur-tabs-set-icons t)
-  (centaur-tabs-gray-out-icons 'buffer) ;; gray out icons for buffer that not selected
-  (centaur-tabs-set-close-button nil)
-  (centaur-tabs-modified-marker t)
-  ;; (centaur-tabs-style "rounded")
-  (centaur-tabs-left-edge-margin nil)
-  :config
-  ;; (centaur-tabs-headline-match)
-  (centaur-tabs-mode t))
 
 (use-package default-text-scale
   :straight t

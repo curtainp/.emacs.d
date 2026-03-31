@@ -176,6 +176,7 @@
   :commands nerd-icons-install-fonts)
 
 (use-package doom-modeline
+  :disabled
   :straight t
   :commands doom-modeline-mode
   :hook (after-init . doom-modeline-mode)
@@ -195,6 +196,17 @@
   ;; (doom-modeline-hud t)
   ;; (doom-modeline-hud-min-height 1)
   ; (doom-modeline-continuous-word-count-modes '(markdown-mode markdown-ts-mode gfm-mode org-mode rst-mode latex-mode tex-mode))
+  )
+
+(use-package awesome-tray
+  :straight (:host github :repo "manateelazycat/awesome-tray")
+  :commands awesome-tray-mode
+  :hook (after-init . awesome-tray-mode)
+  :custom
+  (awesome-tray-file-path-show-filename t)
+  (awesome-tray-file-path-truncated-name-length 2)
+  (awesome-tray-file-path-full-dirname-levels 3)
+  (awesome-tray-active-modules '("location" "belong" "file-path" "mode-name"))
   )
 
 

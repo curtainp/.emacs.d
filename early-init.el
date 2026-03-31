@@ -154,19 +154,7 @@ this stage of initialization."
   (add-hook 'post-command-hook #'minimal-emacs--reset-inhibit-message -100))
 
 ;;; Performance: Disable mode-line during startup
-
-(defvar-local minimal-emacs--hidden-mode-line nil
-  "Store the buffer-local value of `mode-line-format' during startup.")
-
-(when (not noninteractive)
-  (put 'mode-line-format
-       'initial-value (default-toplevel-value 'mode-line-format))
-  (setq-default mode-line-format nil)
-  (dolist (buf (buffer-list))
-    (with-current-buffer buf
-      (when (local-variable-p 'mode-line-format)
-        (setq minimal-emacs--hidden-mode-line mode-line-format)
-        (setq mode-line-format nil)))))
+(setq-default mode-line-format nil)
 
 ;;; Restore values
 
@@ -178,16 +166,7 @@ this stage of initialization."
     ;; If we don't undo inhibit-{message, redisplay} and there's an error, we'll
     ;; see nothing but a blank Emacs frame.
     (setq-default inhibit-message nil)
-    (setq-default inhibit-redisplay nil)
-    ;; Restore the mode-line
-    (unless (default-toplevel-value 'mode-line-format)
-      (setq-default mode-line-format (get 'mode-line-format
-                                          'initial-value))
-      (dolist (buf (buffer-list))
-        (with-current-buffer buf
-          (when (local-variable-p 'minimal-emacs--hidden-mode-line)
-            (setq mode-line-format minimal-emacs--hidden-mode-line)
-            (kill-local-variable 'minimal-emacs--hidden-mode-line)))))))
+    (setq-default inhibit-redisplay nil)))
 
 (advice-add 'startup--load-user-init-file :around
             #'minimal-emacs--startup-load-user-init-file)

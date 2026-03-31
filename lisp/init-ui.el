@@ -31,7 +31,7 @@
   :bind
   ;; pular doesn't define any key bindings.
   (("C-x l" . pulsar-pulse-line) ; override `count-lines-page'
-   ("C-x L" . pulsar-highlight-dwim))) ; override `pulsar-highlight-line'
+   ("C-x L" . pulsar-highlight-permanently-dwim))) ; override `pulsar-highlight-line'
 
 (use-package doom-themes
   :disabled

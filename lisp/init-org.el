@@ -9,15 +9,17 @@
          ("C-c C-q" . my/org-set-tags-command))
   :custom
   (org-directory curtain-org-directory)
-  (org-imenu-depth 4)
+  (org-imenu-depth 7)
+  (org-M-RET-may-split-line '((default . nil))) ; move the end of line before make a new line
   (org-ellipsis " ↩")
   (org-pretty-entities t)
   (org-hide-emphasis-markers t)
+  (org-hide-macro-markers t)
+  (org-hide-leading-stars nil)
   (org-fontify-whole-heading-line t)    ;; prettify heading line
   (org-fontify-todo-headline t)
   (org-fontify-done-headline t)
   (org-fontify-quote-and-verse-blocks t)
-  (org-hide-macro-markers t)
   (org-highlight-latex-and-related '(native script entities))
   (org-startup-indented t)
   (org-adapt-indentation t)

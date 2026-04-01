@@ -51,7 +51,21 @@
   (ef-themes-take-over-modus-themes-mode 1)
   :config
   (setq modus-themes-mixed-fonts t)
+  (setq modus-themes-variable-pitch-ui t)
   (setq modus-themes-italic-constructs t)
+  (setq modus-themes-bold-constructs t)
+  (setq modus-themes-headings
+        '((0 . (variable-pitch light 1.9))
+          (1 . (variable-pitch light 1.8))
+          (2 . (variable-pitch regular 1.7))
+          (3 . (variable-pitch regular 1.6))
+          (4 . (variable-pitch regular 1.5))
+          (5 . (variable-pitch 1.4))
+          (6 . (variable-pitch 1.3))
+          (7 . (variable-pitch 1.2))
+          (agenda-date . (semilight 1.5))
+          (agenda-structure . (variable-pitch light 1.9))
+          (t . (variable-pitch 1.1))))
   (modus-themes-load-theme 'ef-dream))  ;; ef-arbutus for light theme
 
 (use-package fontaine
@@ -157,6 +171,7 @@
                                   ))
   :hook
   (after-init . (lambda ()
+                  (fontaine-mode)
                   (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular))
                   ;; Set Symbol Font
                   (cl-loop for font in cw/symbol-fonts
@@ -204,8 +219,8 @@
   :hook (after-init . awesome-tray-mode)
   :custom
   (awesome-tray-file-path-show-filename t)
-  (awesome-tray-file-path-truncated-name-length 2)
-  (awesome-tray-file-path-full-dirname-levels 3)
+  (awesome-tray-file-path-truncated-name-length 0)
+  (awesome-tray-file-path-full-dirname-levels 0)
   (awesome-tray-active-modules '("location" "belong" "file-path" "mode-name"))
   )
 

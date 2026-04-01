@@ -1118,16 +1118,45 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
   (require 'ox-rss)
   (require 'ox-publish))
 
+(defun cw/blog--collect-open-file-buffers ()
+  "Return the currently live buffers visiting files."
+  (cl-remove-if-not #'buffer-file-name (buffer-list)))
+
+(defun cw/blog--publish-temp-buffer-p (buffer)
+  "Return non-nil when BUFFER is a blog Org buffer opened for publishing."
+  (when-let* ((file (buffer-file-name buffer))
+              (base-dir (and (boundp 'cw/blog-base-dir) cw/blog-base-dir)))
+    (let ((file (expand-file-name file))
+          (base-dir (file-name-as-directory (expand-file-name base-dir))))
+      (and (string-equal (downcase (or (file-name-extension file) "")) "org")
+           (string-prefix-p base-dir file)))))
+
+(defun cw/blog--cleanup-publish-buffers (initial-buffers)
+  "Kill blog Org buffers opened after INITIAL-BUFFERS was captured."
+  (dolist (buffer (buffer-list))
+    (when (and (buffer-live-p buffer)
+               (not (memq buffer initial-buffers))
+               (cw/blog--publish-temp-buffer-p buffer))
+      ;; Publishing may leave temporary Org buffers marked as modified.
+      (with-current-buffer buffer
+        (set-buffer-modified-p nil))
+      (kill-buffer buffer))))
+
 ;;;###autoload
 (defun cw/publish-blog ()
-  "Publish blog with auto-revert-mode temporarily disabled."
+  "Publish blog and clean up temporary Org buffers afterwards."
   (interactive)
   (cw/blog--ensure-publish-deps)
   (require 'autorevert)
-  (let ((auto-revert-stop-on-user-input nil))
-    (global-auto-revert-mode -1)
+  (let ((auto-revert-stop-on-user-input nil)
+        (auto-revert-was-enabled global-auto-revert-mode)
+        (initial-buffers (cw/blog--collect-open-file-buffers)))
+    (when auto-revert-was-enabled
+      (global-auto-revert-mode -1))
     (unwind-protect
         (org-publish "Curtain's Blog" nil)
-      (global-auto-revert-mode 1))))
+      (cw/blog--cleanup-publish-buffers initial-buffers)
+      (when auto-revert-was-enabled
+        (global-auto-revert-mode 1)))))
 
 (provide 'init-notes)

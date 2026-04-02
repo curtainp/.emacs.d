@@ -33,10 +33,6 @@
 (use-package denote-sequence
   :straight t)
 
-;; View and filter Denote files in a tabulated list
-(use-package denote-menu
-  :straight t)
-
 (use-package consult-notes
   :straight (:type git :host github :repo "mclear-tools/consult-notes")
   :commands (consult-notes
@@ -50,6 +46,7 @@
   (setq consult-notes-denote-files-function (lambda () (denote-directory-files nil t t))))
 
 (use-package org-super-links
+  :disabled
   :straight (:type git :host github :repo "toshism/org-super-links" :branch "develop")
   :bind (("C-c s s" . org-super-links-link)
          ("C-c s l" . org-super-links-store-link)
@@ -63,6 +60,7 @@
 
 
 (use-package org-download
+  :disabled
   :straight t
   :after org
   :bind (:map org-mode-map

@@ -24,6 +24,16 @@
   :config
   (setq js-indent-level 2))
 
+(use-package smartparens
+  :straight t
+  :commands smartparens-global-mode
+  :hook (after-init . smartparens-global-mode)
+  :custom
+  (sp-ignore-modes-list '(minibuffer-inactive-mode)) ; Enable in `minibuffer-mode'
+  :config
+  (require 'smartparens-config)
+  (sp-local-pair 'org-mode "$" "$" :unless '(sp-point-after-word-p)))
+
 
 (defvar custom-auto-langs '(bash c cpp css dockerfile html javascript json latex make org python rust sql toml
                              tsx typescript yaml xml markdown markdown-inline elisp))

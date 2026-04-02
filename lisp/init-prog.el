@@ -176,7 +176,9 @@
                            "*.ti" ("terminfo/e" "terminfo/e/*")
                            ("terminfo/65" "terminfo/65/*")
                            ("integration" "integration/*")
-                           (:exclude ".dir-locals.el" "*-tests.el"))))
+                           (:exclude ".dir-locals.el" "*-tests.el")))
+  :hook (eat-mode . (lambda ()
+                      (define-key evil-normal-state-map (kbd "q") 'quit-window))))
 
 
 (provide 'init-prog)

@@ -53,7 +53,7 @@
   (setq modus-themes-mixed-fonts t)
   (setq modus-themes-variable-pitch-ui t)
   (setq modus-themes-italic-constructs t)
-  (setq modus-themes-bold-constructs t)
+  ;; (setq modus-themes-bold-constructs t)
   (setq modus-themes-headings
         '((0 . (variable-pitch light 1.9))
           (1 . (variable-pitch light 1.8))

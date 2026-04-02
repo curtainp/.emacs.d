@@ -13,6 +13,41 @@
   (setf (alist-get 'typescript-ts-mode apheleia-mode-alist) 'prettier)
   (setf (alist-get 'js-ts-mode apheleia-mode-alist) 'prettier))
 
+(use-package gt
+  :straight t
+  :commands (gt-translate gt-setup gt-speak)
+  ;; integration with evil
+  :hook (gt-buffer-render-init . (lambda ()
+                                   (define-key evil-normal-state-local-map (kbd "q") 'quit-window)))
+  :bind
+  (:map global-map
+        ("C-c g t" . gt-translate)
+        ("C-c g s" . gt-speak)
+        ("C-c g p" . gt-setup))
+  :config
+  (setopt gt-langs '(en zh)
+          gt-buffer-render-follow-p t
+          gt-buffer-render-window-config
+          '((display-buffer-reuse-window display-buffer-in-direction)
+            (direction . bottom)
+            (window-height . 0.4)))
+  (setq gt-preset-translators
+        `((default . ,(gt-translator
+                       :taker (list (gt-taker :pick nil :if 'selection)
+                                    (gt-taker :text 'paragraph :if '(Info-mode help-mode helpful-mode elfeed-show-mode))
+                                    (gt-taker :text 'word))
+                       :engines (list (gt-youdao-dict-engine)
+                                      (gt-stardict-engine :dir "~/.stardict/dic" :dict "朗道英汉字典5.0" :exact t))
+                       :render (list (gt-overlay-render :if '(Info-mode help-mode helpful-mode elfeed-show-mode))
+                                     (gt-buffer-render))))
+          ;; TODO: add more translators
+          ))
+  (when (memq system-type '(gnu gnu/linux gnu/kfreebsd))
+      (setopt gt-tts-native-engine 'espeak-ng)
+      (cl-defmethod gt-speech ((engine (eql 'espeak-ng)) text lang &optional play-fn)
+        (let ((command (format "espeak-ng -v %s \"%s\"" lang text)))
+          (start-process-shell-command "espeak-ng" nil command)))))
+
 (use-package time
   :straight nil
   :commands (world-clock)
@@ -129,51 +164,6 @@
     "% 2(mc/num-cursors) cursor%s(if (> (mc/num-cursors) 1) \"s\" \"\")"
 	(("0" mc/insert-numbers "insert numbers" :exit t)
 	 ("A" mc/insert-letters "insert letters" :exit t)))))
-
-(use-package vterm-toggle
-  :disabled
-  :straight t
-  :bind (:map global-map
-              ([f8] . vterm-toggle)
-              :map vterm-mode-map
-              ([f8] . vterm-toggle))
-  )
-
-
-(use-package vterm
-  :disabled
-  :straight t
-  :bind (:map vterm-mode-map ([return] . vterm-send-return))
-  :custom
-  (vterm-always-compile-module t)
-  (vterm-max-scrollback 10000))
-
-(use-package multi-vterm
-  :disabled
-  :bind (([remap project-shell] . multi-vterm-project)
-         ([f1] . +multi-vterm-dedicated-toggle-dwim)
-         :map vterm-mode-map ([f1] . +multi-vterm-dedicated-toggle-dwim))
-  :custom
-  (multi-vterm-dedicated-window-height-percent 30)
-  :config
-  (defun +multi-vterm-dedicated-toggle-dwim ()
-    "Toggle the vterm window.
-When in a project, toggle a `multi-vterm-project' terminal. When outside
-a project, call `multi-vterm-dedicated-toggle'."
-    (interactive)
-    (if-let* ((buf-name (and (multi-vterm-project-root) (multi-vterm-project-get-buffer-name)))
-              (display-buffer-alist (cons `(,(regexp-quote buf-name)
-                                            (display-buffer-reuse-window display-buffer-at-bottom)
-                                            (dedicated . t) ;; Close when finished
-                                            (window-height . 0.3))
-                                          display-buffer-alist)))
-        (if-let* ((buf (get-buffer buf-name))
-                  ((buffer-live-p buf)))
-            (if-let* ((win (get-buffer-window buf))) ; The project's vterm already exists, toggle it's window
-                (delete-window win)
-              (pop-to-buffer buf))
-          (multi-vterm-project))
-      (multi-vterm-dedicated-toggle))))
 
 
 (provide 'init-tools)

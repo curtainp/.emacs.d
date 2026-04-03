@@ -187,8 +187,7 @@
   )
 
 (use-package nerd-icons
-  :straight t
-  :commands nerd-icons-install-fonts)
+  :straight t)
 
 (use-package doom-modeline
   :disabled

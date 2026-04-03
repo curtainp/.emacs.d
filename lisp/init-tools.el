@@ -4,7 +4,7 @@
   :straight t
   :commands (apheleia-format-buffer)
   :bind
-  (:map global-map
+  (:map prog-mode-map
         ("C-c C-f" . apheleia-format-buffer))
   :config
   (setf (alist-get 'python-ts-mode apheleia-mode-alist) 'ruff)
@@ -12,6 +12,10 @@
   (setf (alist-get 'css-mode apheleia-mode-alist) 'prettier)
   (setf (alist-get 'typescript-ts-mode apheleia-mode-alist) 'prettier)
   (setf (alist-get 'js-ts-mode apheleia-mode-alist) 'prettier))
+
+(use-package agent-shell
+  :straight t
+  :defer t)
 
 (use-package gt
   :straight t

@@ -14,6 +14,7 @@
 
 (use-package color-rg
   :straight (:host github :repo "manateelazycat/color-rg")
+  :defer t
   :custom
   (color-rg-mac-load-path-from-shell nil))
 

@@ -26,7 +26,7 @@
                               '("Hydras"
                                 "^.*(\\(pretty-hydra-define\\) \\([a-zA-Z-]+\\)"
                                 2))))
-  :init
+  :config
   (cl-defun pretty-hydra-title (title &optional icon-type icon-name
                                       &key face height v-adjust)
     "Add an icon in the hydra title."

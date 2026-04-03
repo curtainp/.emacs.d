@@ -100,7 +100,6 @@
   (evil-collection-calendar-want-org-bindings t)
   (evil-collection-want-find-usages-bindings nil)
   (evil-collection-want-unimpaired-p nil)
-  :init
-  (evil-collection-init))
+  :hook (evil-mode . evil-collection-init))
 
 (provide 'init-evil)

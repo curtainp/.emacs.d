@@ -2,6 +2,7 @@
 
 (use-package web-mode
   :straight t
+  :defer t
   :config
   (setq web-mode-markup-indent-offset 2
         web-mode-code-indent-offset 2
@@ -16,11 +17,13 @@
 
 (use-package css-mode
   :straight nil
+  :defer t
   :config
   (setq css-indent-offset 2))
 
 (use-package js
   :straight nil
+  :defer t
   :config
   (setq js-indent-level 2))
 
@@ -115,6 +118,7 @@
 
 (use-package markdown-mode
   :straight t
+  :defer t
   :config
   (setq markdown-enable-html t)
   ;; (markdown-enable-math t)
@@ -142,6 +146,7 @@
 
 (use-package rust-mode
   :straight t
+  :defer t
   :init
   (setq rust-mode-treesitter-derive t
         rust-format-goto-problem nil
@@ -154,6 +159,7 @@
 
 (use-package python
   :straight nil
+  :defer t
   :custom
   (python-indent-guess-indent-offset t)
   ;; Don't emit warning

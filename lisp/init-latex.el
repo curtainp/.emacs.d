@@ -84,7 +84,8 @@
   )
 
 (use-package latex
-  :straight auctex)
+  :straight auctex
+  :defer t)
 
 
 (use-package cdlatex

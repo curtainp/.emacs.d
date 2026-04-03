@@ -24,3 +24,5 @@
 /themes
 /autosave/
 /saveplace
+/.agent-shell/
+/agent/

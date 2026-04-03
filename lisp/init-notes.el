@@ -31,7 +31,8 @@
   (denote-rename-buffer-mode 1))
 
 (use-package denote-sequence
-  :straight t)
+  :straight t
+  :defer t)
 
 (use-package consult-notes
   :straight (:type git :host github :repo "mclear-tools/consult-notes")
@@ -114,7 +115,8 @@
         org-html-postamble nil))
 
 (use-package org-count-words
-  :straight (:host github :repo "Elilif/org-count-words"))
+  :straight (:host github :repo "Elilif/org-count-words")
+  :defer t)
 
 (use-package ox-rss
   :straight t

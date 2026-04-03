@@ -15,7 +15,17 @@
 
 (use-package agent-shell
   :straight t
-  :defer t)
+  :defer t
+  :config
+  ;; Evil integration: insert = newline, normal = send
+  (evil-define-key 'insert agent-shell-mode-map (kbd "RET") #'newline)
+  (evil-define-key 'normal agent-shell-mode-map
+    (kbd "RET") #'comint-send-input
+    "q" #'quit-window
+    "gj" #'agent-shell-next-item
+    "gk" #'agent-shell-previous-item)
+  ;; diff buffers use emacs state (they have their own accept/reject keybindings)
+  (add-hook 'agent-shell-diff-mode-hook #'evil-emacs-state))
 
 (use-package gt
   :straight t

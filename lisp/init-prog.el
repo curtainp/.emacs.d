@@ -1,5 +1,13 @@
 ;;; -*- lexical-binding: t -*-
 
+(use-package yasnippet
+  :straight t
+  :commands yas-global-mode
+  :hook (after-init . yas-global-mode)
+  :config
+  (setq yas-triggers-in-field t
+        yas-verbosity 0))
+
 (use-package web-mode
   :straight t
   :defer t

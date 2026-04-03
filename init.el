@@ -27,7 +27,11 @@
 (require 'init-ui)
 (require 'init-evil)
 (require 'init-completion)
-(require 'init-lsp-bridge)
+(require 'init-custom)
+(pcase curtain-lsp-client
+  ('lsp-bridge (require 'init-lsp-bridge))
+  ('eglot      (require 'init-eglot))
+  (_           (require 'init-lsp-bridge)))
 (require 'init-nav)
 (require 'init-search)
 (require 'init-prog)

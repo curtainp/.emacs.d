@@ -1,13 +1,5 @@
 ;; init-lsp-bridge.el -*- lexical-binding: t -*-
 
-(use-package yasnippet
-  :straight t
-  :commands yas-global-mode
-  :hook (after-init . yas-global-mode)
-  :config
-  (setq yas-triggers-in-field t
-        yas-verbosity 0))
-
 (use-package lsp-bridge
   :straight '(:type git :host github :repo "curtainp/lsp-bridge"
                     :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")

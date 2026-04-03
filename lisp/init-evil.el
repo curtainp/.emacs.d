@@ -57,29 +57,39 @@
   (evil-define-key '(normal insert) 'global
         (kbd "C-x C-p")  'yank-from-kill-ring) ;; NOTE: original bind with mark-page
 
-  ;; global key bindings and initial mode custom for lsp-bridge
-  (with-eval-after-load 'lsp-bridge
-    (evil-define-key '(normal visual) 'global
-                         "ga" 'lsp-bridge-code-action
-                         "gd" 'lsp-bridge-find-def
-                         "gr" 'lsp-bridge-find-references
-                         "gR" 'lsp-bridge-rename
-                         "[d" 'lsp-bridge-diagnostic-jump-prev
-                         "]d" 'lsp-bridge-diagnostic-jump-next
-                         "gi" 'lsp-bridge-find-impl
-                         "gI" 'lsp-bridge-find-impl-other-window
-                         "K"  'lsp-bridge-popup-documentation
-                         (kbd "M-s-n") 'lsp-bridge-popup-documentation-scroll-up
-                         (kbd "M-s-p") 'lsp-bridge-popup-documentation-scroll-down
-                         "gp" 'lsp-bridge-peek
-                         )
-    (dolist (mode '(lsp-bridge-peek-mode lsp-bridge-ref-mode eaf-mode))
-      (evil-set-initial-state mode 'emacs))
-    ;; (add-hook 'lsp-bridge-peek-mode-hook 'evil-normalize-keymaps) ;
-    ;; (evil-define-key '(normal visual) 'lsp-bridge-peek-keymap
-    ;;   "M-j" 'lsp-bridge-peek-list-next-line
-    ;;   "M-k" 'lsp-bridge-peek-list-prev-line)
-    )
+  ;; LSP keybindings: conditional on curtain-lsp-client
+  (require 'init-custom)
+  (pcase curtain-lsp-client
+    ('lsp-bridge
+     (with-eval-after-load 'lsp-bridge
+       (evil-define-key '(normal visual) 'global
+         "ga" 'lsp-bridge-code-action
+         "gd" 'lsp-bridge-find-def
+         "gr" 'lsp-bridge-find-references
+         "gR" 'lsp-bridge-rename
+         "[d" 'lsp-bridge-diagnostic-jump-prev
+         "]d" 'lsp-bridge-diagnostic-jump-next
+         "gi" 'lsp-bridge-find-impl
+         "gI" 'lsp-bridge-find-impl-other-window
+         "K"  'lsp-bridge-popup-documentation
+         (kbd "M-s-n") 'lsp-bridge-popup-documentation-scroll-up
+         (kbd "M-s-p") 'lsp-bridge-popup-documentation-scroll-down
+         "gp" 'lsp-bridge-peek)
+       (dolist (mode '(lsp-bridge-peek-mode lsp-bridge-ref-mode eaf-mode))
+         (evil-set-initial-state mode 'emacs))))
+    ('eglot
+     (with-eval-after-load 'eglot
+       (evil-define-key '(normal visual) 'global
+         "ga" 'eglot-code-actions
+         "gd" 'xref-find-definitions
+         "gr" 'xref-find-references
+         "gR" 'eglot-rename
+         "[d" 'flymake-goto-prev-error
+         "]d" 'flymake-goto-next-error
+         "gi" 'eglot-find-implementation
+         "gI" 'eglot-find-implementation
+         "K"  'eldoc-doc-buffer
+         "gp" 'xref-find-definitions-other-window))))
   (with-eval-after-load "evil"
     (evil-define-operator my-evil-comment-or-uncomment (beg end)
       "Toggle comment for the region between BEG and END."

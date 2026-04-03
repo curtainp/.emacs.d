@@ -57,8 +57,6 @@
   (evil-define-key '(normal insert) 'global
         (kbd "C-x C-p")  'yank-from-kill-ring) ;; NOTE: original bind with mark-page
 
-  ;; LSP keybindings: conditional on curtain-lsp-client
-  (require 'init-custom)
   (pcase curtain-lsp-client
     ('lsp-bridge
      (with-eval-after-load 'lsp-bridge

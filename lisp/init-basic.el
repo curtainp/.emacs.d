@@ -59,9 +59,7 @@
 (setq eval-expression-print-level nil
       eval-expression-print-length nil)
 
-(setq epg-pinentry-mode 'loopback)
-
-(setq auth-source (list "~/.authinfo.gpg"))
+(setq auth-sources (list "~/.authinfo.gpg"))
 
 (setq-default display-line-numbers-width 3)
 (setq-default display-line-numbers-widen t)

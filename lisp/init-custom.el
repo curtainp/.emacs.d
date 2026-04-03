@@ -1,4 +1,4 @@
-;; init-custom.el -*- lexical-binding: t -*-
+;;; init-custom.el --- Shared custom options -*- lexical-binding: t; -*-
 
 (defgroup curtain nil
   "Curtain Emacs Configuration Group."
@@ -49,5 +49,5 @@
           (const :tag "LSP Bridge" lsp-bridge)
           (const :tag "Eglot" eglot)))
 
-
 (provide 'init-custom)
+;;; init-custom.el ends here

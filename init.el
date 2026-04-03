@@ -23,11 +23,13 @@
    (add-to-list 'load-path (locate-user-emacs-file path)))
  '("lisp" "modules"))
 
+(require 'init-const)
+(require 'init-custom)
+
 (require 'init-basic)
 (require 'init-ui)
 (require 'init-evil)
 (require 'init-completion)
-(require 'init-custom)
 (pcase curtain-lsp-client
   ('lsp-bridge (require 'init-lsp-bridge))
   ('eglot      (require 'init-eglot))

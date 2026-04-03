@@ -1,9 +1,5 @@
 ;; -*- lexical-binding: t -*-
 
-(eval-when-compile
-  (require 'init-const)
-  (require 'init-custom))
-
 (global-hl-line-mode 1)
 
 (setq frame-resize-pixelwise t

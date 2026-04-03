@@ -17,6 +17,11 @@
   :straight t
   :defer t
   :config
+  (setq agent-shell-openai-authentication
+        (agent-shell-openai-make-authentication :codex-api-key (lambda ()
+                                                                 (let ((json-object-type 'hash-table))
+                                                                   (gethash "OPENAI_API_KEY"
+                                                                            (json-read-file "~/.codex/auth.json"))))))
   ;; Evil integration: insert = newline, normal = send
   (evil-define-key 'insert agent-shell-mode-map (kbd "RET") #'newline)
   (evil-define-key 'normal agent-shell-mode-map

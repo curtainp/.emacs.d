@@ -21,7 +21,7 @@
               ("C-c C-d C-r" . denote-dired-rename-marked-files)
               ("C-c C-d C-k" . denote-dired-rename-marked-files-with-keywords)
               ("C-c C-d C-f" . denote-dired-rename-marked-files-using-front-matter))
-              
+
   :config
   (setq denote-directory curtain-org-directory
         denote-known-keywords '("emacs" "work" "blog" "journal")
@@ -75,6 +75,7 @@
 
 (use-package ox
   :straight nil
+  :defer t
   :config
   (setq org-export-with-priority t
         org-export-with-toc 4
@@ -89,6 +90,7 @@
 
 (use-package ox-html
   :straight nil
+  :defer t
   :config
   (setq org-html-metadata-timestamp-format "%Y-%m-%d"
         org-html-head-include-default-style nil
@@ -120,6 +122,7 @@
 
 (use-package ox-rss
   :straight t
+  :defer t
   :config
   (defvar cw/blog-tags nil)
   (defconst cw/blog-draft-tag "draft")
@@ -310,7 +313,7 @@ time in `current-time' format."
                          (file-name-directory publishing-directory))))
       (rename-file orig-file target-file t)))
 
-  
+
 (defun cw/blog-publish-completion (project)
   (cw/blog-move-sitemap project)
   (cw/blog-generate-sitemap)

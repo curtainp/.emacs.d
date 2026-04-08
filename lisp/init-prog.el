@@ -185,6 +185,7 @@
   :hook (emacs-lisp-mode . highlight-defined-mode))
 
 (use-package eat
+  :disabled
   :straight (:host codeberg :repo "akib/emacs-eat"
                    :files ("*.el" ("term" "term/*.el") "*.texi"
                            "*.ti" ("terminfo/e" "terminfo/e/*")
@@ -194,5 +195,11 @@
   :hook (eat-mode . (lambda ()
                       (define-key evil-normal-state-map (kbd "q") 'quit-window))))
 
+(use-package ghostel
+  :straight (:host github :repo "dakra/ghostel")
+  :commands ghostel
+  :hook (ghostel-mode . evil-emacs-state)
+  :config
+  (setq ghostel-enable-file-detection nil))
 
 (provide 'init-prog)

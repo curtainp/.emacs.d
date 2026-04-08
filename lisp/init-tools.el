@@ -13,6 +13,12 @@
   (setf (alist-get 'typescript-ts-mode apheleia-mode-alist) 'prettier)
   (setf (alist-get 'js-ts-mode apheleia-mode-alist) 'prettier))
 
+(use-package reader
+  :straight (:host codeberg :repo "Monadicsheep/emacs-reader"
+                   :files (:defaults "render-core.so")
+                   :pre-build ("make" "all"))
+  :commands (reader-mode))
+
 (use-package agent-shell
   :straight t
   :defer t

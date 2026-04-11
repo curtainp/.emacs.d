@@ -13,16 +13,26 @@
           html-mode)
          . eglot-ensure)
   :config
-  (setq eglot-autoshutdown t)
-  (setq eglot-events-buffer-size 0)
-  (setq eglot-send-changes-idle-time 0.5)
-  (setq eglot-report-progress nil))
+  (setq eglot-autoshutdown t
+        eglot-events-buffer-config '(:size 0 :format full) ;; no log
+        ;; Keep the server closer to the live buffer so completion
+        ;; doesn't lag behind fast typing.
+        eglot-send-changes-idle-time 0.05
+        ;; format with `apheleia-format-buffer' instead.
+        eglot-ignored-server-capabilities '(:documentFormattingProvider
+                                            :documentRangeFormattingProvider)
+        eglot-report-progress nil))
 
 ;; Eglot-booster: wraps emacs-lsp-booster for faster JSON processing
 ;; Requires `emacs-lsp-booster' binary in PATH
 (use-package eglot-booster
   :straight (:host github :repo "jdtsmith/eglot-booster")
   :after eglot
+  :custom
+  ;; Emacs 31's native JSON reader is already fast, and avoiding
+  ;; bytecode decoding sidesteps odd UTF-8 display glitches from some
+  ;; completion items.
+  (eglot-booster-io-only t)
   :config
   (eglot-booster-mode))
 
@@ -41,11 +51,42 @@
   (corfu-quit-no-match 'separator)
   (corfu-preview-current nil)
   :config
+  (defun +corfu-apply-theme (&rest _)
+    "Sync Corfu faces with the active theme."
+    (let* ((bg (face-background 'default nil t))
+           (fg (face-foreground 'default nil t))
+           (current-bg (or (face-background 'hl-line nil t)
+                           (face-background 'highlight nil t)
+                           bg))
+           (current-fg (or (face-foreground 'highlight nil t)
+                           fg))
+           (border (or (face-background 'vertical-border nil t)
+                       (face-foreground 'vertical-border nil t)
+                       (face-background 'mode-line-inactive nil t)
+                       bg)))
+      (set-face-attribute 'corfu-default nil
+                          :background bg
+                          :foreground fg)
+      (set-face-attribute 'corfu-current nil
+                          :background current-bg
+                          :foreground current-fg
+                          :extend t)
+      (set-face-attribute 'corfu-border nil
+                          :background border)))
+
+  (defun +eglot-corfu-setup ()
+    "Make Corfu react faster in Eglot-managed buffers."
+    (setq-local corfu-auto-delay 0.0))
+
   (defun +corfu-enable-in-minibuffer ()
     "Enable Corfu in the minibuffer if completion is expected."
     (when (local-variable-p 'completion-at-point-functions)
       (setq-local corfu-auto nil)
       (corfu-mode 1)))
+  (+corfu-apply-theme)
+  (unless (advice-member-p #'+corfu-apply-theme #'enable-theme)
+    (advice-add 'enable-theme :after #'+corfu-apply-theme))
+  (add-hook 'eglot-managed-mode-hook #'+eglot-corfu-setup)
   (add-hook 'minibuffer-setup-hook #'+corfu-enable-in-minibuffer)
   :bind (:map corfu-map
               ("S-SPC" . corfu-insert-separator)))
@@ -58,7 +99,10 @@
   :custom
   (corfu-popupinfo-delay '(0.5 . 0.2))
   (corfu-popupinfo-max-height 15)
-  (corfu-popupinfo-max-width 80))
+  (corfu-popupinfo-max-width 80)
+  :config
+  (set-face-attribute 'corfu-popupinfo nil
+                      :inherit 'corfu-default))
 
 ;; Nerd-icons for corfu
 (use-package nerd-icons-corfu
@@ -73,12 +117,11 @@
   :after corfu
   :config
   (defun +eglot-capf ()
-    "Compose eglot capf with cape backends."
+    "Prefer Eglot's CAPF while keeping lightweight local fallbacks."
     (setq-local completion-at-point-functions
-                (list (cape-capf-super
-                       #'eglot-completion-at-point
-                       #'cape-file
-                       #'cape-dabbrev))))
+                (list #'cape-file
+                      #'eglot-completion-at-point
+                      #'cape-dabbrev)))
   (add-hook 'eglot-managed-mode-hook #'+eglot-capf)
   ;; Global fallback backends for non-eglot buffers
   (add-hook 'completion-at-point-functions #'cape-file)

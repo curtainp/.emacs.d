@@ -42,7 +42,8 @@
         (imenu (styles . (basic substring orderless)))
         (consult-location (styles . (basic substring orderless)))
         (kill-ring (styles . (emacs22 orderless)))
-        (eglot (styles . (emacs22 substring orderless)))))
+        ;; (eglot (styles . (emacs22 substring)))
+        ))
 
 (use-package vertico
   :straight t

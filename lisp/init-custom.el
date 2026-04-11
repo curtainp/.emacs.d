@@ -40,7 +40,7 @@
   :group 'curtain
   :type 'boolean)
 
-(defcustom curtain-lsp-client 'lsp-bridge
+(defcustom curtain-lsp-client 'eglot
   "The LSP client to use.
 `lsp-bridge' uses lsp-bridge with acm completion.
 `eglot' uses eglot with corfu, cape, and emacs-lsp-booster."

@@ -216,7 +216,7 @@
   (awesome-tray-file-path-show-filename t)
   (awesome-tray-file-path-truncated-name-length 0)
   (awesome-tray-file-path-full-dirname-levels 0)
-  (awesome-tray-active-modules '("location" "belong" "file-path" "mode-name"))
+  (awesome-tray-active-modules '("evil" "location" "belong" "file-path" "mode-name"))
   )
 
 

@@ -19,6 +19,13 @@
                    :pre-build ("make" "all"))
   :commands (reader-mode))
 
+;; NOTE: need to install TDlib dependency
+(use-package telega
+  :straight (:host github :repo "zevlg/telega.el"
+                   :branch "master"
+                   :files (:defaults "contrib" "etc" "server" "Makefile"))
+  :commands telega)
+
 (use-package agent-shell
   :straight t
   :defer t

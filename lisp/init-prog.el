@@ -198,8 +198,25 @@
 (use-package ghostel
   :straight (:host github :repo "dakra/ghostel")
   :commands ghostel
-  :hook (ghostel-mode . evil-emacs-state)
+  ;; :init
+  ;; ;; NOTE: must be set with `evil-set-initial-state', cause ghostel will call `pop-to-buffer' first,
+  ;; ;; then call `ghostel-mode', in this case, evil will call `evil-initialize-state' everytime when
+  ;; ;; `major-mode' changed, so :hook (ghostel-mode . evil-emacs-state) will be override by that.
+  ;; (with-eval-after-load 'evil
+  ;;   (evil-set-initial-state 'ghostel-mode 'emacs))
   :config
+  (require 'ghostel-evil)
+  (add-hook 'ghostel-mode-hook (lambda ()
+                                 (ghostel-evil-mode)
+                                 (evil-local-set-key 'insert (kbd "C-f")
+                                                     (lambda ()
+                                                       (interactive)
+                                                       (ghostel--send-encoded "f" "ctrl")))
+                                 (evil-local-set-key 'insert (kbd "C-b")
+                                                     (lambda ()
+                                                       (interactive)
+                                                       (ghostel--send-encoded "b" "ctrl")))
+                                 ))
   (setq ghostel-enable-file-detection nil))
 
 (provide 'init-prog)

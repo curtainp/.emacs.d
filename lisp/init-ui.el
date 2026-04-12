@@ -1,6 +1,6 @@
 ;; -*- lexical-binding: t -*-
 
-(global-hl-line-mode 1)
+;; (global-hl-line-mode 1)
 
 (setq frame-resize-pixelwise t
       window-resize-pixelwise t)

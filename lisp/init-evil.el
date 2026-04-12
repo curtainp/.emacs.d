@@ -5,15 +5,13 @@
   :commands (evil-mode evil-define-key)
   :hook (after-init . evil-mode)
   :init
-  (setq evil-want-C-u-scroll t
-        evil-want-C-i-jump nil
+  (setq evil-want-C-u-scroll nil
+        evil-want-C-i-jump t
         ;; This two variable is needed for evil-collections
         evil-want-keybinding nil
         evil-want-integration t
         evil-undo-system 'undo-redo
-        evil-spilt-window-below t
-        evil-symbol-word-search t
-        evil-vspilt-window-right t)
+        evil-symbol-word-search t)
   :custom
   (evil-search-module 'evil-search)
   (evil-echo-state nil) ;; we have state indicator with awesome-tray

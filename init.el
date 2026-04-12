@@ -33,7 +33,7 @@
 (pcase curtain-lsp-client
   ('lsp-bridge (require 'init-lsp-bridge))
   ('eglot      (require 'init-eglot))
-  (_           (require 'init-lsp-bridge)))
+  (_           (require 'init-eglot)))
 (require 'init-nav)
 (require 'init-search)
 (require 'init-prog)

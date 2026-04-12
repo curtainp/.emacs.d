@@ -13,6 +13,11 @@
   (setf (alist-get 'typescript-ts-mode apheleia-mode-alist) 'prettier)
   (setf (alist-get 'js-ts-mode apheleia-mode-alist) 'prettier))
 
+(use-package evil-matchit
+  :straight t
+  :commands global-evil-matchit-mode
+  :hook (after-init . global-evil-matchit-mode))
+
 (use-package reader
   :straight (:host codeberg :repo "Monadicsheep/emacs-reader"
                    :files (:defaults "render-core.so")

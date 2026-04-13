@@ -20,6 +20,11 @@
   :group 'cw-emacs
   :type 'string)
 
+(defcustom cw-emacs-blog-directory (expand-file-name "~/Documents/org-blog/orgs/")
+  "Set org blog directory."
+  :group 'cw-emacs
+  :type 'string)
+
 (defcustom cw-emacs-server-p nil
   "Enable `server-mode' or not."
   :group 'cw-emacs

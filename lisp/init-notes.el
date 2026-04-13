@@ -4,18 +4,19 @@
 (use-package denote
   :straight t
   :commands (denote-create-note denote-insert-link denote-show-backlinks-buffer)
-  :hook (dired-mode . denote-dired-mode)
+  :hook ((dired-mode . denote-dired-mode)
+         (text-mode . denote-fontify-links-mode))
   :custom
   (denote-date-prompt-use-org-read-date t) ; And `org-read-date' is an amazing bit of tech
   :bind (:map global-map
-              ("C-c n p" . denote-sequence-new-parent)
-              ("C-c n c" . denote-sequence-new-child)
-              ("C-c n s" . denote-sequence-new-sibling)
-              ("C-c n d" . denote-sequence-dired)
-              ("C-c n l" . denote-sequence-link)
-              ;; :map org-mode-map
-              ;; ("C-c n d l" . denote-org-extra-dblock-insert-links)
-              ;; ("C-c n d b" . denote-org-extra-dblock-insert-backlinks)
+              ("C-c n n" . denote-silo-open-or-create)
+              ("C-c n N" . denote-silo-open-or-create)
+              ("C-c n d" . denote-dired)
+              ("C-c n g" . denote-grep)
+              ("C-c n r" . denote-rename-file)
+              ("C-c n i" . denote-link)
+              ("C-c n I" . denote-add-links)
+              ("C-c n b" . denote-backlinks)
               :map dired-mode-map
               ("C-c C-d C-i" . denote-dired-link-marked-notes)
               ("C-c C-d C-r" . denote-dired-rename-marked-files)
@@ -24,13 +25,14 @@
 
   :config
   (setq denote-directory cw-emacs-notes-directory
-        denote-known-keywords '("emacs" "work" "blog" "journal")
+        denote-silo-directories (list cw-emacs-blog-directory cw-emacs-notes-directory)
+        denote-known-keywords '("emacs" "work" "blog" "security")
         denote-infer-keywords t
         denote-sort-keywords t
         )
   (denote-rename-buffer-mode 1))
 
-(use-package denote-sequence
+(use-package denote-silo
   :straight t
   :defer t)
 
@@ -45,33 +47,6 @@
   (when (locate-library "denote")
     (consult-notes-denote-mode))
   (setq consult-notes-denote-files-function (lambda () (denote-directory-files nil t t))))
-
-(use-package org-super-links
-  :disabled
-  :straight (:type git :host github :repo "toshism/org-super-links" :branch "develop")
-  :bind (("C-c s s" . org-super-links-link)
-         ("C-c s l" . org-super-links-store-link)
-         ("C-c s C-l" . org-super-links-insert-link)
-         ("C-c s d" . org-super-links-quick-insert-drawer-link)
-         ("C-c s i" . org-super-links-quick-insert-inline-link)
-         ("C-c s C-d" . org-super-links-delete-link))
-  :config
-  (setq org-super-links-related-into-drawer t
-  	org-super-links-link-prefix 'org-super-links-link-prefix-timestamp))
-
-
-(use-package org-download
-  :disabled
-  :straight t
-  :after org
-  :bind (:map org-mode-map
-              ("C-c d c" . org-download-clipboard))
-  :config
-  (add-hook 'dired-mode-hook 'org-download-enable)
-  (when (eq system-type 'darwin)
-    (setq org-download-screenshot-method "pngpaste %s"))
-  (setq-default org-download-heading-lvl nil
-                org-download-image-dir "."))
 
 (use-package ox
   :straight nil

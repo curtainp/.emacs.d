@@ -11,10 +11,10 @@
   :hook (after-init . pulsar-global-mode)
   :config
   (setq pulsar-delay 0.055
-        pulsar-iterations 10
-        pulsar-face 'pulsar-yellow
+        pulsar-iterations 5
+        pulsar-face 'pulsar-green
         pulsar-highlight-face 'pulsar-magenta
-        pulsar-region-change-face 'pulsar-red)
+        pulsar-region-face 'pulsar-yellow)
 
   (with-eval-after-load 'evil
     (cl-callf append pulsar-pulse-functions
@@ -22,8 +22,7 @@
                   evil-paste-after evil-paste-before evil-goto-last-change evil-goto-last-change-reverse)))
 
   :hook
-  ((next-error . (pulsar-pulse-line-red pulsar-recenter-top pulsar-reveal-entry))
-   (minibuffer-setup . pulsar-pulse-line-yellow))
+  ((next-error minibuffer-setup-hook) . (pulsar-pulse-line-red pulsar-recenter-top pulsar-reveal-entry))
   :bind
   ;; pular doesn't define any key bindings.
   (("C-x l" . pulsar-pulse-line) ; override `count-lines-page'
@@ -51,16 +50,15 @@
   (setq modus-themes-italic-constructs t)
   ;; (setq modus-themes-bold-constructs t)
   (setq modus-themes-headings
-        '((0 . (variable-pitch light 1.9))
-          (1 . (variable-pitch light 1.8))
-          (2 . (variable-pitch regular 1.7))
-          (3 . (variable-pitch regular 1.6))
-          (4 . (variable-pitch regular 1.5))
-          (5 . (variable-pitch 1.4))
-          (6 . (variable-pitch 1.3))
-          (7 . (variable-pitch 1.2))
+        '((0 . (variable-pitch light 1.7))
+          (1 . (variable-pitch light 1.6))
+          (2 . (variable-pitch regular 1.5))
+          (3 . (variable-pitch regular 1.4))
+          (4 . (variable-pitch regular 1.3))
+          (5 . (variable-pitch 1.2))
+          (6 . (variable-pitch 1.1))
           (agenda-date . (semilight 1.5))
-          (agenda-structure . (variable-pitch light 1.9))
+          (agenda-structure . (variable-pitch light 1.7))
           (t . (variable-pitch 1.1))))
   (modus-themes-load-theme 'ef-dream))  ;; ef-arbutus for light theme
 
@@ -68,6 +66,7 @@
   :straight t
   :commands fontaine-mode
   :config
+  (setq-default text-scale-remap-header-line t)
   (setq fontaine-presets
         '((small
            :default-height 80)

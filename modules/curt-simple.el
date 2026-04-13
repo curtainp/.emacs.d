@@ -34,15 +34,21 @@ minibuffer, even without explicitly focusing it.
 The DWIM behaviour of this command is as follows:
 
 - When the region is active, disable it.
+
 - When a minibuffer is open, but not focused, close the minibuffer.
-- When the Completions buffer is selected, close it.
+  For recursive minibuffer, make sure to only close one level of depth.
+
+- When in a *Completions* or `special-mode' buffer (e.g. *Help* or *Message*),
+  close it.
+
 - In every other case use the regular `keyboard-quit'."
   (interactive)
   (cond
    ((region-active-p)
     (keyboard-quit))
-   ((derived-mode-p 'completion-list-mode)
-    (delete-completion-window))
+   ((and (derived-mode-p 'completion-list-mode 'special-mode)
+         (not (one-window-p)))
+    (quit-window))
    ((> (minibuffer-depth) 0)
     (abort-recursive-edit))
    (t

@@ -8,7 +8,7 @@
   :bind (:map org-mode-map
          ("C-c C-q" . my/org-set-tags-command))
   :custom
-  (org-directory curtain-org-directory)
+  (org-directory cw-emacs-notes-directory)
   (org-imenu-depth 7)
   (org-M-RET-may-split-line '((default . nil))) ; move the end of line before make a new line
   (org-ellipsis " ↩")

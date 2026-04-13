@@ -59,7 +59,7 @@
 
 (when (not noninteractive)
   (setq frame-resize-pixelwise t)
-  (setq frame-inhibit-implied-resize t)
+  (setq frame-inhibit-implied-resize 'force)
   (setq auto-mode-case-fold nil)
   ;; startup screen
   (setq inhibit-startup-screen t
@@ -208,3 +208,5 @@ this stage of initialization."
 
 ;; This results in a more compact output that emphasizes performance
 (setq package-enable-at-startup nil)
+;; from Emacs31, make byte-compile lisp file under this directory and load autoloads.
+;; (setq user-lisp-directory (locate-user-emacs-file "modules/"))

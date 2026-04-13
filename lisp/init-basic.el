@@ -1,5 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 
+(setq backward-delete-char-untabify-method 'hungry)
 (setq tab-always-indent 'complete) ; try indent first, if indent already, try complete
 (setq tab-first-completion 'word-or-paren-or-punct)
 (setq-default tab-width 4
@@ -306,6 +307,7 @@
         ("<insert>" . nil)
         ("<menu>" . nil)
         ("C-z" . nil)
+        ("C-M-w" . nil)
         ("C-x C-z" . nil)
         ("C-x C-d" . nil)
         ("C-x C-v" . nil)

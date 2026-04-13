@@ -20,7 +20,7 @@
   :group 'curtain
   :type 'string)
 
-(defcustom curtain-org-directory (expand-file-name "~/Documents/org")
+(defcustom curtain-org-directory (expand-file-name "~/Documents/notes/")
   "Set org directory."
   :group 'curtain
   :type 'string)

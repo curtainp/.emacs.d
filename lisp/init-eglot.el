@@ -55,7 +55,7 @@
     "Sync Corfu faces with the active theme."
     (let* ((bg (face-background 'default nil t))
            (fg (face-foreground 'default nil t))
-           (current-bg (or (face-background 'hl-line nil t)
+           (current-bg (or ;; (face-background 'hl-line nil t)
                            (face-background 'highlight nil t)
                            bg))
            (current-fg (or (face-foreground 'highlight nil t)

@@ -23,7 +23,7 @@
               ("C-c C-d C-f" . denote-dired-rename-marked-files-using-front-matter))
 
   :config
-  (setq denote-directory curtain-org-directory
+  (setq denote-directory cw-emacs-notes-directory
         denote-known-keywords '("emacs" "work" "blog" "journal")
         denote-infer-keywords t
         denote-sort-keywords t

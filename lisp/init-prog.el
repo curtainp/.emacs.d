@@ -205,9 +205,9 @@
   ;; (with-eval-after-load 'evil
   ;;   (evil-set-initial-state 'ghostel-mode 'emacs))
   :config
-  (require 'ghostel-evil)
+  (require 'evil-ghostel)
   (add-hook 'ghostel-mode-hook (lambda ()
-                                 (ghostel-evil-mode)
+                                 (evil-ghostel-mode)
                                  (evil-local-set-key 'insert (kbd "C-f")
                                                      (lambda ()
                                                        (interactive)

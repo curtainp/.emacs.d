@@ -162,6 +162,14 @@
                                        (pulsar-reveal-entry)))
   )
 
+(use-package embark
+  :straight t
+  :bind (:map minibuffer-local-map
+              ("C-c C-c" . embark-collect)
+              ("C-c C-e" . embark-export)))
+
+(use-package embark-consult
+  :straight t)
 
 (use-package which-key
   :straight t

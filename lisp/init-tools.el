@@ -14,6 +14,7 @@
   (setf (alist-get 'js-ts-mode apheleia-mode-alist) 'prettier))
 
 (use-package evil-matchit
+  :disabled
   :straight t
   :commands global-evil-matchit-mode
   :hook (after-init . global-evil-matchit-mode))
@@ -41,21 +42,22 @@
                                                                    (gethash "OPENAI_API_KEY"
                                                                             (json-read-file "~/.codex/auth.json"))))))
   ;; Evil integration: insert = newline, normal = send
-  (evil-define-key 'insert agent-shell-mode-map (kbd "RET") #'newline)
-  (evil-define-key 'normal agent-shell-mode-map
-    (kbd "RET") #'comint-send-input
-    "q" #'quit-window
-    "gj" #'agent-shell-next-item
-    "gk" #'agent-shell-previous-item)
+  ;; (evil-define-key 'insert agent-shell-mode-map (kbd "RET") #'newline)
+  ;; (evil-define-key 'normal agent-shell-mode-map
+  ;;   (kbd "RET") #'comint-send-input
+  ;;   "q" #'quit-window
+  ;;   "gj" #'agent-shell-next-item
+  ;;   "gk" #'agent-shell-previous-item)
   ;; diff buffers use emacs state (they have their own accept/reject keybindings)
-  (add-hook 'agent-shell-diff-mode-hook #'evil-emacs-state))
+  ;; (add-hook 'agent-shell-diff-mode-hook #'evil-emacs-state)
+  )
 
 (use-package gt
   :straight t
   :commands (gt-translate gt-setup gt-speak)
   ;; integration with evil
-  :hook (gt-buffer-render-init . (lambda ()
-                                   (define-key evil-normal-state-local-map (kbd "q") 'quit-window)))
+  ;; :hook (gt-buffer-render-init . (lambda ()
+  ;;                                  (define-key evil-normal-state-local-map (kbd "q") 'quit-window)))
   :bind
   (:map global-map
         ("C-c g t" . gt-translate)

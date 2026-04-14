@@ -39,6 +39,13 @@
           (const :tag "LSP Bridge" lsp-bridge)
           (const :tag "Eglot" eglot)))
 
+(defcustom cw-emacs-modal nil
+  "The modal approach to use. `nil' for vanilla Emacs."
+  :group 'cw-emacs
+  :type '(choice
+          (const :tag "Evil" evil)
+          (const :tag "Meow" meow)))
+
 
 (setq straight-repository-branch "develop")
 (setq straight-check-for-modifications '(check-on-save find-when-checking))
@@ -67,7 +74,10 @@
 
 (require 'init-basic)
 (require 'init-ui)
-(require 'init-evil)
+(pcase cw-emacs-modal
+  ('evil (require 'init-evil))
+  ('meow (require 'init-meow))
+  (_))
 (require 'init-completion)
 (pcase cw-emacs-lsp-client
   ('lsp-bridge (require 'init-lsp-bridge))

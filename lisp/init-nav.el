@@ -13,6 +13,7 @@
   :bind (("M-j" . avy-goto-word-or-subword-1)))
 
 (use-package color-rg
+  :disabled
   :straight (:host github :repo "manateelazycat/color-rg")
   :defer t
   :custom

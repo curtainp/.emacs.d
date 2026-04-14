@@ -15,6 +15,7 @@
 
 ;;;; Completion styles
 (setq completion-styles '(basic substring initials flex orderless)) ; also see `completion-category-overrides'
+(setq completion-flex-nospace t)
 (setq completion-pcm-leading-wildcard t) ; Emacs 31: make `partial-completion' behave like `substring'
 
 ;; Reset all the per-category defaults so that (i) we use the
@@ -23,27 +24,26 @@
 ;; explicitly override everything.
 (setq completion-category-defaults nil)
 
-(setq completion-category-overrides
-      ;; NOTE 2021-10-25: I am adding `basic' because it works better as a
-      ;; default for some contexts.  Read:
-      ;; <https://debbugs.gnu.org/cgi/bugreport.cgi?bug=50387>.
-      ;;
-      ;; `partial-completion' is a killer app for files, because it
-      ;; can expand ~/.l/s/fo to ~/.local/share/fonts.
-      ;;
-      ;; If `basic' cannot match my current input, Emacs tries the
-      ;; next completion style in the given order.  In other words,
-      ;; `orderless' kicks in as soon as I input a space or one of its
-      ;; style dispatcher characters.
-      '((file (styles . (basic partial-completion orderless)))
-        (bookmark (styles . (basic substring)))
-        (library (styles . (basic substring)))
-        (embark-keybinding (styles . (basic substring)))
-        (imenu (styles . (basic substring orderless)))
-        (consult-location (styles . (basic substring orderless)))
-        (kill-ring (styles . (emacs22 orderless)))
-        ;; (eglot (styles . (emacs22 substring)))
-        ))
+(let* ((eager-update-properties '((eager-display . nil)
+                                  (eager-update . t)))
+       (eager-update-properties-no-sort (append eager-update-properties (list (cons 'display-sort-function #'identity)))))
+  (setq completion-category-overrides
+        `((file ((styles . (partial-completion))
+                 (eager-display . nil)
+                 (eager-update . t)))
+          (bookmark (,@eager-update-properties))
+          (project-file . (,@eager-update-properties))
+          (symbol-help . (,@eager-update-properties))
+          (buffer . (,@eager-update-properties))
+          (command . (affixation-function . nil))
+          (denote-file . ,eager-update-properties)
+          (theme . ,eager-update-properties)
+          (unicode-name . ,eager-update-properties)
+          (imenu . ,eager-update-properties-no-sort)
+          (consult-location . ,eager-update-properties-no-sort)
+          (kill-ring (styles . (emacs22 orderless)))
+          ;; (eglot (styles . (emacs22 substring)))
+          )))
 
 (use-package vertico
   :straight t
@@ -86,6 +86,7 @@
 (setq read-buffer-completion-ignore-case t)
 (setq-default case-fold-search t)   ; For general regexp
 (setq read-file-name-completion-ignore-case t)
+(setq minibuffer-history-case-insensitive-variables t)
 
 (use-package mb-depth
   :straight nil
@@ -119,7 +120,7 @@
   ;; package: <https://github.com/minad/vertico>.
   (setq minibuffer-prompt-properties
         '(read-only t cursor-intangible t face minibuffer-prompt))
-
+  (setq crm-prompt (format "%s %%p" (propertize "[%d]" 'face 'shadow))) ; Emacs 31
   (file-name-shadow-mode 1))
 
 (use-package marginalia
@@ -128,6 +129,38 @@
   :hook (vertico-mode . marginalia-mode)
   :config
   (setq marginalia-max-relative-age 0)) ; absolute time
+
+(use-package consult
+  :straight nil
+  :bind (:map global-map
+              ("M-g M-g" . consult-goto-line)
+              ("M-s M-b" . consult-buffer)
+              ("M-s M-f" . consult-find)
+              ("M-s M-g" . consult-grep)
+              ("M-s M-h" . consult-history)
+              ("M-s M-i" . consult-imenu)
+              ("M-s M-l" . consult-line)
+              ("M-s M-m" . consult-mark)
+              ("M-s M-y" . consult-yank-pop)
+              ("M-s M-s" . consult-outline)
+              )
+  :config
+  (setq consult-line-numbers-widen t)
+  (setq consult-async-min-input 3)
+  (setq consult-async-input-debounce 0.5)
+  (setq consult-async-input-throttle 0.8)
+  (setq consult-narrow-key nil)
+  (setq consult-find-args
+        (concat "find . -not ( "
+                "-path */.git* -prune "
+                "-or -path */.cache* -prune )"))
+  (setq consult-preview-key 'any)
+  (setq consult-project-function nil)
+  (setq consult-after-jump-hook nil)    ; use `pulsar' instead.
+  (add-hook 'consult-after-jump-hook (lambda ()
+                                       (pulsar-recenter-top)
+                                       (pulsar-reveal-entry)))
+  )
 
 
 (use-package which-key

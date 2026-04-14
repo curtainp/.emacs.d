@@ -1,8 +1,8 @@
 ;;; -*- lexical-binding: t -*-
 
-(setq search-whitespace-regexp ".*?" ; one `setq' here to make it obvious they are a bundle
-    isearch-lax-whitespace t
-    isearch-regexp-lax-whitespace nil)
+(setq search-whitespace-regexp ".*?"
+      isearch-lax-whitespace t
+      isearch-regexp-lax-whitespace nil)
 
 (setq search-highlight t)
 (setq isearch-lazy-highlight t)

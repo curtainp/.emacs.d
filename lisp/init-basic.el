@@ -324,18 +324,25 @@
         ("C-h K" . describe-keymap)
         ))
 
-(use-package curt-simple
+(use-package cw-simple
   :straight nil
-  :commands (curt-simple-override-mode)
+  :commands (cw-simple-override-mode)
   :config
-  (curt-simple-override-mode 1)
+  (cw-simple-override-mode 1)
   :bind
   (:map global-map
-        ("ESC ESC" . curt-simple-keyboard-quit-dwim)
-        ("C-g" . curt-simple-keyboard-quit-dwim)
-        ("C-=" . curt-simple-insert-date)
-        ("C-x o" . curt-simple-other-window)
-        ("C-x k" . curt-simple-kill-buffer-current)))
+        ("<escape>" . cw-simple-keyboard-quit-dwim)
+        ("C-g" . cw-simple-keyboard-quit-dwim)
+        ("C-M-SPC" . cw-simple-mark-sexp)
+        ("C-x 0" . cw-simple-delete-window-dwim) ;; override `delete-window'
+        ("C-w" . cw-simple-kill-region-dwim)
+        ("M-w" . cw-simple-kill-ring-save-dwim)
+        ("C-s-y" . cw-simple-yank-replace-line-or-region)
+        ("C-=" . cw-simple-insert-date)
+        ("M-r" . window-layout-transpose) ;; Emacs 31 override `move-to-window-line-top-bottom'
+        ("M-s-r" . rotate-windows-back)   ;; Emacs 31
+        ("C-x o" . cw-simple-other-window)
+        ("C-x k" . cw-simple-kill-buffer-current)))
 
 (use-package savehist
   :straight nil

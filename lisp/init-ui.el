@@ -185,12 +185,12 @@
   :straight t)
 
 (use-package doom-modeline
-  :disabled
   :straight t
   :commands doom-modeline-mode
   :hook (after-init . doom-modeline-mode)
   :custom
   (doom-modeline-height 20)
+  (doom-modeline-bar-width 0)
   (doom-modeline-irc nil)
   (doom-modeline-mu4e nil)
   (doom-modeline-gnus nil)
@@ -206,18 +206,6 @@
   ;; (doom-modeline-hud-min-height 1)
   ; (doom-modeline-continuous-word-count-modes '(markdown-mode markdown-ts-mode gfm-mode org-mode rst-mode latex-mode tex-mode))
   )
-
-(use-package awesome-tray
-  :straight (:host github :repo "manateelazycat/awesome-tray")
-  :commands awesome-tray-mode
-  :hook (after-init . awesome-tray-mode)
-  :custom
-  (awesome-tray-file-path-show-filename t)
-  (awesome-tray-file-path-truncated-name-length 0)
-  (awesome-tray-file-path-full-dirname-levels 0)
-  (awesome-tray-active-modules '("evil" "location" "belong" "file-path" "mode-name"))
-  )
-
 
 (use-package default-text-scale
   :straight t

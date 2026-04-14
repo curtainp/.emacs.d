@@ -397,7 +397,7 @@
   :hook
   (after-init . recentf-mode)
   :custom
-  (recentf-max-saved-items 300)
+  (recentf-max-saved-items 100)
   (recentf-max-menu-items 15)
   (recentf-auto-cleanup (if (daemonp) 300 'never))
   (recentf-exclude

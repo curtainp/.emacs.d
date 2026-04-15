@@ -95,7 +95,7 @@
 
 (use-package magit
   :straight t
-  :bind ("C-c g" . magit-status)
+  :bind ("C-x g" . magit-status)
   :config
   (setq transient-show-menu 0.5)
   (setq magit-display-buffer-function #'display-buffer)
@@ -106,3 +106,5 @@
   (setq git-commit-summary-max-length 50)
   (setq git-commit-style-convention-checks '(non-empty-second-line))
   (setq git-commit-major-mode #'text-mode))
+
+(provide 'init-vc)

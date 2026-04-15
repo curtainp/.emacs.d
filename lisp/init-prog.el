@@ -191,32 +191,13 @@
                            ("terminfo/65" "terminfo/65/*")
                            ("integration" "integration/*")
                            (:exclude ".dir-locals.el" "*-tests.el")))
-  ;; :hook (eat-mode . (lambda ()
-  ;;                     (define-key evil-normal-state-map (kbd "q") 'quit-window)))
-  )
+  :commands eat)
 
 (use-package ghostel
+  :disabled
   :straight (:host github :repo "dakra/ghostel")
   :commands ghostel
-  ;; :init
-  ;; ;; NOTE: must be set with `evil-set-initial-state', cause ghostel will call `pop-to-buffer' first,
-  ;; ;; then call `ghostel-mode', in this case, evil will call `evil-initialize-state' everytime when
-  ;; ;; `major-mode' changed, so :hook (ghostel-mode . evil-emacs-state) will be override by that.
-  ;; (with-eval-after-load 'evil
-  ;;   (evil-set-initial-state 'ghostel-mode 'emacs))
   :config
-  ;; (require 'evil-ghostel)
-  ;; (add-hook 'ghostel-mode-hook (lambda ()
-  ;;                                (evil-ghostel-mode)
-  ;;                                (evil-local-set-key 'insert (kbd "C-f")
-  ;;                                                    (lambda ()
-  ;;                                                      (interactive)
-  ;;                                                      (ghostel--send-encoded "f" "ctrl")))
-  ;;                                (evil-local-set-key 'insert (kbd "C-b")
-  ;;                                                    (lambda ()
-  ;;                                                      (interactive)
-  ;;                                                      (ghostel--send-encoded "b" "ctrl")))
-  ;;                                ))
   (setq ghostel-enable-file-detection nil))
 
 (provide 'init-prog)

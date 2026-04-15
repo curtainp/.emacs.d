@@ -17,7 +17,10 @@
   :commands (org-mode org-version)
   :hook ((org-mode . my/org-prettify-symbols))
   :hook ((org-agenda-after-show org-follow-link) . (pulsar-recenter-center pulsar-reveal-entry))
-  :bind (:map org-mode-map
+  :bind (:map global-map
+              ("C-c l" . org-store-link)
+              ("C-c o" . org-open-at-point-global)
+         :map org-mode-map
               ("C-c C-q" . my/org-set-tags-command)
               ("C-'" . nil)
               ("C-," . nil)
@@ -25,6 +28,7 @@
               ("C-c ;" . nil)
               ("C-c C-x C-c" . nil)     ; `org-column'
               ("M-." . org-edit-special)
+              ("C-c C-v" . yank-media)
               :map org-src-mode-map
               ("M-," . org-edit-src-exit)
               )
@@ -63,11 +67,6 @@
                         "DONE(d)"
                         "OBSOLETE(o)"
                         "CANCELLED(c)")))
-  (org-todo-keyword-faces '(("TODO"       :foreground "red" :weight bold)
-                            ("WAITING"    :foreground "yellow" :weight bold)
-                            ("DONE"       :foreground "green" :weight bold)
-                            ("CANCELLED"  :foreground "gray" :weight bold)
-                            ("OBSOLETE"   :foreground "blue"   :weight bold)))
   (org-use-fast-todo-selection 'expert)
   (org-enforce-todo-dependencies t)
   (org-enforce-todo-checkbox-dependencies t)
@@ -99,6 +98,10 @@
   (org-tags-column 0)
 
   :config
+  (with-eval-after-load 'yank-media
+    (add-to-list 'yank-media-preferred-types 'image/avif))
+  (set-face-attribute 'org-code nil :background
+                      (face-attribute 'org-block :background))
   (defun my/org-read-file-name-relative (&optional prompt directory)
     "Read a file name and return a path relative to the current buffer."
     (let* ((base-dir (file-name-directory
@@ -205,7 +208,9 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
     (prettify-symbols-mode))
   )
 
+
 (use-package org-modern
+  :disabled
   :straight t
   :commands org-modern-mode
   :hook (org-mode . org-modern-mode)
@@ -231,18 +236,15 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
           (?* . "✦")))
   )
 
-(use-package org-appear
-  :straight t
-  :commands org-appear-mode
-  :hook (org-mode . org-appear-mode))
-
 (use-package mixed-pitch
   :straight t
   :commands mixed-pitch-mode
   :hook (org-mode . mixed-pitch-mode)
   :config
   (setq mixed-pitch-variable-pitch-cursor 'box
-        mixed-pitch-set-height t))
+        mixed-pitch-set-height t)
+  (dolist (face '(org-date org-tag curfu-default font-lock-comment-face))
+    (add-to-list 'mixed-pitch-fixed-pitch-faces face)))
 
 ;; preview and edit latex in org elegantly
 (use-package org-fragtog
@@ -410,6 +412,7 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
         org-html-doctype "html5"))
 
 (use-package valign
+  :disabled
   :straight (:host github :repo "casouri/valign")
   :commands valign-mode
   :hook (org-mode . valign-mode))

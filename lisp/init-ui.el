@@ -1,7 +1,5 @@
 ;; -*- lexical-binding: t -*-
 
-;; (global-hl-line-mode 1)
-
 (setq frame-resize-pixelwise t
       window-resize-pixelwise t)
 
@@ -28,17 +26,6 @@
   (("C-x l" . pulsar-pulse-line) ; override `count-lines-page'
    ("C-x L" . pulsar-highlight-permanently-dwim))) ; override `pulsar-highlight-line'
 
-(use-package doom-themes
-  :disabled
-  :straight t
-  :init
-  (load-theme 'doom-one t)
-  :config
-  (setq doom-themes-enable-bold t
-        doom-themes-enable-italic t)
-  ;; (doom-themes-visual-bell-config)
-  (doom-themes-org-config))
-
 (use-package ef-themes
   :straight (:type git :host github :repo "protesilaos/ef-themes")
   :commands ef-themes-take-over-modus-themes-mode
@@ -60,7 +47,23 @@
           (agenda-date . (semilight 1.5))
           (agenda-structure . (variable-pitch light 1.7))
           (t . (variable-pitch 1.1))))
-  (modus-themes-load-theme 'ef-dream))  ;; ef-arbutus for light theme
+  ;; ef-arbutus ef-melissa-light ef-dream
+  (modus-themes-load-theme 'ef-arbutus))  ;; ef-arbutus for light theme
+
+(use-package nano-modeline
+  :straight t
+  :config
+  (setq-default mode-line-format nil)
+  (add-hook 'prog-mode-hook            #'nano-modeline-prog-mode)
+  (add-hook 'text-mode-hook            #'nano-modeline-text-mode)
+  (add-hook 'org-mode-hook             #'nano-modeline-org-mode)
+  (add-hook 'elfeed-show-mode-hook     #'nano-modeline-elfeed-entry-mode)
+  (add-hook 'elfeed-search-mode-hook   #'nano-modeline-elfeed-search-mode)
+  (add-hook 'term-mode-hook            #'nano-modeline-term-mode)
+  (add-hook 'messages-buffer-mode-hook #'nano-modeline-message-mode)
+  (add-hook 'org-capture-mode-hook     #'nano-modeline-org-capture-mode)
+  (add-hook 'org-agenda-mode-hook      #'nano-modeline-org-agenda-mode)
+  (nano-modeline-text-mode t))
 
 (use-package fontaine
   :straight t
@@ -184,53 +187,8 @@
 (use-package nerd-icons
   :straight t)
 
-(use-package doom-modeline
-  :straight t
-  :commands doom-modeline-mode
-  :hook (after-init . doom-modeline-mode)
-  :custom
-  (doom-modeline-height 20)
-  (doom-modeline-bar-width 0)
-  (doom-modeline-irc nil)
-  (doom-modeline-mu4e nil)
-  (doom-modeline-gnus nil)
-  (doom-modeline-github nil)
-  (doom-modeline-buffer-file-name-style 'truncate-upto-root)
-  (doom-modeline-persp-name nil)
-  ; (doom-modeline-time-icon nil)
-  ; (doom-modeline-buffer-encoding 'nondefault)
-  (doom-modeline-unicode-fallback t)
-  ; (doom-modeline-total-line-number t)
-  (doom-modeline-enable-word-count nil)
-  ;; (doom-modeline-hud t)
-  ;; (doom-modeline-hud-min-height 1)
-  ; (doom-modeline-continuous-word-count-modes '(markdown-mode markdown-ts-mode gfm-mode org-mode rst-mode latex-mode tex-mode))
-  )
-
 (use-package default-text-scale
   :straight t
   :hook (after-init . default-text-scale-mode))
-
-(use-package ligature
-  :straight t
-  :commands ligature-mode
-  :hook (prog-mode . ligature-mode)
-  :config
-  ;; Enable all Cascadia Code ligatures in programming modes
-  (ligature-set-ligatures '(prog-mode markdown-mode org-mode)
-                          '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
-                            ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
-                            "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
-                            "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
-                            "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
-                            "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
-                            "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
-                            "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
-                            ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
-                            "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
-                            "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
-                            "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
-                            "\\\\" "://"))
-  )
 
 (provide 'init-ui)

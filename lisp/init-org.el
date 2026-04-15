@@ -1,35 +1,56 @@
 ;;; -*- lexical-binding: t -*-
 
+(with-eval-after-load 'calendar
+  (setq calendar-mark-diary-entries-flag nil)
+  (setq calendar-mark-holidays-flag t)
+  (setq calendar-mode-line-format nil)
+  (setq calendar-time-display-form
+        '(24-hours ":" minutes
+                   (when time-zone (format "(%s)" time-zone))))
+  (setq calendar-week-start-day 1)
+  (setq calendar-date-style 'iso)
+  (setq calendar-time-zone-style 'numeric)
+  )
 
 (use-package org
   :straight t
   :commands (org-mode org-version)
   :hook ((org-mode . my/org-prettify-symbols))
+  :hook ((org-agenda-after-show org-follow-link) . (pulsar-recenter-center pulsar-reveal-entry))
   :bind (:map org-mode-map
-         ("C-c C-q" . my/org-set-tags-command))
+              ("C-c C-q" . my/org-set-tags-command)
+              ("C-'" . nil)
+              ("C-," . nil)
+              ("M-;" . nil)
+              ("C-c ;" . nil)
+              ("C-c C-x C-c" . nil)     ; `org-column'
+              ("M-." . org-edit-special)
+              :map org-src-mode-map
+              ("M-," . org-edit-src-exit)
+              )
   :custom
   (org-directory cw-emacs-notes-directory)
   (org-imenu-depth 7)
   (org-M-RET-may-split-line '((default . nil))) ; move the end of line before make a new line
   (org-ellipsis " ↩")
   (org-pretty-entities t)
-  (org-hide-emphasis-markers t)
-  (org-hide-macro-markers t)
+  (org-hide-emphasis-markers nil)
+  (org-hide-macro-markers nil)
   (org-hide-leading-stars nil)
-  (org-fontify-whole-heading-line t)    ;; prettify heading line
-  (org-fontify-todo-headline t)
-  (org-fontify-done-headline t)
+  (org-fontify-whole-heading-line nil)    ;; prettify heading line
+  (org-fontify-todo-headline nil)
+  (org-fontify-done-headline nil)
   (org-fontify-quote-and-verse-blocks t)
   (org-highlight-latex-and-related '(native script entities))
   (org-startup-indented t)
-  (org-adapt-indentation t)
+  (org-adapt-indentation nil)
   (org-startup-with-inline-images t)
   (org-footnote-auto-adjust t)
   (org-image-actual-width '(500))       ;; first try get from ATTR html
   (org-startup-folded 'fold)
   (org-list-allow-alphabetical t)
   (org-fold-catch-invisible-edits 'smart)
-  (org-insert-heading-respect-content nil)
+  (org-insert-heading-respect-content t)
   (org-yank-image-save-method "imgs")
   (org-return-follows-link t)
   (org-use-sub-superscripts '{})        ;; use {} 包裹上下标
@@ -73,13 +94,9 @@
                               ("security" . ?s)
                               ("pwn"      . ?p)
                               ("note"     . ?n)))
-  (org-tag-alist '((:startgroup)
-                   ("crypto"   . ?c)
-                   ("linux"    . ?l)
-                   ("noexport" . ?n)
-                   ("ignore"   . ?i)
-                   ("toc"      . ?t)
-                   (:endgroup)))
+  (org-tag-alist nil)
+  (org-auto-align-tags nil)
+  (org-tags-column 0)
 
   :config
   (defun my/org-read-file-name-relative (&optional prompt directory)
@@ -212,11 +229,7 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
         '((?- . "•")
           (?+ . "◌")
           (?* . "✦")))
-  :config
-  (set-face-attribute 'org-modern-symbol nil
-                      :family "Iosevka Nerd Font"
-                      :height 1.4
-                      :foreground "#8a8f98"))
+  )
 
 (use-package org-appear
   :straight t

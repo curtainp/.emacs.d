@@ -24,7 +24,7 @@
   :straight nil
   :bind
   (:map global-map
-        ("C-." . isearch-forward-symbol-at-point) ; easier than M-s .
+        ;; ("C-." . isearch-forward-symbol-at-point) ; easier than M-s .
         :map minibuffer-local-isearch-map
         ("M-/" . isearch-complete-edit)
         :map occur-mode-map

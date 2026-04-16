@@ -332,6 +332,7 @@
   :bind
   (:map global-map
         ("<escape>" . cw-simple-keyboard-quit-dwim)
+        ("C-." . cw-simple-duplicate-line-or-region)
         ("C-g" . cw-simple-keyboard-quit-dwim)
         ("C-M-SPC" . cw-simple-mark-sexp)
         ("C-x 0" . cw-simple-delete-window-dwim) ;; override `delete-window'

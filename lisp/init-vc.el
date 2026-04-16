@@ -36,6 +36,8 @@
               ("C-x v <up>" . diff-hl-previous-hunk)
               ("C-x v <down>" . diff-hl-next-hunk))
   :config
+  (with-eval-after-load 'magit
+    (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
   (setq diff-hl-draw-borders nil)
   (setq diff-hl-update-async t))
 

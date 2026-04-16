@@ -13,11 +13,16 @@
   (setf (alist-get 'typescript-ts-mode apheleia-mode-alist) 'prettier)
   (setf (alist-get 'js-ts-mode apheleia-mode-alist) 'prettier))
 
-(use-package evil-matchit
-  :disabled
+(use-package multiple-cursors
   :straight t
-  :commands global-evil-matchit-mode
-  :hook (after-init . global-evil-matchit-mode))
+  :bind (:map global-map
+              ("C-S-c C-S-c" . mc/edit-lines)
+              ("C->" . mc/mark-next-like-this)
+              ("C-<" . mc/mark-previous-like-this)
+              ("C-c C-<" . mc/mark-all-like-this)
+              ("C-\"" . mc/skip-to-next-like-this)
+              ("C-:" . mc/skip-to-previous-like-this)
+              ))
 
 (use-package reader
   :straight (:host codeberg :repo "Monadicsheep/emacs-reader"

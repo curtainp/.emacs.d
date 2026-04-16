@@ -185,6 +185,7 @@
   :hook (emacs-lisp-mode . highlight-defined-mode))
 
 (use-package eat
+  :disabled
   :straight (:host codeberg :repo "akib/emacs-eat"
                    :files ("*.el" ("term" "term/*.el") "*.texi"
                            "*.ti" ("terminfo/e" "terminfo/e/*")
@@ -194,7 +195,6 @@
   :commands eat)
 
 (use-package ghostel
-  :disabled
   :straight (:host github :repo "dakra/ghostel")
   :commands ghostel
   :config

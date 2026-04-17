@@ -22,7 +22,10 @@
               ("C-c C-<" . mc/mark-all-like-this)
               ("C-\"" . mc/skip-to-next-like-this)
               ("C-:" . mc/skip-to-previous-like-this)
-              ))
+              )
+  :config
+  (setq mc/cmds-to-run-for-all
+        '(cw-simple-mark-sexp cw-simple-kill-region-dwim cw-simple-kill-ring-save-dwim)))
 
 (use-package reader
   :straight (:host codeberg :repo "Monadicsheep/emacs-reader"

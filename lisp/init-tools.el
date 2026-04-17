@@ -155,47 +155,6 @@
   :config
   (add-to-list 'global-colorful-modes 'helpful-mode))
 
-(use-package sort-tab
-  :disabled
-  :straight '(:type git :host github :repo "manateelazycat/sort-tab")
-  ;; :demand t
-  :config
-  (sort-tab-mode))
-
-
-(use-package multiple-cursors
-  :disabled
-  :bind (("C-c m" . multiple-cursors-hydra/body)
-         ("C-S-c C-S-c"   . mc/edit-lines)
-         ("C->"           . mc/mark-next-like-this)
-         ("C-<"           . mc/mark-previous-like-this)
-         ("C-c C-<"       . mc/mark-all-like-this)
-         ("C-M->"         . mc/skip-to-next-like-this)
-         ("C-M-<"         . mc/skip-to-previous-like-this)
-         ("s-<mouse-1>"   . mc/add-cursor-on-click)
-         ("C-S-<mouse-1>" . mc/add-cursor-on-click)
-         :map mc/keymap
-         ("C-|" . mc/vertical-align-with-space))
-  :pretty-hydra
-  ((:title (pretty-hydra-title "Multiple Cursors" 'mdicon "nf-md-cursor_move")
-    :color amaranth :quit-key ("q" "C-g"))
-   ("Up"
-	(("p" mc/mark-previous-like-this "prev")
-	 ("P" mc/skip-to-previous-like-this "skip")
-	 ("M-p" mc/unmark-previous-like-this "unmark")
-	 ("|" mc/vertical-align "align with input CHAR"))
-    "Down"
-    (("n" mc/mark-next-like-this "next")
-	 ("N" mc/skip-to-next-like-this "skip")
-	 ("M-n" mc/unmark-next-like-this "unmark"))
-    "Misc"
-    (("l" mc/edit-lines "edit lines" :exit t)
-	 ("a" mc/mark-all-like-this "mark all" :exit t)
-	 ("s" mc/mark-all-in-region-regexp "search" :exit t)
-     ("<mouse-1>" mc/add-cursor-on-click "click"))
-    "% 2(mc/num-cursors) cursor%s(if (> (mc/num-cursors) 1) \"s\" \"\")"
-	(("0" mc/insert-numbers "insert numbers" :exit t)
-	 ("A" mc/insert-letters "insert letters" :exit t)))))
 
 
 (provide 'init-tools)

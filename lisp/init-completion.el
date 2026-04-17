@@ -88,6 +88,22 @@
 (setq read-file-name-completion-ignore-case t)
 (setq minibuffer-history-case-insensitive-variables t)
 
+(use-package prescient
+  :straight t
+  :after orderless
+  :config
+  (prescient-persist-mode t))
+
+(use-package vertico-prescient
+  :straight t
+  :after (prescient vertico)
+  :config
+  (setq vertico-prescient-enable-sorting t)
+  (setq vertico-prescient-enable-filtering t)
+  (setq vertico-prescient-completion-styles
+        '(prescient orderless basic))
+  (vertico-prescient-mode t))
+
 (use-package mb-depth
   :straight nil
   :commands minibuffer-depth-indicate-mode
@@ -150,6 +166,10 @@
   (setq consult-async-input-debounce 0.5)
   (setq consult-async-input-throttle 0.8)
   (setq consult-narrow-key nil)
+  (setq consult-ripgrep-args
+        "rg --hidden --glob \"!.git\" --null --line-buffered --color=never
+--max-columns=1000 --path-separator / --smart-case --no-heading
+--line-number")
   (setq consult-find-args
         (concat "find . -not ( "
                 "-path */.git* -prune "

@@ -91,6 +91,14 @@
   :bind (:map corfu-map
               ("S-SPC" . corfu-insert-separator)))
 
+(use-package corfu-prescient
+  :straight t
+  :after (corfu prescient)
+  :config
+  (setq corfu-prescient-enable-sorting t)
+  ;; (setq corfu-prescient-enable-filtering t)
+  (corfu-prescient-mode t))
+
 ;; Corfu popup info (documentation popup)
 (use-package corfu-popupinfo
   :straight nil

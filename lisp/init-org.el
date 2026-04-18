@@ -403,6 +403,9 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
                               (sql             . t)
                               (css             . t)
                               ))
+  :config
+  (setq org-babel-default-header-args:C
+        '((:flags . "-O2 -Wall -std=c23")))
   )
 
 (use-package ox

@@ -12,6 +12,7 @@
 (setq minibuffer-completion-auto-choose t)
 (setq minibuffer-visible-completions t) ; Emacs 30
 (setq completions-sort 'historical)
+(setq text-mode-ispell-word-completion nil) ;; disable ispell-completion
 
 ;;;; Completion styles
 (setq completion-styles '(basic substring initials flex orderless)) ; also see `completion-category-overrides'
@@ -167,9 +168,7 @@
   (setq consult-async-input-throttle 0.8)
   (setq consult-narrow-key nil)
   (setq consult-ripgrep-args
-        "rg --hidden --glob \"!.git\" --null --line-buffered --color=never
---max-columns=1000 --path-separator / --smart-case --no-heading
---line-number")
+        "rg --hidden --glob \"!.git\" --null --line-buffered --color=never --max-columns=1000 --path-separator / --smart-case --no-heading --line-number")
   (setq consult-find-args
         (concat "find . -not ( "
                 "-path */.git* -prune "

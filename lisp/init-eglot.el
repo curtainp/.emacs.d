@@ -10,9 +10,14 @@
           js-ts-mode typescript-ts-mode tsx-ts-mode
           bash-ts-mode
           css-ts-mode
+          org-mode
           html-mode)
          . eglot-ensure)
   :config
+  (add-to-list 'eglot-server-programs '(org-mode . ("harper-ls" "--stdio")))
+  (setq-default eglot-workspace-configuration
+                '(:harper-ls (:linters (:SpellCheck :json-false
+                                                     :SentenceCapitalization :json-false))))
   (setq eglot-autoshutdown t
         eglot-events-buffer-config '(:size 0 :format full) ;; no log
         ;; Keep the server closer to the live buffer so completion

@@ -33,18 +33,16 @@
         ("C-g" . isearch-cancel) ; instead of `isearch-abort'
         ("M-/" . isearch-complete)))
 
-(let ((ripgrep (or (executable-find "rg") (executable-find "ripgrep"))))
-  (setq xref-show-definitions-function #'xref-show-definitions-completing-read) ; for M-.
-  (setq xref-show-xrefs-function #'xref-show-definitions-buffer)
-  (setq xref-file-name-display 'project-relative)
-  (setq xref-search-program (if ripgrep 'ripgrep 'grep))
-  (setq grep-save-buffers nil)
-  (setq grep-use-headings nil)
-  (setq grep-program (or ripgrep (executable-find "grep")))
-  (setq grep-template
-        (if ripgrep
-            "/usr/bin/rg -nH --null -e <R> <F>"
-          "/usr/bin/grep <X> <C> -nH --null -e <R> <F>")))
+(use-package dumb-jump
+  :straight t
+  :custom
+  (dumb-jump-force-searcher 'rg)
+  (dumb-jump-rg-search-args "--pcre2 --follow") ;; follow symbolic links
+  (dumb-jump-rust-search-dependencies t)
+  (xref-show-definitions-function #'consult-xref)
+  (xref-show-xrefs-function #'consult-xref)
+  :config
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
 ;; `grep-edit-mode' built-in Emacs 31
 

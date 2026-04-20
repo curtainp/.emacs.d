@@ -38,7 +38,18 @@
   :straight (:host github :repo "zevlg/telega.el"
                    :branch "master"
                    :files (:defaults "contrib" "etc" "server" "Makefile"))
-  :commands telega)
+  :commands telega
+  :hook (telega-load . (lambda ()
+                         (define-key global-map (kbd "C-c t") telega-prefix-map)))
+  :bind (
+         :map telega-prefix-map
+         ("p" . telega-notifications-history)
+         )
+  :config
+  (setq telega-autoplay-mode t)
+  (setq telega-notifications-mode t)
+  (setq telega-emoji-use-images nil)
+  (setq telega-open-file-function 'org-open-file))
 
 (use-package agent-shell
   :straight t

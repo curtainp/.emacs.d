@@ -68,6 +68,9 @@
 (use-package fontaine
   :straight t
   :commands fontaine-mode
+  :bind
+  (("C-c f" . fontaine-set-preset)
+   ("C-c F" . fontaine-toggle-preset))
   :config
   (setq-default text-scale-remap-header-line t)
   (setq fontaine-presets

@@ -13,6 +13,10 @@
           org-mode
           html-mode)
          . eglot-ensure)
+  :bind
+  (("C-c e i" . eglot-find-implementation)
+   ("C-c e a" . eglot-code-actions)
+   ("C-c e r" . eglot-rename))
   :config
   (add-to-list 'eglot-server-programs '(org-mode . ("harper-ls" "--stdio")))
   (setq-default eglot-workspace-configuration

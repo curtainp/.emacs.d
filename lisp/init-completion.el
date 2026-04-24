@@ -98,11 +98,11 @@
 (use-package vertico-prescient
   :straight t
   :after (prescient vertico)
+  :custom
+  (vertico-prescient-completion-styles '(flex orderless))
   :config
   (setq vertico-prescient-enable-sorting t)
   (setq vertico-prescient-enable-filtering t)
-  (setq vertico-prescient-completion-styles
-        '(prescient orderless basic))
   (vertico-prescient-mode t))
 
 (use-package mb-depth

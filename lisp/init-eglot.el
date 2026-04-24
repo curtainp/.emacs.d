@@ -103,9 +103,11 @@
 (use-package corfu-prescient
   :straight t
   :after (corfu prescient)
+  :custom
+  (corfu-prescient-completion-styles '(flex orderless basic))
   :config
   (setq corfu-prescient-enable-sorting t)
-  ;; (setq corfu-prescient-enable-filtering t)
+  (setq corfu-prescient-enable-filtering t)
   (corfu-prescient-mode t))
 
 ;; Corfu popup info (documentation popup)

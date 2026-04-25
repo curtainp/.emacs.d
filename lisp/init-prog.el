@@ -195,7 +195,8 @@
   :commands eat)
 
 (use-package ghostel
-  :straight (:host github :repo "dakra/ghostel")
+  :straight (:host github :repo "dakra/ghostel"
+                   :files (:defaults "etc" "src" "vendor" "build.zig" "build.zig.zon" "symbols.map"))
   :commands ghostel
   :config
   (setq ghostel-enable-file-detection nil))

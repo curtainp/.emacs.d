@@ -181,6 +181,13 @@
                                        (pulsar-reveal-entry)))
   )
 
+(use-package consult-dir
+  :straight t
+  :bind (("C-x C-d" . consult-dir)
+         :map minibuffer-local-completion-map
+         ("C-x C-d" . consult-dir)
+         ("C-x C-j" . consult-dir-jump-file)))
+
 (use-package embark
   :straight t
   :bind (:map minibuffer-local-map

@@ -50,20 +50,52 @@
   ;; ef-arbutus ef-melissa-light ef-dream
   (modus-themes-load-theme 'ef-arbutus))  ;; ef-arbutus for light theme
 
-(use-package nano-modeline
+(use-package spacious-padding
   :straight t
+  :commands (spacious-padding-mode)
+  :hook (after-init . spacious-padding-mode)
+  :bind (("<f8>" . spacious-padding-mode))
   :config
-  (setq-default mode-line-format nil)
-  (add-hook 'prog-mode-hook            #'nano-modeline-prog-mode)
-  (add-hook 'text-mode-hook            #'nano-modeline-text-mode)
-  (add-hook 'org-mode-hook             #'nano-modeline-org-mode)
-  (add-hook 'elfeed-show-mode-hook     #'nano-modeline-elfeed-entry-mode)
-  (add-hook 'elfeed-search-mode-hook   #'nano-modeline-elfeed-search-mode)
-  (add-hook 'term-mode-hook            #'nano-modeline-term-mode)
-  (add-hook 'messages-buffer-mode-hook #'nano-modeline-message-mode)
-  (add-hook 'org-capture-mode-hook     #'nano-modeline-org-capture-mode)
-  (add-hook 'org-agenda-mode-hook      #'nano-modeline-org-agenda-mode)
-  (nano-modeline-text-mode t))
+  (setq spacious-padding-widths
+        `(:internal-border-width 15
+                                 :header-line-width 4
+                                 :mode-line-width 6
+                                 :tab-width 4
+                                 :right-divider-width 15
+                                 :scroll-bar-width 8
+                                 :left-fringe-width 8
+                                 :right-fringe-width 20))
+  (setq spacious-padding-subtle-frame-lines
+        '( :mode-line-active spacious-padding-line-active
+           :mode-line-inactive spacious-padding-line-inactive
+           :header-line-active spacious-padding-line-active
+           :header-line-inactive spacious-padding-line-inactive)))
+
+
+(use-package doom-modeline
+  :straight t
+  :commands doom-modeline-mode
+  :hook (after-init . doom-modeline-mode)
+  :custom
+  (doom-modeline-height 20)
+  ;; (doom-modeline-bar-width 5)
+  (doom-modeline-irc nil)
+  (doom-modeline-mu4e nil)
+  (doom-modeline-gnus nil)
+  (doom-modeline-github nil)
+  (doom-modeline-buffer-file-name-style 'truncate-upto-root)
+  (doom-modeline-persp-name nil)
+  ; (doom-modeline-time-icon nil)
+  ; (doom-modeline-buffer-encoding 'nondefault)
+  (doom-modeline-unicode-fallback t)
+  ; (doom-modeline-total-line-number t)
+  (doom-modeline-enable-word-count nil)
+  ;; (doom-modeline-hud t)
+  ;; (doom-modeline-hud-min-height 1)
+  ;; (doom-modeline-continuous-word-count-modes '(markdown-mode markdown-ts-mode gfm-mode org-mode rst-mode latex-mode tex-mode))
+  :config
+  (doom-modeline-remove-segment 'bar)
+  )
 
 (use-package fontaine
   :straight t

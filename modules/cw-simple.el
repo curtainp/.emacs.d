@@ -42,6 +42,17 @@ Used by `cw-simple-insert-date'. '%R %z' is like %H:%M, %z is the numeric form."
   (goto-char (cdr bounds))
   (activate-mark))
 
+;;;autoload
+(defun cw-simple-mark-current-line-dwim (arg)
+  "Select the current line and move the cursor by ARG lines if no region is selected.
+
+If a region is already selected, only move the cursor by ARG lines."
+  (interactive "p")
+  (when (not (use-region-p))
+    (forward-line 0)
+    (set-mark-command nil))
+  (forward-line arg))
+
 ;;;###autoload
 (defun cw-simple-mark-sexp ()
   "Mark symbolic expression at or near point. Repeat to extend the region
@@ -53,6 +64,8 @@ forward to the next symbolic expression."
     (when-let* ((thing (cond
                         ((thing-at-point 'url) 'url)
                         ((thing-at-point 'sexp) 'sexp)
+                        ((thing-at-point 'filename) 'filename)
+                        ((thing-at-point 'email) 'email)
                         ((thing-at-point 'string) 'string)
                         ((thing-at-point 'word) 'word))))
       (cw-simple--mark (bounds-of-thing-at-point thing)))))

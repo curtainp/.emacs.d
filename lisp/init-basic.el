@@ -340,6 +340,7 @@
         ("M-w" . cw-simple-kill-ring-save-dwim)
         ("C-s-y" . cw-simple-yank-replace-line-or-region)
         ("C-=" . cw-simple-insert-date)
+        ("C-l" . cw-simple-mark-current-line-dwim)
         ("M-r" . window-layout-transpose) ;; Emacs 31 override `move-to-window-line-top-bottom'
         ("M-s-r" . rotate-windows-back)   ;; Emacs 31
         ("C-x o" . cw-simple-other-window)

@@ -134,18 +134,12 @@ current line."
     (setq this-command 'kill-ring-save)))
 
 ;;;###autoload
-(defun cw-simple-kill-region-dwim (&optional beg end)
-  "Do `kill-region' when the region is active, else `kill-ring-save' symbol
-at point."
-  (interactive
-   (when (region-active-p)
-     (list
-      (region-beginning)
-      (region-end))))
-  (if (and beg end)
-      (kill-region beg end)
-    (cw-simple-mark-sexp)
-    (copy-region-as-kill (region-beginning) (region-end)))
+(defun cw-simple-kill-region-dwim ()
+  "Do `kill-region' when the region is active, else `backward-kill-word'."
+  (interactive)
+  (if (use-region-p)
+      (kill-region (region-beginning) (region-end))
+    (backward-kill-word 1))
   (setq this-command 'kill-ring-save))
 
 (defun cw-simple--duplicate-buffer-substring (boundaries)

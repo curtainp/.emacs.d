@@ -97,6 +97,11 @@
   (doom-modeline-remove-segment 'bar)
   )
 
+(use-package hide-mode-line
+  :straight t
+  :commands hide-mode-line-mode
+  :hook ((ghostel-mode telega-root-mode telega-chat-mode compilation-mode) . hide-mode-line-mode))
+
 (use-package fontaine
   :straight t
   :commands fontaine-mode

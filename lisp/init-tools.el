@@ -33,6 +33,21 @@
                    :pre-build ("make" "all"))
   :commands (reader-mode))
 
+(use-package insidious
+  :disabled
+  :straight (:host codeberg :repo "Monadicsheep/insidious"))
+
+(use-package keymap-popup
+  :straight (:host codeberg :repo "thanosapollo/emacs-keymap-popup"))
+
+(use-package yeetube
+  :straight t
+  :bind ("C-c y" . yeetube)
+  :config
+  (setf yeetube-display-thumbnails-p nil
+        yeetube-results-limit 20
+        yeetube-enable-tor t))
+
 ;; NOTE: need to install TDlib dependency
 (use-package telega
   :straight (:host github :repo "zevlg/telega.el"

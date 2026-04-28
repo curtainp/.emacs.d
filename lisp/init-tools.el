@@ -80,11 +80,18 @@
   (setq gt-preset-translators
         `((default . ,(gt-translator
                        :taker (list (gt-taker :pick nil :if 'selection)
-                                    ;; (gt-taker :text 'paragraph :if '(Info-mode help-mode helpful-mode elfeed-show-mode))
+                                    (gt-taker :text 'paragraph :if 'read-only)
                                     (gt-taker :text 'word))
-                       :engines (list (gt-youdao-dict-engine)
-                                      (gt-stardict-engine :dir "~/.stardict/dic" :dict "朗道英汉字典5.0" :exact t))
-                       :render (list (gt-overlay-render :if '(Info-mode help-mode helpful-mode elfeed-show-mode))
+                       :engines (list
+                                 (gt-stardict-engine :dir "~/.stardict/dic" :dict "朗道英汉字典5.0" :exact t :if 'word)
+                                 ;; (gt-youdao-dict-engine)
+                                 (gt-youdao-suggest-engine :if '(and word src:en))
+                                 (gt-bing-engine :if '(and not-word parts))
+                                 ;; TODO: self-host this service
+                                 ;; (gt-libre-engine :if 'word)
+                                 )
+                       :render (list ;; (gt-overlay-render :if 'selection)
+                                     ;; (gt-posframe-pop-render :if 'word)
                                      (gt-buffer-render))))
           ;; TODO: add more translators
           ))

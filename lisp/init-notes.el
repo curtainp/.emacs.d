@@ -1,5 +1,9 @@
 ;;; init-notes.el -*- lexical-binding: t -*-
 
+(use-package gnosis
+  :disabled
+  :straight t)
+
 ;; Simple notes for Emacs with an efficient file-naming scheme
 (use-package denote
   :straight t

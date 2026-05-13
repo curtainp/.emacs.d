@@ -116,6 +116,12 @@
         (let ((command (format "espeak-ng -v %s \"%s\"" lang text)))
           (start-process-shell-command "espeak-ng" nil command)))))
 
+(use-package buffer-to-pdf
+  :straight (:host github :repo "protesilaos/buffer-to-pdf")
+  :commands (buffer-to-pdf)
+  :config
+  (setq buffer-to-pdf-directory (expand-file-name "~/Documents/")))
+
 (use-package time
   :straight nil
   :commands (world-clock)

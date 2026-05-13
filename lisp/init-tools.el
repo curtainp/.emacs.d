@@ -122,6 +122,15 @@
   :config
   (setq buffer-to-pdf-directory (expand-file-name "~/Documents/")))
 
+(use-package elfeed
+  :straight t
+  :commands (elfeed))
+
+(use-package elfeed-org
+  :straight t
+  :commands elfeed-org
+  :hook (after-init . elfeed-org))
+
 (use-package time
   :straight nil
   :commands (world-clock)

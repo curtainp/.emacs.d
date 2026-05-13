@@ -1,0 +1,10 @@
+* Feed :elfeed:
+** CTF :CTF:security:
+*** [[https://writeups.fr/feed.xml][writeups.fr]] :rev:
+*** [[https://cold.is-a.dev/rss.xml][code is a dev]] :misc:
+*** [[https://tommy-kay.github.io/feed.xml][Tommy Kay]] :misc:
+*** [[https://u1f383.github.io/feed.xml][Pumpkin]] :Linux_kernel:
+*** [[https://w0y.at/feeds/all.rss.xml][We 0WN Y0U]] :pwn:
+*** [[https://trebledj.me/feeds/posts.xml][Johnathan]] :rev:misc:
+** Programming :code:
+*** [[https://matklad.github.io/feed.xml][matklad blog]] :code:

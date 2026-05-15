@@ -119,12 +119,23 @@
 (use-package buffer-to-pdf
   :straight (:host github :repo "protesilaos/buffer-to-pdf")
   :commands (buffer-to-pdf)
+  :bind (:map global-map
+              ("C-c t p" . buffer-to-pdf))
   :config
   (setq buffer-to-pdf-directory (expand-file-name "~/Documents/")))
 
+(use-package shr-tag-pre-highlight
+  :straight t
+  :after shr
+  :config
+  (add-to-list 'shr-external-rendering-functions
+               '(pre . shr-tag-pre-highlight)))
+
 (use-package elfeed
   :straight t
-  :commands (elfeed))
+  :commands (elfeed)
+  :bind (:map global-map
+              ("C-c t e" . elfeed)))
 
 (use-package elfeed-org
   :straight t

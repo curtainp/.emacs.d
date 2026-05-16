@@ -197,6 +197,7 @@ this stage of initialization."
 (push '(tool-bar-lines . 0) default-frame-alist)
 (setq tool-bar-mode nil)
 (push '(tab-bar-lines . 1) default-frame-alist)
+(tab-bar-history-mode 1)
 (setq default-frame-scroll-bars 'right)
 (push '(vertical-scroll-bars) default-frame-alist)
 (push '(horizontal-scroll-bars) default-frame-alist)

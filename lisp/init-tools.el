@@ -217,6 +217,51 @@
   :config
   (add-to-list 'global-colorful-modes 'helpful-mode))
 
+(use-package winner
+  :straight nil
+  :commands (winner-undo winner-redo)
+  :hook (after-init . winner-mode)
+  :custom
+  (winner-boring-buffers
+   '("*Completions*" "*Compile-Log*" "*inferior-lisp*" "*Fuzzy Completions*"
+     "*Apropos*" "*Help*" "*cvs*" "*Buffer List*" "*Ibuffer*"
+     "*esh command on file*")))
 
+(use-package popper
+  :disabled
+  :straight t
+  :commands popper-mode
+  :hook (emacs-startup . popper-mode)
+  :bind (:map global-map
+              ("C-M-<tab>" . popper-cycle)
+              ("M-`" . popper-toggle-type))
+  :custom
+  (popper-reference-buffers
+   '("\\*Messages\\*"
+     "\\*Async Shell Command\\*"
+     compilation-mode
+     "\\*compilation\\*"
+     "\\*Telega User\\*"
+     "\\*Telegram Chat Info\\*"
+     "\\*Telegram Message Info\\*"
+     "\\*Telegram Sticker Set\\*"
+     "\\*Embark Actions\\*"
+     helpful-mode
+     "\\*ghostel\\*" ghostel-mode
+     "\\*Org Select\\*"
+     ))
+  :config
+  (popper-echo-mode 1)
+  ;; (popper-tab-line-mode 1)
+  (defun +popper-close-window-hack (&rest _)
+    "Close popper window via `C-g'."
+    (when (and (called-interactively-p 'interactive)
+               (not (region-active-p))
+               popper-open-popup-alist)
+      (let ((window (caar popper-open-popup-alist)))
+        (when (window-live-p window)
+          (delete-window window)))))
+  (advice-add 'keyboard-quit :before #'+popper-close-window-hack)
+  )
 
 (provide 'init-tools)

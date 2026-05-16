@@ -33,6 +33,7 @@
               ("M-," . org-edit-src-exit)
               )
   :custom
+  (org-modules nil)
   (org-directory cw-emacs-notes-directory)
   (org-imenu-depth 7)
   (org-M-RET-may-split-line '((default . nil))) ; move the end of line before make a new line

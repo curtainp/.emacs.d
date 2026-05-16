@@ -231,4 +231,34 @@
   :straight t
   :hook (after-init . default-text-scale-mode))
 
+(use-package tab-bar
+  :straight nil
+  :config
+  (setq tab-bar-separator ""
+        tab-bar-new-tab-choice "*scratch*"
+        tab-bar-tab-name-truncated-max 20
+        tab-bar-auto-width nil
+        tab-bar-close-button-show nil
+        tab-bar-tab-hints t)
+  :custom
+  (tab-bar-select-tab-modifiers '(meta))
+  (tab-bar-tab-name-function
+   (lambda ()
+     (let* ((raw-tab-name (buffer-name (window-buffer (minibuffer-selected-window))))
+            (count (length (window-list-1 nil 'nomini)))
+            (truncate-tab-name (if (< (length raw-tab-name) tab-bar-tab-name-truncated-max)
+                                   raw-tab-name
+                                 (truncate-string-to-width raw-tab-name
+                                                           tab-bar-tab-name-truncated-max
+                                                           nil nil tab-bar-tab-name-ellipsis))))
+       truncate-tab-name
+       )))
+  (tab-bar-tab-name-format-function
+   (lambda (tab idx)
+     (let ((face (funcall tab-bar-tab-face-function tab)))
+       (concat
+        (propertize (format " %s" idx) 'face `(:inherit ,face :weight ultra-bold))
+        (propertize (concat " " (alist-get 'name tab) " ") 'face face)))))
+  )
+
 (provide 'init-ui)

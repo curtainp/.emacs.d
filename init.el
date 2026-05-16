@@ -49,6 +49,7 @@
 
 (setq straight-repository-branch "develop")
 (setq straight-check-for-modifications '(check-on-save find-when-checking))
+(setq straight-vc-git-default-clone-depth '(1 single-branch)) ; shadow clone
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name

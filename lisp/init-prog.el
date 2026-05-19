@@ -197,7 +197,10 @@
 (use-package ghostel
   :straight (:host github :repo "dakra/ghostel"
                    :files (:defaults "etc" "src" "vendor" "build.zig" "build.zig.zon" "symbols.map"))
-  :commands ghostel
+  :commands (ghostel ghostel-compile-global-mode)
+  :hook (emacs-startup . ghostel-compile-global-mode)
+  :custom
+  (ghostel-compile-global-mode-excluded-modes '(grep-mode rg-mode))
   :config
   (setq ghostel-enable-file-detection nil))
 

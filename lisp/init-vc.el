@@ -109,4 +109,8 @@
   (setq git-commit-style-convention-checks '(non-empty-second-line))
   (setq git-commit-major-mode #'text-mode))
 
+(use-package forge
+  :after magit
+  :straight t)
+
 (provide 'init-vc)

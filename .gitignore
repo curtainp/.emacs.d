@@ -31,3 +31,5 @@
 /var/
 /yeetube
 /gnosis/
+/elfeed/
+*.sqlite

@@ -54,13 +54,12 @@
                    :branch "master"
                    :files (:defaults "contrib" "etc" "server" "Makefile"))
   :commands telega
-  :hook (telega-load . (lambda ()
-                         (define-key global-map (kbd "C-c t") telega-prefix-map)))
   :hook (telega-load . telega-notifications-mode)
-  :bind (
-         :map telega-prefix-map
+  :bind (:map telega-prefix-map
          ("p" . telega-notifications-history)
          )
+  :bind-keymap
+  ("C-c t" . telega-prefix-map)
   :config
   (setq telega-autoplay-mode t)
   (setq telega-emoji-use-images nil)
@@ -120,7 +119,7 @@
   :straight (:host github :repo "protesilaos/buffer-to-pdf")
   :commands (buffer-to-pdf)
   :bind (:map global-map
-              ("C-c t p" . buffer-to-pdf))
+              ("C-c x p" . buffer-to-pdf))
   :config
   (setq buffer-to-pdf-directory (expand-file-name "~/Documents/")))
 
@@ -135,7 +134,7 @@
   :straight t
   :commands (elfeed)
   :bind (:map global-map
-              ("C-c t e" . elfeed)))
+              ("C-c x e" . elfeed)))
 
 (use-package elfeed-org
   :straight t

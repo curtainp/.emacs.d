@@ -56,13 +56,13 @@
   :commands telega
   :hook (telega-load . (lambda ()
                          (define-key global-map (kbd "C-c t") telega-prefix-map)))
+  :hook (telega-load . telega-notifications-mode)
   :bind (
          :map telega-prefix-map
          ("p" . telega-notifications-history)
          )
   :config
   (setq telega-autoplay-mode t)
-  (setq telega-notifications-mode t)
   (setq telega-emoji-use-images nil)
   (setq telega-open-file-function 'org-open-file))
 

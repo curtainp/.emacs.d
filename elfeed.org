@@ -6,5 +6,8 @@
 *** [[https://u1f383.github.io/feed.xml][Pumpkin]] :Linux_kernel:
 *** [[https://w0y.at/feeds/all.rss.xml][We 0WN Y0U]] :pwn:
 *** [[https://trebledj.me/feeds/posts.xml][Johnathan]] :rev:misc:
+*** [[https://0xdf.gitlab.io/feed.xml][0xdf]] :htb:
+** BugBounty :security:bounty:
+*** [[https://blog.doyensec.com/atom.xml][doyensec]] :security:
 ** Programming :code:
 *** [[https://matklad.github.io/feed.xml][matklad blog]] :code:

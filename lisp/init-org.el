@@ -39,7 +39,7 @@
   (org-M-RET-may-split-line '((default . nil))) ; move the end of line before make a new line
   (org-ellipsis " ↩")
   (org-pretty-entities t)
-  (org-hide-emphasis-markers nil)
+  (org-hide-emphasis-markers t)
   (org-hide-macro-markers nil)
   (org-hide-leading-stars nil)
   (org-fontify-whole-heading-line nil)    ;; prettify heading line

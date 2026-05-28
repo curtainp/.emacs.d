@@ -39,6 +39,14 @@
   :straight t
   :commands smartparens-global-mode
   :hook (after-init . smartparens-global-mode)
+  :bind (:map smartparens-mode-map
+              ("C-M-f" . sp-forward-sexp)
+              ("C-M-b" . sp-backward-sexp)
+              ("C-M-u" . sp-backward-up-sexp)
+              ("C-M-d" . sp-down-sexp)
+              ("C-M-p" . sp-backward-down-sexp)
+              ("C-M-n" . sp-up-sexp)
+              )
   :custom
   (sp-ignore-modes-list '(minibuffer-inactive-mode)) ; Enable in `minibuffer-mode'
   :config

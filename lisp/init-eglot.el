@@ -21,7 +21,8 @@
   (add-to-list 'eglot-server-programs '(org-mode . ("harper-ls" "--stdio")))
   (setq-default eglot-workspace-configuration
                 '(:harper-ls (:linters (:SpellCheck :json-false
-                                                     :SentenceCapitalization :json-false))))
+                                                    :SentenceCapitalization :json-false
+                                                    :Spaces nil))))
   (setq eglot-autoshutdown t
         eglot-events-buffer-config '(:size 0 :format full) ;; no log
         ;; Keep the server closer to the live buffer so completion

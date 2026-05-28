@@ -46,5 +46,17 @@
 
 ;; `grep-edit-mode' built-in Emacs 31
 
+(use-package visual-replace
+  :straight t
+  :commands (visual-replace visual-replace-from-isearch)
+  :bind (("C-c r" .  visual-replace)
+         ([remap query-replace] . visual-replace)
+         ([remap replace-string] . visual-replace)
+         ([remap isearch-query-replace] . visual-replace-from-isearch)
+         ([remap isearch-query-replace-regexp] . visual-replace-from-isearch)
+         :map isearch-mode-map
+         ("C-c r" . visual-replace-from-isearch))
+  :config
+  (setq visual-replace-default-to-full-scope t))
 
 (provide 'init-search)

@@ -184,6 +184,15 @@
   :commands highlight-defined-mode
   :hook (emacs-lisp-mode . highlight-defined-mode))
 
+(use-package hideshow
+  :straight nil
+  :commands hs-minor-mode
+  :hook (prog-mode . hs-minor-mode)
+  :bind (:map hs-minor-mode-map
+              ([C-tab] . hs-toggle-hiding))
+  :config
+  (setq hs-allow-nesting t))
+
 (use-package eat
   :disabled
   :straight (:host codeberg :repo "akib/emacs-eat"

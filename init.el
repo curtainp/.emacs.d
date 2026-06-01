@@ -30,7 +30,7 @@
   :group 'cw-emacs
   :type 'boolean)
 
-(defcustom cw-emacs-lsp-client 'eglot
+(defcustom cw-emacs-lsp-client nil
   "The LSP client to use.
 `lsp-bridge' uses lsp-bridge with acm completion.
 `eglot' uses eglot with corfu, cape, and emacs-lsp-booster."
@@ -83,7 +83,7 @@
 (pcase cw-emacs-lsp-client
   ('lsp-bridge (require 'init-lsp-bridge))
   ('eglot      (require 'init-eglot))
-  (_           (require 'init-eglot)))
+  (_           (message "Happy Hacking!")))
 (require 'init-nav)
 (require 'init-search)
 (require 'init-prog)

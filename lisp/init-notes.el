@@ -16,7 +16,7 @@
               ("C-c n n" . denote-silo-open-or-create)
               ("C-c n N" . denote-silo-open-or-create)
               ("C-c n d" . denote-dired)
-              ("C-c n g" . denote-grep)
+              ;; ("C-c n g" . denote-grep)
               ("C-c n r" . denote-rename-file)
               ("C-c n i" . denote-link)
               ("C-c n I" . denote-add-links)
@@ -41,6 +41,7 @@
   :defer t)
 
 (use-package consult-notes
+  :disabled
   :straight (:type git :host github :repo "mclear-tools/consult-notes")
   :commands (consult-notes
              consult-notes-search-in-all-notes)
@@ -51,6 +52,17 @@
   (when (locate-library "denote")
     (consult-notes-denote-mode))
   (setq consult-notes-denote-files-function (lambda () (denote-directory-files nil t t))))
+
+(use-package consult-denote
+  :straight t
+  :bind
+  (("C-c n f" . consult-denote-find)
+   ("C-c n g" . consult-denote-grep))
+  :custom
+  (consult-denote-find-command #'consult-fd)
+  (consult-denote-grep-command #'consult-ripgrep)
+  :config
+  (consult-denote-mode 1))
 
 (use-package ox
   :straight nil

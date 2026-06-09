@@ -9,12 +9,12 @@
 (add-hook 'emacs-startup-hook #'display-startup-time 100)
 
 (setq gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 0.5)
+      gc-cons-percentage 0.6)
 
 (add-hook 'emacs-startup-hook
           (lambda ()
-            (setq gc-cons-threshold (* 32 1024 1024))) 105)
-                                        ; make gc-restore at the end of `emacs-startup-hook'
+            (setq gc-cons-threshold (* 32 1024 1024)
+                  gc-cons-percentage 0.1)) 105)
 
 ;; Prefer loading newer compiled files
 (setq load-prefer-newer t)
@@ -196,8 +196,7 @@ this stage of initialization."
 
 (push '(tool-bar-lines . 0) default-frame-alist)
 (setq tool-bar-mode nil)
-(push '(tab-bar-lines . 1) default-frame-alist)
-(tab-bar-history-mode 1)
+(push '(tab-bar-lines . 0) default-frame-alist)
 (setq default-frame-scroll-bars 'right)
 (push '(vertical-scroll-bars) default-frame-alist)
 (push '(horizontal-scroll-bars) default-frame-alist)

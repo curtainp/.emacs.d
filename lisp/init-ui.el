@@ -228,6 +228,7 @@
   :hook (after-init . default-text-scale-mode))
 
 (use-package tab-bar
+  :disabled
   :straight nil
   :config
   (setq tab-bar-separator ""

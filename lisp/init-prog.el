@@ -221,4 +221,7 @@
   :config
   (setq ghostel-enable-file-detection nil))
 
+(use-package mermaid-mode
+  :straight t)
+
 (provide 'init-prog)

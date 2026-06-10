@@ -220,6 +220,15 @@
   :straight nil
   :commands (winner-undo winner-redo)
   :hook (after-init . winner-mode)
+  :config
+  (defun toggle-delete-other-windows ()
+    "Delete other windows in frame if any, or restore previous window layout."
+    (interactive)
+    (if (and winner-mode
+             (equal (selected-window) (next-window)))
+        (winner-undo)
+      (delete-other-windows)))
+  (global-set-key (kbd "C-x 1") #'toggle-delete-other-windows)
   :custom
   (winner-boring-buffers
    '("*Completions*" "*Compile-Log*" "*inferior-lisp*" "*Fuzzy Completions*"

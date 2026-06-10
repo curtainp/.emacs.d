@@ -3,6 +3,8 @@
 (setq frame-resize-pixelwise t
       window-resize-pixelwise t)
 
+(setq window-combination-resize t)
+
 (use-package pulsar
   :straight t
   :commands pulsar-global-mode

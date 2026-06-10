@@ -15,6 +15,9 @@
 (setq native-comp-async-query-on-exit t)
 (setq save-interprogram-paste-before-kill t)
 
+(add-hook 'after-save-hook
+          #'executable-make-buffer-file-executable-if-script-p)
+
 (setq read-answer-short t)
 (if (boundp 'use-short-answers)
     (setq use-short-answers t)

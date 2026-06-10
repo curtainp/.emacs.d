@@ -13,6 +13,7 @@
 ;; (add-hook 'prog-mode-hook #'whitespace-mode)
 
 (setq native-comp-async-query-on-exit t)
+(setq save-interprogram-paste-before-kill t)
 
 (setq read-answer-short t)
 (if (boundp 'use-short-answers)

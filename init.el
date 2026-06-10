@@ -66,6 +66,8 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(straight-use-package 'org)
+
 (mapc
  (lambda (path)
    (add-to-list 'load-path (locate-user-emacs-file path)))

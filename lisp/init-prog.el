@@ -222,6 +222,7 @@
   (setq ghostel-enable-file-detection nil))
 
 (use-package mermaid-mode
-  :straight t)
+  :straight t
+  :defer t)
 
 (provide 'init-prog)

@@ -261,11 +261,13 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
 
 (use-package ob-mermaid
   :straight t
+  :after org
   :config
   (setq ob-mermaid-cli-path (executable-find "mmdc")))
 
 (use-package org-src
   :straight nil
+  :after org
   :hook (org-babel-after-execute . org-redisplay-inline-images)
   :bind (:map org-src-mode-map
          ("C-c C-c" . org-edit-src-exit))
@@ -283,21 +285,6 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
           (:wrap    . "results")          ; 结果通过#+begin_results包裹
           (:tangle  . "no")               ; 不写入文件
           ))
-  :config
-  (org-babel-do-load-languages
-   'org-babel-load-languages '((python          . t)
-                               (awk             . t)
-                               (C               . t)
-                               (latex           . t)
-                               (emacs-lisp      . t)
-                               (eshell          . t)
-                               (shell           . t)
-                               (js              . t)
-                               (sql             . t)
-                               (css             . t)
-                               (mermaid         . t)
-                               ))
-
   :custom
   ;; 代码块语法高亮
   (org-src-fontify-natively t)
@@ -321,6 +308,19 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
                         ("shell"        . sh)
                         ("mysql"        . sql)
                         ))
+  (org-babel-load-languages '((python          . t)
+                               (awk             . t)
+                               (C               . t)
+                               (latex           . t)
+                               (emacs-lisp      . t)
+                               (eshell          . t)
+                               (shell           . t)
+                               (js              . t)
+                               (sql             . t)
+                               (css             . t)
+                               (mermaid         . t)
+                               ))
+
   ;; 在这个阶段，只需要加载默认支持的语言
   :config
   (setq org-babel-default-header-args:C
@@ -329,6 +329,7 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
 
 (use-package ox
   :straight nil
+  :after org
   :config
   (setq org-html-html5-fancy t
         org-html-doctype "html5"))

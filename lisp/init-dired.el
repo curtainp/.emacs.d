@@ -58,6 +58,7 @@
 
 (use-package wdired
   :commands (wdired-change-to-wdired-mode)
+  :after dired
   :config
   (setq wdired-allow-to-change-permissions t)
   (setq wdired-create-parent-directories t))

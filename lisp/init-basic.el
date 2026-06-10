@@ -10,7 +10,7 @@
 ;; whitespace
 (setq whitespace-style
       '(face tabs tab-mark spaces space-mark trailing lines))
-(add-hook 'prog-mode-hook #'whitespace-mode)
+;; (add-hook 'prog-mode-hook #'whitespace-mode)
 
 (setq native-comp-async-query-on-exit t)
 

@@ -259,6 +259,11 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
     (setq org-preview-latex-image-directory (expand-file-name "~/.cache/org/preview/latex-image/")))
   )
 
+(use-package ob-mermaid
+  :straight t
+  :config
+  (setq ob-mermaid-cli-path (executable-find "mmdc")))
+
 (use-package org-src
   :straight nil
   :hook (org-babel-after-execute . org-redisplay-inline-images)
@@ -403,6 +408,7 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
                               (js              . t)
                               (sql             . t)
                               (css             . t)
+                              (mermaid         . t)
                               ))
   :config
   (setq org-babel-default-header-args:C

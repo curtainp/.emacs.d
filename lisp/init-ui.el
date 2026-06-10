@@ -48,7 +48,7 @@
           (agenda-structure . (variable-pitch light 1.7))
           (t . (variable-pitch 1.1))))
   ;; ef-arbutus ef-melissa-light ef-dream
-  (modus-themes-load-theme 'ef-arbutus))  ;; ef-arbutus for light theme
+  (modus-themes-load-theme 'ef-autumn))  ;; ef-arbutus for light theme
 
 (use-package spacious-padding
   :straight t

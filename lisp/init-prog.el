@@ -225,4 +225,8 @@
   :straight t
   :defer t)
 
+(use-package zig-mode
+  :straight (:host codeberg :repo "ziglang/zig-mode")
+  :defer t)
+
 (provide 'init-prog)

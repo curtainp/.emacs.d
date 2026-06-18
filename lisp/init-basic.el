@@ -15,8 +15,8 @@
 (setq native-comp-async-query-on-exit t)
 (setq save-interprogram-paste-before-kill t)
 
-(add-hook 'after-save-hook
-          #'executable-make-buffer-file-executable-if-script-p)
+;; (add-hook 'after-save-hook
+;;           #'executable-make-buffer-file-executable-if-script-p)
 
 (setq read-answer-short t)
 (if (boundp 'use-short-answers)
@@ -93,6 +93,10 @@
       ;; by a version control system, rather than asking for permission.
       vc-follow-symlinks t)
 (setq create-lockfiles nil)
+
+;; Emacs-31
+(setq delete-pair-push-mark t
+      view-lossage-auto-refresh t)
 
 ;; Disable backup files (e.g., filename~). Note that `auto-save-default'
 ;; remains enabled by default. Even with `make-backup-files' backups disabled,
@@ -205,8 +209,7 @@
  ;; FIX: emacs-plus@31 will cause bug with lsp-bridge acm
  alter-fullscreen-frames nil
 
- ;; set [fill column] indicator to 100
- fill-column 100
+ fill-column 80
 
  next-error-recenter '(4)
  find-library-include-other-files nil
@@ -322,7 +325,7 @@
         ("C-x C-v" . nil)
         ("C-x C-c" . nil)
         ("C-x C-c C-c" . save-buffers-kill-emacs)
-        ("C-x C-r" . restart-emacs) ; override `find-file-read-only'
+        ;; ("C-x C-r" . restart-emacs) ; override `find-file-read-only'
         ("M-c" . capitalize-dwim)
         ("M-l" . downcase-dwim)
         ("M-u" . upcase-dwim)

@@ -107,7 +107,21 @@
   (setq magit-log-auto-more t)
   (setq git-commit-summary-max-length 50)
   (setq git-commit-style-convention-checks '(non-empty-second-line))
-  (setq git-commit-major-mode #'text-mode))
+  (setq git-commit-major-mode #'text-mode)
+  (defun +magit-kill-buffers (&rest _)
+    "Restore window configuration and kill all Magit buffers."
+    (interactive)
+    (magit-restore-window-configuration)
+    (let ((buffers (magit-mode-get-buffers)))
+      (when (eq major-mode 'magit-status-mode)
+        (mapc (lambda (buf)
+                (with-current-buffer buf
+                  (if (and magit-this-process
+                           (eq (process-status magit-this-process) 'run))
+                      (bury-buffer buf)
+                    (kill-buffer buf))))
+              buffers))))
+  (setq magit-bury-buffer-function #'+magit-kill-buffers))
 
 (use-package forge
   :after magit

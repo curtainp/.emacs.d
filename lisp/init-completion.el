@@ -43,11 +43,11 @@
           (imenu . ,eager-update-properties-no-sort)
           (consult-location . ,eager-update-properties-no-sort)
           (kill-ring (styles . (emacs22 orderless)))
-          ;; (eglot (styles . (emacs22 substring)))
+          (eglot (styles orderless))
           )))
 
 (use-package vertico
-  :straight t
+  :straight (:files (:defaults "extensions/*.el"))
   :hook (after-init . vertico-mode)
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)
   :bind (("M-R" . vertico-repeat)
@@ -61,6 +61,37 @@
   (vertico-cycle t)
   (vertico-resize t)
   (vertico-count 5))
+
+(use-package vertico-multiform
+  :straight nil
+  :after vertico
+  :hook (vertico-mode . vertico-multiform-mode)
+  :config
+  (setq vertico-buffer-display-action
+        '(display-buffer-in-side-window
+          (side . bottom)
+          (window-height . 0.25))
+        vertico-multiform-commands
+        '((consult-buffer buffer)
+          (consult-buffer-other-frame buffer)
+          (consult-buffer-other-window buffer)
+          (consult-fd buffer)
+          (consult-grep buffer)
+          (consult-git-grep buffer)
+          (consult-imenu buffer)
+          (consult-imenu-multi buffer)
+          (consult-line buffer)
+          (consult-locate buffer)
+          (consult-ripgrep buffer)
+          (consult-yank-pop grid)
+          (consult-register grid)
+          (consult-theme grid))
+        vertico-multiform-categories
+        '((buffer buffer)
+          (consult-grep buffer)
+          (consult-location buffer)
+          (imenu buffer)
+          (kill-ring grid))))
 
 (use-package orderless
   :straight t
@@ -102,7 +133,7 @@
   (vertico-prescient-completion-styles '(flex orderless))
   :config
   (setq vertico-prescient-enable-sorting t)
-  (setq vertico-prescient-enable-filtering t)
+  (setq vertico-prescient-enable-filtering nil)
   (vertico-prescient-mode t))
 
 (use-package mb-depth
@@ -195,7 +226,8 @@
               ("C-c C-e" . embark-export)))
 
 (use-package embark-consult
-  :straight t)
+  :straight t
+  :after (embark consult))
 
 (use-package which-key
   :straight t

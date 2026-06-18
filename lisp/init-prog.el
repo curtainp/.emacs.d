@@ -54,17 +54,20 @@
   (sp-local-pair 'org-mode "$" "$" :unless '(sp-point-after-word-p)))
 
 
-(defvar custom-auto-langs '(bash c cpp css dockerfile html javascript json latex make org python rust sql toml
-                             tsx typescript yaml xml markdown markdown-inline elisp))
-(use-package treesit-auto
-  :straight t
-  :commands global-treesit-auto-mode
-  :hook (after-init . global-treesit-auto-mode)
-  :custom
-  (treesit-auto-install 'prompt)
-  (treesit-auto-langs custom-auto-langs)
+(use-package treesit
+  :straight nil
   :config
-  (treesit-auto-add-to-auto-mode-alist custom-auto-langs))
+  ;; Emacs-31
+  (setq treesit-auto-install-grammar t
+        treesit-enabled-modes t)
+  (add-to-list 'treesit-language-source-alist
+               '((c "https://github.com/tree-sitter/tree-sitter-c")
+                 (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
+                 (python "https://github.com/tree-sitter/tree-sitter-python")
+                 (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+                 (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+                 (rust "https://github.com/tree-sitter/tree-sitter-rust")
+                 (typst "https://github.com/uben0/tree-sitter-typst"))))
 
 (use-package electric
   :straight nil
@@ -133,13 +136,22 @@
   (add-to-list 'so-long-variable-overrides '(save-place-alist . nil)))
 
 (use-package markdown-mode
+  :disabled                             ;; Emacs-31 built-in markdown-ts-mode
   :straight t
   :defer t
   :config
-  (setq markdown-enable-html t)
-  ;; (markdown-enable-math t)
-  (setq markdown-fontify-code-blocks-natively t)
-  (setq markdown-enable-highlighting-syntax t))
+  (setq markdown-enable-html t
+        markdown-italic-underscore t
+        markdown-header-scaling t
+        markdown-asymmetric-header t
+        markdown-nested-imenu-heading-index t
+        markdown-fontify-code-blocks-natively t
+        markdown-enable-highlighting-syntax t)
+  (add-to-list 'markdown-code-lang-modes '("rust" . rust-mode)))
+
+(use-package markdown-ts-mode
+  :straight nil
+  :defer t)
 
 (use-package csv-mode
   :straight t
@@ -168,6 +180,16 @@
         rust-format-goto-problem nil
         rust-format-on-save t))
 
+(use-package cargo-mode
+  :straight t
+  :hook ((rust-mode rust-ts-mode) . cargo-minor-mode))
+
+(use-package yaml-mode
+  :straight t)
+
+(use-package toml-mode
+  :straight t)
+
 (use-package envrc
   :straight t
   :commands envrc-global-mode
@@ -195,10 +217,19 @@
 (use-package hideshow
   :straight nil
   :commands hs-minor-mode
-  :hook (prog-mode . hs-minor-mode)
+  :hook ((prog-mode conf-mode yaml-mode) . hs-minor-mode)
   :bind (:map hs-minor-mode-map
               ([C-tab] . hs-toggle-hiding))
   :config
+  (defun cw/hs-display-code-line-counts (ov)
+    (when (eq 'code (overlay-get ov 'hs))
+      (overlay-put ov 'display
+                   (let ((lines (number-to-string (count-lines (overlay-start ov) (overlay-end ov)))))
+                     (concat " "
+                             (propertize (concat "  .. L" lines " ") 'face '(:inherit shadow :height 0.8 :box t))
+                             " "))
+                   )))
+  (setq hs-set-up-overlay #'cw/hs-display-code-line-counts)
   (setq hs-allow-nesting t))
 
 (use-package eat
@@ -227,6 +258,7 @@
 
 (use-package zig-mode
   :straight (:host codeberg :repo "ziglang/zig-mode")
-  :defer t)
+  :config
+  (setq zig-format-on-save nil))
 
 (provide 'init-prog)

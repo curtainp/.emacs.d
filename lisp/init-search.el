@@ -39,6 +39,7 @@
   (dumb-jump-force-searcher 'rg)
   (dumb-jump-rg-search-args "--pcre2 --follow") ;; follow symbolic links
   (dumb-jump-rust-search-dependencies t)
+  (xref-search-program 'ripgrep)
   (xref-show-definitions-function #'consult-xref)
   (xref-show-xrefs-function #'consult-xref)
   :config

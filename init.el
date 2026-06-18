@@ -30,7 +30,7 @@
   :group 'cw-emacs
   :type 'boolean)
 
-(defcustom cw-emacs-lsp-client nil
+(defcustom cw-emacs-lsp-client 'eglot
   "The LSP client to use.
 `lsp-bridge' uses lsp-bridge with acm completion.
 `eglot' uses eglot with corfu, cape, and emacs-lsp-booster."
@@ -66,6 +66,8 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(setq use-package-expand-minimally t
+      use-package-enable-imenu-support t)
 (straight-use-package 'org)
 
 (mapc

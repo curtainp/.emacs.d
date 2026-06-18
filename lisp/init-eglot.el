@@ -4,34 +4,52 @@
 (use-package eglot
   :straight nil
   :commands (eglot eglot-ensure)
-  :hook ((python-base-mode
+  :hook ((python-mode
+          python-ts-mode
+          rust-mode
           rust-ts-mode
+          zig-mode
           c-ts-mode c++-ts-mode
-          js-ts-mode typescript-ts-mode tsx-ts-mode
-          bash-ts-mode
-          css-ts-mode
-          org-mode
-          html-mode)
+          c-mode c++-mode)
          . eglot-ensure)
   :bind
-  (("C-c e i" . eglot-find-implementation)
-   ("C-c e a" . eglot-code-actions)
-   ("C-c e r" . eglot-rename))
+  (:map eglot-mode-map
+        ("C-c e i" . eglot-find-implementation)
+        ("C-c e a" . eglot-code-actions)
+        ("C-c e r" . eglot-rename))
   :config
-  (add-to-list 'eglot-server-programs '(org-mode . ("harper-ls" "--stdio")))
-  (setq-default eglot-workspace-configuration
-                '(:harper-ls (:linters (:SpellCheck :json-false
-                                                    :SentenceCapitalization :json-false
-                                                    :Spaces nil))))
   (setq eglot-autoshutdown t
         eglot-events-buffer-config '(:size 0 :format full) ;; no log
         ;; Keep the server closer to the live buffer so completion
         ;; doesn't lag behind fast typing.
         eglot-send-changes-idle-time 0.05
+        eglot-code-action-indications nil
         ;; format with `apheleia-format-buffer' instead.
         eglot-ignored-server-capabilities '(:documentFormattingProvider
                                             :documentRangeFormattingProvider)
-        eglot-report-progress nil))
+        eglot-report-progress 'messages)
+  (setq-local eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly)
+  (setq-default eglot-workspace-configuration
+                '(
+                  (:rust-analyzer . (:cargo (:allFeatures t :allTargets t :features "full")
+                                            :checkOnSave :json-false
+                                            :completion (:termSearch (:enable t)
+                                                                     :fullFunctionSignatures (:enable t))
+                                            :hover (:memoryLayout (:size "both")
+                                                                  :show (:traitAssocItems 5)
+                                                                  :documentation (:keywords (:enable :json-false)))
+                                            :inlayHints(;:bindingModeHints (:enable t)
+                                                        :lifetimeElisionHints (:enable "skip_trivial" :useParameterNames t)
+                                                        :closureReturnTypeHints (:enable "always")
+                                                        :discriminantHints (:enable t)
+                                                        :genericParameterHints (:lifetime (:enable t)))
+                                            :semanticHighlighting (:operator (:specialization (:enable t))
+                                                                             :punctuation (:enable t :specialization (:enable t)))
+                                            :workspace (:symbol (:search (:kind "all_symbols"
+                                                                                :scope "workspace_and_dependencies")))
+                                            :lru (:capacity 1024)
+                                            :diagnostics (:enable :json-false)))
+                  )))
 
 ;; Eglot-booster: wraps emacs-lsp-booster for faster JSON processing
 ;; Requires `emacs-lsp-booster' binary in PATH
@@ -48,15 +66,19 @@
 
 ;; Corfu: in-buffer completion UI
 (use-package corfu
-  :straight t
+  :straight (:files (:defaults "extensions/*.el"))
   :commands (global-corfu-mode corfu-mode)
-  :hook (after-init . global-corfu-mode)
+  :hook ((prog-mode conf-mode yaml-mode text-mode) . corfu-mode)
+  :bind (:map corfu-map
+              ("TAB" . corfu-complete)
+              ("<tab>" . corfu-complete)
+              ("RET" . nil))
   :custom
   (corfu-auto t)
-  (corfu-auto-delay 0.2)
+  (corfu-auto-delay 0.1)
   (corfu-auto-prefix 2)
   (corfu-cycle t)
-  (corfu-preselect 'prompt)
+  ;; (corfu-preselect 'prompt)
   (corfu-on-exact-match nil)
   (corfu-quit-no-match 'separator)
   (corfu-preview-current nil)
@@ -84,10 +106,6 @@
       (set-face-attribute 'corfu-border nil
                           :background border)))
 
-  (defun +eglot-corfu-setup ()
-    "Make Corfu react faster in Eglot-managed buffers."
-    (setq-local corfu-auto-delay 0.0))
-
   (defun +corfu-enable-in-minibuffer ()
     "Enable Corfu in the minibuffer if completion is expected."
     (when (local-variable-p 'completion-at-point-functions)
@@ -96,7 +114,6 @@
   (+corfu-apply-theme)
   (unless (advice-member-p #'+corfu-apply-theme #'enable-theme)
     (advice-add 'enable-theme :after #'+corfu-apply-theme))
-  (add-hook 'eglot-managed-mode-hook #'+eglot-corfu-setup)
   (add-hook 'minibuffer-setup-hook #'+corfu-enable-in-minibuffer)
   :bind (:map corfu-map
               ("S-SPC" . corfu-insert-separator)))
@@ -108,7 +125,7 @@
   (corfu-prescient-completion-styles '(flex orderless basic))
   :config
   (setq corfu-prescient-enable-sorting t)
-  (setq corfu-prescient-enable-filtering t)
+  (setq corfu-prescient-enable-filtering nil)
   (corfu-prescient-mode t))
 
 ;; Corfu popup info (documentation popup)
@@ -126,6 +143,7 @@
 
 ;; Nerd-icons for corfu
 (use-package nerd-icons-corfu
+  :disabled
   :straight t
   :after corfu
   :config
@@ -134,17 +152,20 @@
 ;; Cape: completion backends (file, dabbrev, etc.)
 (use-package cape
   :straight t
-  :after corfu
-  :config
-  (defun +eglot-capf ()
-    "Prefer Eglot's CAPF while keeping lightweight local fallbacks."
-    (setq-local completion-at-point-functions
-                (list #'cape-file
-                      #'eglot-completion-at-point
-                      #'cape-dabbrev)))
-  (add-hook 'eglot-managed-mode-hook #'+eglot-capf)
-  ;; Global fallback backends for non-eglot buffers
-  (add-hook 'completion-at-point-functions #'cape-file)
-  (add-hook 'completion-at-point-functions #'cape-dabbrev))
+  :hook (((prog-mode conf-mode yaml-mode shell-mode eshell-mode text-mode codex-ide-session-mode) . +completion-add-default-capfs)
+         ((TeX-mode LaTeX-mode org-mode markdown-mode) . +completion-add-tex-capfs))
+  :init
+  (defun +completion-add-capfs (&rest capfs)
+    "Append CAPFS to the buffer-local `completion-at-point-functions'."
+    (dolist (capf capfs)
+      (unless (memq capf completion-at-point-functions)
+        (setq-local completion-at-point-functions
+                    (append completion-at-point-functions (list capf))))))
+
+  (defun +completion-add-default-capfs ()
+    (+completion-add-capfs #'cape-file #'cape-dabbrev))
+
+  (defun +completion-add-tex-capfs ()
+    (+completion-add-capfs #'cape-tex)))
 
 (provide 'init-eglot)

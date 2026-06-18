@@ -11,3 +11,6 @@
 *** [[https://blog.doyensec.com/atom.xml][doyensec]] :security:
 ** Programming :code:
 *** [[https://matklad.github.io/feed.xml][matklad blog]] :code:
+*** [[https://karthinks.com/index.xml][Karthinks]] :code:
+** Emacs
+*** [[https://www.rahuljuliato.com/rss.xml][Rahuljuliato]] :emacs:

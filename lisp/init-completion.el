@@ -15,7 +15,7 @@
 ;; (setq text-mode-ispell-word-completion nil) ;; disable ispell-completion
 
 ;;;; Completion styles
-(setq completion-styles '(basic substring initials flex orderless)) ; also see `completion-category-overrides'
+(setq completion-styles '(orderless basic)) ; also see `completion-category-overrides'
 (setq completion-flex-nospace t)
 (setq completion-pcm-leading-wildcard t) ; Emacs 31: make `partial-completion' behave like `substring'
 
@@ -61,37 +61,6 @@
   (vertico-cycle t)
   (vertico-resize t)
   (vertico-count 5))
-
-(use-package vertico-multiform
-  :straight nil
-  :after vertico
-  :hook (vertico-mode . vertico-multiform-mode)
-  :config
-  (setq vertico-buffer-display-action
-        '(display-buffer-in-side-window
-          (side . bottom)
-          (window-height . 0.25))
-        vertico-multiform-commands
-        '((consult-buffer buffer)
-          (consult-buffer-other-frame buffer)
-          (consult-buffer-other-window buffer)
-          (consult-fd buffer)
-          (consult-grep buffer)
-          (consult-git-grep buffer)
-          (consult-imenu buffer)
-          (consult-imenu-multi buffer)
-          (consult-line buffer)
-          (consult-locate buffer)
-          (consult-ripgrep buffer)
-          (consult-yank-pop grid)
-          (consult-register grid)
-          (consult-theme grid))
-        vertico-multiform-categories
-        '((buffer buffer)
-          (consult-grep buffer)
-          (consult-location buffer)
-          (imenu buffer)
-          (kill-ring grid))))
 
 (use-package orderless
   :straight t
@@ -180,17 +149,29 @@
 
 (use-package consult
   :straight nil
-  :bind (:map global-map
-              ("M-g M-g" . consult-goto-line)
-              ("M-s M-b" . consult-buffer)
-              ("M-s M-f" . consult-fd)
-              ("M-s M-g" . consult-ripgrep)
-              ("M-s M-h" . consult-history)
-              ("M-s M-i" . consult-imenu)
-              ("M-s M-l" . consult-line)
-              ("M-s M-m" . consult-mark)
-              ("M-s M-y" . consult-yank-pop)
-              ("M-s M-s" . consult-outline)
+  :bind (
+         ("C-c M-x" . consult-mode-command)
+         ("C-c h"   . consult-history)
+         ("C-c k"   . consult-kmacro)
+         ("C-c i"   . consult-info)
+         ("C-c /"   . consult-ripgrep)
+         ;; registers
+         ("M-#"     . consult-register-load)
+         ("M-'"     . consult-register-store)
+         ("C-M-#"   . consult-register)
+         ;; yank
+         ("M-y"     . consult-yank-pop)
+         ;; goto-map
+         ("M-g g"   . consult-goto-line)
+         ("M-g o"   . consult-outline)
+         ("M-g m"   . consult-mark)
+         ("M-g i"   . consult-imenu)
+         ("M-g I"   . consult-imenu-multi)
+         ;; search-map
+         ("M-s c"   . consult-locate)
+         ("M-s g"   . consult-ripgrep)
+         ("M-s f"   . consult-fd)
+         ("M-s l"   . consult-line)
               )
   :config
   (setq consult-line-numbers-widen t)
@@ -201,7 +182,7 @@
   (setq consult-ripgrep-args
         "rg --hidden --glob \"!.git\" --null --line-buffered --color=never --max-columns=1000 --path-separator / --smart-case --no-heading --line-number")
   (setq consult-find-args
-        (concat "find . -not ( "
+        (concat "find . -not ( ":
                 "-path */.git* -prune "
                 "-or -path */.cache* -prune )"))
   (setq consult-preview-key 'any)
@@ -221,7 +202,10 @@
 
 (use-package embark
   :straight t
-  :bind (:map minibuffer-local-map
+  :init
+  (setq prefix-help-command #'embark-prefix-help-command)
+  :bind (("C-." . embark-act)
+         :map minibuffer-local-map
               ("C-c C-c" . embark-collect)
               ("C-c C-e" . embark-export)))
 

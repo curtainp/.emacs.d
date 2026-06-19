@@ -67,6 +67,12 @@
                  (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
                  (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
                  (rust "https://github.com/tree-sitter/tree-sitter-rust")
+                 (toml            "https://github.com/tree-sitter/tree-sitter-toml")
+                 (dockerfile      "https://github.com/camdencheek/tree-sitter-dockerfile")
+                 (org             "https://github.com/milisims/tree-sitter-org")
+                 (yaml            "https://github.com/tree-sitter-grammars/tree-sitter-yaml")
+                 (markdown        "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown/src")
+                 (markdown-inline "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown-inline/src")
                  (typst "https://github.com/uben0/tree-sitter-typst"))))
 
 (use-package electric
@@ -193,7 +199,7 @@
 (use-package envrc
   :straight t
   :commands envrc-global-mode
-  :hook (after-init . envrc-global-mode))
+  :hook (emacs-startup . envrc-global-mode))
 
 (use-package python
   :straight nil

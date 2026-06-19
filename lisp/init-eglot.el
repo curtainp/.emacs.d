@@ -8,7 +8,6 @@
           python-ts-mode
           rust-mode
           rust-ts-mode
-          zig-mode
           c-ts-mode c++-ts-mode
           c-mode c++-mode)
          . eglot-ensure)
@@ -152,7 +151,8 @@
 ;; Cape: completion backends (file, dabbrev, etc.)
 (use-package cape
   :straight t
-  :hook (((prog-mode conf-mode yaml-mode shell-mode eshell-mode text-mode codex-ide-session-mode) . +completion-add-default-capfs)
+  :bind ("C-c e" . cape-prefix-map)
+  :hook (((prog-mode conf-mode yaml-mode text-mode) . +completion-add-default-capfs)
          ((TeX-mode LaTeX-mode org-mode markdown-mode) . +completion-add-tex-capfs))
   :init
   (defun +completion-add-capfs (&rest capfs)
@@ -163,7 +163,7 @@
                     (append completion-at-point-functions (list capf))))))
 
   (defun +completion-add-default-capfs ()
-    (+completion-add-capfs #'cape-file #'cape-dabbrev))
+    (+completion-add-capfs #'cape-file #'cape-dabbrev #'cape-emoji))
 
   (defun +completion-add-tex-capfs ()
     (+completion-add-capfs #'cape-tex)))

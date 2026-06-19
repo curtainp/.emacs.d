@@ -344,7 +344,7 @@
   :bind
   (:map global-map
         ("<escape>" . cw-simple-keyboard-quit-dwim)
-        ("C-." . cw-simple-duplicate-line-or-region)
+        ;; ("C-." . cw-simple-duplicate-line-or-region)
         ("C-g" . cw-simple-keyboard-quit-dwim)
         ("C-M-SPC" . cw-simple-mark-sexp)
         ("C-x 0" . cw-simple-delete-window-dwim) ;; override `delete-window'
@@ -367,13 +367,16 @@
   (setq history-length 100)
   (setq history-delete-duplicates t)
   (setq savehist-save-minibuffer-history t)
+  (setq savehist-autosave-interval 1000)
   (add-to-list 'savehist-additional-variables 'kill-ring))
 
 (use-package saveplace
   :straight nil
   :commands (save-place-mode save-place-local-mode)
   :hook
-  (after-init . save-place-mode))
+  (after-init . save-place-mode)
+  :config
+  (setopt save-place-autosave-interval 1000))
 
 (use-package super-save
   :straight t

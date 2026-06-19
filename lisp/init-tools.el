@@ -94,13 +94,13 @@
   (setq gt-preset-translators
         `((default . ,(gt-translator
                        :taker (list (gt-taker :pick nil :if 'selection)
-                                    (gt-taker :text 'paragraph :if 'read-only)
+                                    (gt-taker :text 'paragraph)
                                     (gt-taker :text 'word))
                        :engines (list
                                  (gt-stardict-engine :dir "~/.stardict/dic" :dict "朗道英汉字典5.0" :exact t :if 'word)
                                  ;; (gt-youdao-dict-engine)
                                  (gt-youdao-suggest-engine :if '(and word src:en))
-                                 (gt-bing-engine :if '(and not-word parts))
+                                 (gt-bing-engine :if 'not-word)
                                  ;; TODO: self-host this service
                                  ;; (gt-libre-engine :if 'word)
                                  )

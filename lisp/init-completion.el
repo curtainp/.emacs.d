@@ -148,8 +148,8 @@
   (setq marginalia-max-relative-age 0)) ; absolute time
 
 (use-package consult
-  :straight nil
-  :bind (
+  :straight t
+  :bind (:map global-map
          ("C-c M-x" . consult-mode-command)
          ("C-c h"   . consult-history)
          ("C-c k"   . consult-kmacro)
@@ -171,27 +171,9 @@
          ("M-s c"   . consult-locate)
          ("M-s g"   . consult-ripgrep)
          ("M-s f"   . consult-fd)
-         ("M-s l"   . consult-line)
-              )
+         ("M-s l"   . consult-line))
   :config
-  (setq consult-line-numbers-widen t)
-  (setq consult-async-min-input 3)
-  (setq consult-async-input-debounce 0.5)
-  (setq consult-async-input-throttle 0.8)
-  (setq consult-narrow-key nil)
-  (setq consult-ripgrep-args
-        "rg --hidden --glob \"!.git\" --null --line-buffered --color=never --max-columns=1000 --path-separator / --smart-case --no-heading --line-number")
-  (setq consult-find-args
-        (concat "find . -not ( ":
-                "-path */.git* -prune "
-                "-or -path */.cache* -prune )"))
-  (setq consult-preview-key 'any)
-  (setq consult-project-function nil)
-  (setq consult-after-jump-hook nil)    ; use `pulsar' instead.
-  (add-hook 'consult-after-jump-hook (lambda ()
-                                       (pulsar-recenter-top)
-                                       (pulsar-reveal-entry)))
-  )
+  (setq consult-async-min-input 2))
 
 (use-package consult-dir
   :straight t

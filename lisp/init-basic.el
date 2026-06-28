@@ -331,7 +331,7 @@
         ("M-u" . upcase-dwim)
         ("M-=" . count-words)
         ("M-:" . pp-eval-expression)
-        ;; ("C-'" . duplicate-dwim) ;; NOTE: original bind with undo
+        ("C-," . duplicate-dwim) ;; NOTE: original bind with undo
         ;; ("C-w" . backward-kill-word)
         ("C-h K" . describe-keymap)
         ))

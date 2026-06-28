@@ -21,7 +21,7 @@
   :commands embrace-commander
   :bind
   (:map global-map
-        ("C-," . embrace-commander)))
+        ("C-c b" . embrace-commander)))
 
 (use-package css-mode
   :straight nil

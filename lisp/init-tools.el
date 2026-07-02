@@ -7,6 +7,8 @@
   (:map prog-mode-map
         ("C-c C-f" . apheleia-format-buffer))
   :config
+  (setf (alist-get 'rustfmt apheleia-formatters)
+      '("apheleia-from-project-root" "Cargo.lock" "cargo" "--quiet" "fmt" "--" "--quiet" "--emit" "stdout"))
   (setf (alist-get 'python-ts-mode apheleia-mode-alist) 'ruff)
   (setf (alist-get 'python-mode apheleia-mode-alist) 'ruff)
   (setf (alist-get 'css-mode apheleia-mode-alist) 'prettier)
@@ -62,8 +64,11 @@
   ("C-c t" . telega-prefix-map)
   :config
   (setq telega-autoplay-mode t)
-  (setq telega-emoji-use-images nil)
-  (setq telega-open-file-function 'org-open-file))
+  (setq telega-open-file-function 'org-open-file)
+  (setq telega-sticker--use-thumbnail t
+        telega-use-images nil
+        telega-emoji-use-images nil
+        telega-symbols-emojify nil))
 
 (use-package agent-shell
   :straight t

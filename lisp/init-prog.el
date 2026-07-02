@@ -184,11 +184,7 @@
   :init
   (setq rust-mode-treesitter-derive t
         rust-format-goto-problem nil
-        rust-format-on-save t))
-
-(use-package cargo-mode
-  :straight t
-  :hook ((rust-mode rust-ts-mode) . cargo-minor-mode))
+        rust-format-on-save nil))
 
 (use-package yaml-mode
   :straight t)

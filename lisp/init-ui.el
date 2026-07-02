@@ -125,13 +125,13 @@
           (jumbo
            :default-height 260)
           (t
-           :default-family "MonoLisaCode"
+           :default-family "Iosevka Term"
            :default-weight regular
            :default-slant normal
            :default-width normal
            :default-height 100
 
-           :fixed-pitch-family "MonoLisaCode"
+           :fixed-pitch-family "Iosevka Term"
            :fixed-pitch-weight nil
            :fixed-pitch-slant nil
            :fixed-pitch-width nil

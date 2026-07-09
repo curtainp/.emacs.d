@@ -15,3 +15,4 @@
 *** [[https://blog.sheerluck.dev/rss.xml][sheerluck dev]] :rust:
 ** Emacs
 *** [[https://www.rahuljuliato.com/rss.xml][Rahuljuliato]] :emacs:
+*** [[https://sachachua.com/blog/category/emacs-news/feed/index.xml][Emacs News]] :emacs:

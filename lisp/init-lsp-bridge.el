@@ -16,6 +16,7 @@
   (setq acm-enable-icon t)
   (setq acm-enable-tabnine nil)
   (setq acm-enable-codeium nil)
+  (setq acm-enable-copilot nil)
   (setq acm-enable-quick-access nil)
   (setq acm-enable-lsp-workspace-symbol t)
   (setq lsp-bridge-semantic-tokens t)

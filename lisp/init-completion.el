@@ -89,22 +89,6 @@
 (setq read-file-name-completion-ignore-case t)
 (setq minibuffer-history-case-insensitive-variables t)
 
-(use-package prescient
-  :straight t
-  :after orderless
-  :config
-  (prescient-persist-mode t))
-
-(use-package vertico-prescient
-  :straight t
-  :after (prescient vertico)
-  :custom
-  (vertico-prescient-completion-styles '(flex orderless))
-  :config
-  (setq vertico-prescient-enable-sorting t)
-  (setq vertico-prescient-enable-filtering nil)
-  (vertico-prescient-mode t))
-
 (use-package mb-depth
   :straight nil
   :commands minibuffer-depth-indicate-mode

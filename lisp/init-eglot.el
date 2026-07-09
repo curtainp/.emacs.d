@@ -18,11 +18,12 @@
         ("C-c e r" . eglot-rename))
   :config
   (setq eglot-autoshutdown t
+        eglot-extend-to-xref t
         eglot-events-buffer-config '(:size 0 :format full) ;; no log
         ;; Keep the server closer to the live buffer so completion
         ;; doesn't lag behind fast typing.
         eglot-send-changes-idle-time 0.05
-        eglot-code-action-indications nil
+        eglot-code-action-indications '(eldoc-hint)
         ;; format with `apheleia-format-buffer' instead.
         eglot-ignored-server-capabilities '(:documentFormattingProvider
                                             :documentRangeFormattingProvider)
@@ -116,16 +117,6 @@
   (add-hook 'minibuffer-setup-hook #'+corfu-enable-in-minibuffer)
   :bind (:map corfu-map
               ("S-SPC" . corfu-insert-separator)))
-
-(use-package corfu-prescient
-  :straight t
-  :after (corfu prescient)
-  :custom
-  (corfu-prescient-completion-styles '(flex orderless basic))
-  :config
-  (setq corfu-prescient-enable-sorting t)
-  (setq corfu-prescient-enable-filtering nil)
-  (corfu-prescient-mode t))
 
 ;; Corfu popup info (documentation popup)
 (use-package corfu-popupinfo

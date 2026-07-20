@@ -77,10 +77,10 @@
   (corfu-auto t)
   (corfu-auto-delay 0.1)
   (corfu-auto-prefix 2)
+  (corfu-on-exact-match 'insert)        ; insert if there is only single candidates
   (corfu-cycle t)
   ;; (corfu-preselect 'prompt)
-  (corfu-on-exact-match nil)
-  (corfu-quit-no-match 'separator)
+  (corfu-quit-no-match t)
   (corfu-preview-current nil)
   :config
   (defun +corfu-apply-theme (&rest _)
@@ -133,7 +133,6 @@
 
 ;; Nerd-icons for corfu
 (use-package nerd-icons-corfu
-  :disabled
   :straight t
   :after corfu
   :config

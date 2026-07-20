@@ -15,7 +15,7 @@
 ;; (setq text-mode-ispell-word-completion nil) ;; disable ispell-completion
 
 ;;;; Completion styles
-(setq completion-styles '(orderless basic)) ; also see `completion-category-overrides'
+(setq completion-styles '(basic substring initials partial-completion flex orderless)) ; from tight to loose
 (setq completion-flex-nospace t)
 (setq completion-pcm-leading-wildcard t) ; Emacs 31: make `partial-completion' behave like `substring'
 
@@ -60,13 +60,15 @@
   (vertico-scroll-margin 0)
   (vertico-cycle t)
   (vertico-resize t)
-  (vertico-count 5))
+  (vertico-count 5)
+  :config
+  (vertico-reverse-mode t))
 
 (use-package orderless
   :straight t
   :after minibuffer
   :custom
-  (orderless-matching-styles '(orderless-prefixes orderless-regexp))
+  (orderless-matching-styles '(orderless-prefixes))
 
   ;; SPC should never complete: use it for `orderless' groups.
   ;; The `?' is a regexp construct.
@@ -128,6 +130,8 @@
   :straight t
   :commands (marginalia-mode marginalia-cycle)
   :hook (vertico-mode . marginalia-mode)
+  :custom
+  (marginalia-align 'right)
   :config
   (setq marginalia-max-relative-age 0)) ; absolute time
 

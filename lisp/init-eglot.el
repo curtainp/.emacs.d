@@ -24,9 +24,10 @@
         ;; Keep the server closer to the live buffer so completion
         ;; doesn't lag behind fast typing.
         eglot-send-changes-idle-time 0.05
-        eglot-code-action-indications '(eldoc-hint)
+        eglot-code-action-indications nil ;; disable automatic code action indicators to reduce background polling
         ;; format with `apheleia-format-buffer' instead.
         eglot-ignored-server-capabilities '(:documentFormattingProvider
+                                            :documentOnTypeFormattingProvider
                                             :documentRangeFormattingProvider)
         eglot-report-progress 'messages)
   (setq-local eldoc-documentation-strategy 'eldoc-documentation-compose-eagerly)

@@ -18,6 +18,7 @@
         ("C-c e r" . eglot-rename))
   :config
   (setq eglot-autoshutdown t
+        eglot-sync-connect nil          ;; make LSP initialize in the background, which prevent eglot blocking the UI
         eglot-extend-to-xref t
         eglot-events-buffer-config '(:size 0 :format full) ;; no log
         ;; Keep the server closer to the live buffer so completion
@@ -75,46 +76,12 @@
               ("RET" . nil))
   :custom
   (corfu-auto t)
-  (corfu-auto-delay 0.1)
-  (corfu-auto-prefix 2)
   (corfu-on-exact-match 'insert)        ; insert if there is only single candidates
+  (corfu-min-width 20)
   (corfu-cycle t)
   ;; (corfu-preselect 'prompt)
   (corfu-quit-no-match t)
   (corfu-preview-current nil)
-  :config
-  (defun +corfu-apply-theme (&rest _)
-    "Sync Corfu faces with the active theme."
-    (let* ((bg (face-background 'default nil t))
-           (fg (face-foreground 'default nil t))
-           (current-bg (or ;; (face-background 'hl-line nil t)
-                           (face-background 'highlight nil t)
-                           bg))
-           (current-fg (or (face-foreground 'highlight nil t)
-                           fg))
-           (border (or (face-background 'vertical-border nil t)
-                       (face-foreground 'vertical-border nil t)
-                       (face-background 'mode-line-inactive nil t)
-                       bg)))
-      (set-face-attribute 'corfu-default nil
-                          :background bg
-                          :foreground fg)
-      (set-face-attribute 'corfu-current nil
-                          :background current-bg
-                          :foreground current-fg
-                          :extend t)
-      (set-face-attribute 'corfu-border nil
-                          :background border)))
-
-  (defun +corfu-enable-in-minibuffer ()
-    "Enable Corfu in the minibuffer if completion is expected."
-    (when (local-variable-p 'completion-at-point-functions)
-      (setq-local corfu-auto nil)
-      (corfu-mode 1)))
-  (+corfu-apply-theme)
-  (unless (advice-member-p #'+corfu-apply-theme #'enable-theme)
-    (advice-add 'enable-theme :after #'+corfu-apply-theme))
-  (add-hook 'minibuffer-setup-hook #'+corfu-enable-in-minibuffer)
   :bind (:map corfu-map
               ("S-SPC" . corfu-insert-separator)))
 
@@ -122,7 +89,7 @@
 (use-package corfu-popupinfo
   :straight nil
   :after corfu
-  :hook (global-corfu-mode . corfu-popupinfo-mode)
+  :hook (corfu-mode . corfu-popupinfo-mode)
   :custom
   (corfu-popupinfo-delay '(0.5 . 0.2))
   (corfu-popupinfo-max-height 15)

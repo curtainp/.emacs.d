@@ -53,18 +53,11 @@
                                             :diagnostics (:enable :json-false)))
                   )))
 
-;; Eglot-booster: wraps emacs-lsp-booster for faster JSON processing
-;; Requires `emacs-lsp-booster' binary in PATH
-(use-package eglot-booster
-  :straight (:host github :repo "jdtsmith/eglot-booster")
-  :after eglot
-  :custom
-  ;; Emacs 31's native JSON reader is already fast, and avoiding
-  ;; bytecode decoding sidesteps odd UTF-8 display glitches from some
-  ;; completion items.
-  (eglot-booster-io-only t)
-  :config
-  (eglot-booster-mode))
+(with-eval-after-load 'eglot
+  (add-to-list
+   'eglot-server-programs
+   '((python-base-mode :language-id "python")
+     . ("ty" "server"))))
 
 ;; Corfu: in-buffer completion UI
 (use-package corfu

@@ -1,5 +1,11 @@
 ;;; -*- lexical-binding: t -*-
 
+(let ((local-bin (expand-file-name "~/.local/bin")))
+  (when (file-directory-p local-bin)
+    (add-to-list 'exec-path local-bin)
+    (setenv "PATH"
+            (concat local-bin path-separator (getenv "PATH")))))
+
 (setq backward-delete-char-untabify-method 'hungry)
 (setq tab-always-indent 'complete) ; try indent first, if indent already, try complete
 (setq tab-first-completion 'word-or-paren-or-punct)

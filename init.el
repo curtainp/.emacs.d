@@ -1,4 +1,5 @@
 ;;; -*- lexical-binding: t -*-
+(set-default-toplevel-value 'lexical-binding t)
 
 (defgroup cw-emacs nil
   "Curtain Emacs Configuration Group."

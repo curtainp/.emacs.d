@@ -9,8 +9,8 @@
   :config
   (setf (alist-get 'rustfmt apheleia-formatters)
       '("apheleia-from-project-root" "Cargo.lock" "cargo" "--quiet" "fmt" "--" "--quiet" "--emit" "stdout"))
-  (setf (alist-get 'python-ts-mode apheleia-mode-alist) 'ruff)
-  (setf (alist-get 'python-mode apheleia-mode-alist) 'ruff)
+  (setf (alist-get 'python-ts-mode apheleia-mode-alist) '(ruff-isort ruff))
+  (setf (alist-get 'python-mode apheleia-mode-alist) '(ruff-isort ruff))
   (setf (alist-get 'css-mode apheleia-mode-alist) 'prettier)
   (setf (alist-get 'typescript-ts-mode apheleia-mode-alist) 'prettier)
   (setf (alist-get 'js-ts-mode apheleia-mode-alist) 'prettier))
@@ -28,12 +28,6 @@
   :config
   (setq mc/cmds-to-run-for-all
         '(cw-simple-mark-sexp cw-simple-kill-region-dwim cw-simple-kill-ring-save-dwim)))
-
-(use-package reader
-  :straight (:host codeberg :repo "Monadicsheep/emacs-reader"
-                   :files (:defaults "render-core.so")
-                   :pre-build ("make" "all"))
-  :commands (reader-mode))
 
 (use-package insidious
   :disabled
@@ -66,8 +60,6 @@
   (setq telega-autoplay-mode t)
   (setq telega-open-file-function 'org-open-file)
   (setq telega-sticker--use-thumbnail t
-        telega-use-images nil
-        telega-emoji-use-images nil
         telega-symbols-emojify nil))
 
 (use-package agent-shell

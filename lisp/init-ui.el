@@ -28,7 +28,19 @@
   (("C-x l" . pulsar-pulse-line) ; override `count-lines-page'
    ("C-x L" . pulsar-highlight-permanently-dwim))) ; override `pulsar-highlight-line'
 
+(use-package modus-themes
+  :straight t)
+
+(use-package modus-vague
+  :straight (modus-vague
+             :host github
+             :repo "paniash/modus-vague"
+             :branch "main")
+  :config
+  (modus-themes-load-theme 'modus-vague))
+
 (use-package ef-themes
+  :disabled
   :straight (:type git :host github :repo "protesilaos/ef-themes")
   :commands ef-themes-take-over-modus-themes-mode
   :init

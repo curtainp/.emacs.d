@@ -29,13 +29,6 @@
   (setq mc/cmds-to-run-for-all
         '(cw-simple-mark-sexp cw-simple-kill-region-dwim cw-simple-kill-ring-save-dwim)))
 
-(use-package insidious
-  :disabled
-  :straight (:host codeberg :repo "Monadicsheep/insidious"))
-
-(use-package keymap-popup
-  :straight (:host codeberg :repo "thanosapollo/emacs-keymap-popup"))
-
 (use-package yeetube
   :straight t
   :bind ("C-c y" . yeetube)

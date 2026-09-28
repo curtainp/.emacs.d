@@ -29,14 +29,6 @@
   (setq mc/cmds-to-run-for-all
         '(cw-simple-mark-sexp cw-simple-kill-region-dwim cw-simple-kill-ring-save-dwim)))
 
-(use-package yeetube
-  :straight t
-  :bind ("C-c y" . yeetube)
-  :config
-  (setf yeetube-display-thumbnails-p nil
-        yeetube-results-limit 20
-        yeetube-enable-tor t))
-
 ;; NOTE: need to install TDlib dependency
 (use-package telega
   :straight (:host github :repo "zevlg/telega.el"

@@ -209,6 +209,16 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
     (prettify-symbols-mode))
   )
 
+(use-package org-download
+  :straight t
+  :after org
+  :custom
+  (org-download-method 'directory)
+  (org-download-image-dir "./imgs")
+  (org-download-heading-lvl nil)
+  :bind (:map org-mode-map
+              ("C-c C-v" . org-download-clipboard)))
+
 
 (use-package org-modern
   :disabled

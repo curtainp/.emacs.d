@@ -29,6 +29,12 @@
   (setq mc/cmds-to-run-for-all
         '(cw-simple-mark-sexp cw-simple-kill-region-dwim cw-simple-kill-ring-save-dwim)))
 
+(use-package excali
+  :straight (:host github :repo "yibie/excali-mode"
+                   :files (:defaults "excali-module.so")
+                   :pre-build (("make") ("make" "fonts")))
+  :commands (excali-open excali-new))
+
 ;; NOTE: need to install TDlib dependency
 (use-package telega
   :straight (:host github :repo "zevlg/telega.el"

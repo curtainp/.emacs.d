@@ -212,14 +212,12 @@
       (org-publish-cache-set-file-property file :title title)
       (if (= (length title) 0)
           (format "%s*" entry)
-        (format "%s{{{timestamp(%s)}}}    [[file:%s][%s]] {{{tags(%s)}}}"
-                (if (cw/blog-pinned-p file project)
-                    cw/blog-pin-macro
-                  "")
+        (format "{{{timestamp(%s)}}}    [[file:%s][%s%s]] {{{tags(%s)}}}"
                 (format-time-string
                  org-html-metadata-timestamp-format
                  (cw/org-publish-find-date file project))
                 (concat "articles/" entry)
+                (if (cw/blog-pinned-p file project) cw/blog-pin-macro "")
                 title
                 tags-string))))
   (defun cw/org-publish-find-date (file project)
@@ -382,13 +380,11 @@ DIR is the location of the output."
     "Return non-nil when sitemap ITEM is marked as pinned."
     (let ((text (car-safe item)))
       (and (stringp text)
-           (string-prefix-p cw/blog-pin-macro text))))
+           (string-match-p (regexp-quote cw/blog-pin-macro) text))))
 
   (defun cw/blog-strip-pin-marker (text)
     "Remove the pin marker from TEXT."
-    (if (string-prefix-p cw/blog-pin-macro text)
-        (substring text (length cw/blog-pin-macro))
-      text))
+    (string-replace cw/blog-pin-macro "" text))
 
   (defun cw/blog-sitemap-strip-pin-markers (node)
     "Return sitemap NODE without pin markers."
@@ -1087,7 +1083,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
     (add-to-list 'org-export-global-macros
                  '("kbd" . "@@html:<kbd>$1</kbd>@@"))
     (add-to-list 'org-export-global-macros
-                 '("pin" . "@@html:<span class=\"pinned-marker\" aria-hidden=\"true\"><i class=\"bx bxs-pin\"></i></span>@@")))
+                 '("pin" . "@@html:<span class=\"pinned-marker\" role=\"img\" aria-label=\"Pinned\" title=\"Pinned\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" aria-hidden=\"true\" focusable=\"false\"><use href=\"/static/article-icons.svg#pin\"/></svg></span>@@")))
   (when (require 'ox-html)
     (org-export-define-derived-backend 'blog 'html
       :translate-alist '((src-block . cw/blog-src-block)
@@ -1100,6 +1096,8 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
   (add-hook 'org-export-before-processing-functions 'cw/org-export-add-custom-id)
   (add-hook 'org-export-filter-src-block-functions 'cw/org-blog-add-noweb-ref)
   (add-hook 'org-export-filter-final-output-functions 'cw/org-blog-id-filter)
+
+  (load (expand-file-name "lisp/blog-password.el" user-emacs-directory) nil t)
 
   )
 

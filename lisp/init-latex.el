@@ -50,7 +50,9 @@
   (setq
    org-entities-user '(("ws" "\\ " nil " " " " " " " "))
    org-latex-prefer-user-labels t
-   org-startup-with-latex-preview nil
+   ;; Preview all formulas on opening an Org buffer.  Per-file opt-out:
+   ;; #+STARTUP: nolatexpreview
+   org-startup-with-latex-preview t
    org-latex-hyperref-template "\\hypersetup{\n pdfauthor={%a},\n pdftitle={%t},\n pdfkeywords={%k},\n pdfsubject={%d},\n pdfcreator={%c}, \n pdflang={%L},\n colorlinks=true,\n linkcolor=black}\n"
    org-latex-src-block-backend 'minted
    org-latex-minted-options '(("breaklines"))

@@ -104,7 +104,9 @@
   :straight t
   :bind ("C-c e" . cape-prefix-map)
   :hook (((prog-mode conf-mode yaml-mode text-mode) . +completion-add-default-capfs)
-         ((TeX-mode LaTeX-mode org-mode markdown-mode) . +completion-add-tex-capfs))
+         ;; cape-tex inserts Unicode characters, not literal LaTeX commands.
+         ;; Keep Org and TeX input compatible with pdfLaTeX.
+         (markdown-mode . +completion-add-tex-capfs))
   :init
   (defun +completion-add-capfs (&rest capfs)
     "Append CAPFS to the buffer-local `completion-at-point-functions'."

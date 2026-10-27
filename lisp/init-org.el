@@ -257,18 +257,6 @@ If before first heading, set #+FILETAGS.  Otherwise delegate to
   (dolist (face '(org-date org-tag curfu-default font-lock-comment-face))
     (add-to-list 'mixed-pitch-fixed-pitch-faces face)))
 
-;; preview and edit latex in org elegantly
-(use-package org-fragtog
-  :disabled
-  :straight t
-  :hook (org-mode . org-fragtog-mode)
-  :config
-  (plist-put org-format-latex-options :scale 2.4)
-  (when (executable-find "dvisvgm")
-    (setq org-preview-latex-default-process 'dvisvgm)
-    (setq org-preview-latex-image-directory (expand-file-name "~/.cache/org/preview/latex-image/")))
-  )
-
 (use-package ob-mermaid
   :straight t
   :after org

@@ -83,6 +83,11 @@
   :straight nil
   :defer t
   :config
+  ;; Give inline code and verbatim text independent HTML styles.
+  (setf (alist-get 'code org-html-text-markup-alist)
+        "<code class=\"org-code\">%s</code>"
+        (alist-get 'verbatim org-html-text-markup-alist)
+        "<code class=\"org-verbatim\">%s</code>")
   (setq org-html-metadata-timestamp-format "%Y-%m-%d"
         org-html-head-include-default-style nil
         org-html-htmlize-output-type 'css

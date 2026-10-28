@@ -103,6 +103,12 @@
     (add-to-list 'yank-media-preferred-types 'image/avif))
   (set-face-attribute 'org-code nil :background
                       (face-attribute 'org-block :background))
+  (require 'crm)
+  (require 'cw-org-blog-tags)
+
+  (defvar my/org-filetags-history nil
+    "History of file tag selections, saved by `savehist-mode'.")
+
   (defun my/org-read-file-name-relative (&optional prompt directory)
     "Read a file name and return a path relative to the current buffer."
     (let* ((base-dir (file-name-directory
@@ -139,14 +145,19 @@
     "Set #+FILETAGS for the current buffer."
     (interactive)
     (org-set-regexps-and-options)
-    (let* ((current (mapcar #'substring-no-properties org-file-tags))
+    (let* ((crm-separator "[,:[:space:]]+")
+           (current (mapcar #'substring-no-properties org-file-tags))
            (table (delete-dups
-                   (append (mapcar #'car (org-get-buffer-tags))
+                   (append (when (cw/org-blog-buffer-p)
+                             (cw/org-blog-tag-candidates))
+                           current
+                           (mapcar #'car (org-get-buffer-tags))
                            (mapcar #'car org-tag-persistent-alist))))
            (selected (completing-read-multiple
-                      "File tags (comma/space separated): "
+                      "File tags (comma/space/colon separated): "
                       table nil nil
-                      (mapconcat #'identity current ",")))
+                      (mapconcat #'identity current ",")
+                      'my/org-filetags-history))
            (tagstr (my/org--format-filetags selected)))
       (my/org--set-filetags-line tagstr)
       (org-set-regexps-and-options)

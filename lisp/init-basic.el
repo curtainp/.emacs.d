@@ -1,10 +1,13 @@
 ;;; -*- lexical-binding: t -*-
 
-(let ((local-bin (expand-file-name "~/.local/bin")))
-  (when (file-directory-p local-bin)
-    (add-to-list 'exec-path local-bin)
-    (setenv "PATH"
-            (concat local-bin path-separator (getenv "PATH")))))
+;; Add directories here in priority order (highest first).
+(let ((bin-dirs '("~/.local/bin" "~/.zvm/bin")))
+  (dolist (dir (reverse bin-dirs))
+    (let ((bin-dir (expand-file-name dir)))
+      (when (file-directory-p bin-dir)
+        (add-to-list 'exec-path bin-dir)
+        (setenv "PATH"
+                (concat bin-dir path-separator (getenv "PATH")))))))
 
 (setq backward-delete-char-untabify-method 'hungry)
 (setq tab-always-indent 'complete) ; try indent first, if indent already, try complete

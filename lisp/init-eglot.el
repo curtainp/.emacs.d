@@ -8,6 +8,7 @@
           python-ts-mode
           rust-mode
           rust-ts-mode
+          zig-mode
           c-ts-mode c++-ts-mode
           c-mode c++-mode)
          . eglot-ensure)
@@ -54,6 +55,7 @@
                   )))
 
 (with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs '(zig-mode . ("zls")))
   (add-to-list
    'eglot-server-programs
    '((python-base-mode :language-id "python")

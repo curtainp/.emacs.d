@@ -13,6 +13,7 @@
 *** [[https://matklad.github.io/feed.xml][matklad blog]] :code:
 *** [[https://karthinks.com/index.xml][Karthinks]] :code:
 *** [[https://blog.sheerluck.dev/rss.xml][sheerluck dev]] :rust:
+*** [[https://www.openmymind.net/atom.xml][Karl Seguin Blog]] :zig:
 ** Emacs
 *** [[https://www.rahuljuliato.com/rss.xml][Rahuljuliato]] :emacs:
 *** [[https://sachachua.com/blog/category/emacs-news/feed/index.xml][Emacs News]] :emacs:

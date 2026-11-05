@@ -97,7 +97,7 @@
   (doom-modeline-mu4e nil)
   (doom-modeline-gnus nil)
   (doom-modeline-github nil)
-  (doom-modeline-buffer-file-name-style 'truncate-upto-root)
+  (doom-modeline-buffer-file-name-style 'relative-from-project)
   (doom-modeline-persp-name nil)
   ; (doom-modeline-time-icon nil)
   ; (doom-modeline-buffer-encoding 'nondefault)

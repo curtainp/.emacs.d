@@ -4,14 +4,24 @@
 (use-package eglot
   :straight nil
   :commands (eglot eglot-ensure)
-  :hook ((python-mode
-          python-ts-mode
-          rust-mode
-          rust-ts-mode
-          zig-mode
-          c-ts-mode c++-ts-mode
-          c-mode c++-mode)
-         . eglot-ensure)
+  :init
+  (defun +eglot-zig-ensure ()
+    "Start Eglot for Zig without semantic tokens or inlay hints."
+    (require 'eglot)
+    ;; ZLS 0.17.0 can panic in type analysis for either request.
+    (setq-local eglot-ignored-server-capabilities
+                (seq-uniq
+                 (append '(:semanticTokensProvider :inlayHintProvider)
+                         eglot-ignored-server-capabilities)))
+    (eglot-ensure))
+  :hook (((python-mode
+           python-ts-mode
+           rust-mode
+           rust-ts-mode
+           c-ts-mode c++-ts-mode
+           c-mode c++-mode)
+          . eglot-ensure)
+         (zig-ts-mode . +eglot-zig-ensure))
   :bind
   (:map eglot-mode-map
         ("C-c e i" . eglot-find-implementation)
@@ -55,7 +65,7 @@
                   )))
 
 (with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs '(zig-mode . ("zls")))
+  (add-to-list 'eglot-server-programs '(zig-ts-mode . ("zls")))
   (add-to-list
    'eglot-server-programs
    '((python-base-mode :language-id "python")

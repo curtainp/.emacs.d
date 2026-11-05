@@ -274,9 +274,11 @@
   :straight t
   :defer t)
 
-(use-package zig-mode
-  :straight (:host codeberg :repo "ziglang/zig-mode")
-  :config
-  (setq zig-format-on-save nil))
+(use-package zig-ts-mode
+  :straight (:host codeberg :repo "meow_king/zig-ts-mode")
+  :mode ("\\.\\(?:zig\\|zon\\)\\'" . zig-ts-mode)
+  :init
+  (add-to-list 'treesit-language-source-alist
+               '(zig "https://github.com/tree-sitter-grammars/tree-sitter-zig")))
 
 (provide 'init-prog)

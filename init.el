@@ -99,5 +99,4 @@
 (require 'init-notes)
 (require 'init-docs)
 (require 'init-tools)
-(require 'init-rime)
 (require 'init-vc)

@@ -1,5 +1,31 @@
 ;;; init-tools.el -*- lexical-binding: t -*-
 
+(use-package agent-shell
+  :straight t
+  :commands (agent-shell)
+  :config
+  (setq agent-shell-openai-authentication
+        (agent-shell-openai-make-authentication :login t))
+  (setq agent-shell-antigravity-authentication
+        (agent-shell-antigravity-make-authentication :login t))
+  ;; Resolve the local installation independently of Emacs' exec-path.
+  (let ((server (expand-file-name "~/.local/bin/agy_acp_server.par")))
+    (when (file-executable-p server)
+      (setq agent-shell-antigravity-acp-command
+            (cons (file-truename server)
+                  (when (eq system-type 'gnu/linux) '("--uid="))))
+      ;; The standalone server needs an explicit path to its companion.
+      (let ((harness (expand-file-name
+                      "localharness_external"
+                      (file-name-directory (file-truename server)))))
+        (when (file-executable-p harness)
+          (let ((process-environment agent-shell-antigravity-environment))
+            (setenv "ANTIGRAVITY_HARNESS_PATH" harness)
+            (setq agent-shell-antigravity-environment process-environment))))))
+  (setq agent-shell-google-authentication
+        (agent-shell-google-make-authentication :login t))
+  )
+
 (use-package apheleia
   :straight t
   :commands (apheleia-format-buffer)
@@ -53,17 +79,6 @@
   (setq telega-sticker--use-thumbnail t
         telega-symbols-emojify nil))
 
-(use-package agent-shell
-  :straight t
-  :defer t
-  :config
-  (setq agent-shell-openai-authentication
-        (agent-shell-openai-make-authentication :codex-api-key (lambda ()
-                                                                 (let ((json-object-type 'hash-table))
-                                                                   (gethash "OPENAI_API_KEY"
-                                                                            (json-read-file "~/.codex/auth.json"))))))
-  )
-
 (use-package gt
   :straight t
   :commands (gt-translate gt-setup gt-speak)
@@ -104,6 +119,7 @@
           (start-process-shell-command "espeak-ng" nil command)))))
 
 (use-package buffer-to-pdf
+  :disabled
   :straight (:host github :repo "protesilaos/buffer-to-pdf")
   :commands (buffer-to-pdf)
   :bind (:map global-map

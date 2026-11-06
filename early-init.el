@@ -16,8 +16,7 @@
             (setq gc-cons-threshold (* 32 1024 1024)
                   gc-cons-percentage 0.1)) 105)
 
-;; Prefer loading newer compiled files
-(setq load-prefer-newer t)
+(setq load-prefer-newer noninteractive)
 
 ;; custom variable
 (setq custom-theme-directory

@@ -163,12 +163,6 @@
   :commands elfeed-org
   :hook (after-init . elfeed-org))
 
-(use-package etaf
-  :straight t
-  :commands etaf-install
-  :config
-  (call-interactively #'etaf-install))
-
 (use-package time
   :straight nil
   :commands (world-clock)

@@ -118,6 +118,7 @@
 
 (use-package fontaine
   :straight t
+  :if (display-graphic-p)
   :commands fontaine-mode
   :bind
   (("C-c f" . fontaine-set-preset)

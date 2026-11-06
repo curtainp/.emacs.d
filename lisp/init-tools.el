@@ -3,6 +3,24 @@
 (use-package agent-shell
   :straight t
   :commands (agent-shell)
+  :preface
+  (defun +agent-shell-setup-completion ()
+    "Use Corfu for agent-shell candidates without completing ordinary prose."
+    (require 'corfu)
+    ;; The viewport inherits text-mode, which may already enable Corfu.
+    ;; Restart it so a previous automatic-completion hook is removed.
+    (corfu-mode -1)
+    (setq-local corfu-auto nil
+                corfu-preselect 'first
+                corfu-on-exact-match nil
+                corfu-map (copy-keymap corfu-map))
+    ;; Only the active popup owns these keys.  Outside it, keep the
+    ;; shell's RET submission and TAB item navigation unchanged.
+    (dolist (key '("TAB" "<tab>" "RET" "<return>"))
+      (keymap-set corfu-map key #'corfu-insert))
+    (corfu-mode 1))
+  :hook ((agent-shell-mode agent-shell-viewport-edit-mode)
+         . +agent-shell-setup-completion)
   :config
   (setq agent-shell-openai-authentication
         (agent-shell-openai-make-authentication :login t))
@@ -144,6 +162,12 @@
   :straight t
   :commands elfeed-org
   :hook (after-init . elfeed-org))
+
+(use-package etaf
+  :straight t
+  :commands etaf-install
+  :config
+  (call-interactively #'etaf-install))
 
 (use-package time
   :straight nil

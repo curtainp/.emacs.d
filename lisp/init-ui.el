@@ -129,21 +129,25 @@
            :default-height 80)
           (regular)
           (medium
+           :default-family "Aporetic Serif Mono"
+           :fixed-pitch-family "Aporetic Serif Mono"
+           :variable-pitch-family "Aporetic Sans"
            :default-height 115)
           (large
            :default-height 150)
           (presentation
-           :default-height 180)
+           :default-height 220)
           (jumbo
+           :inherit medium
            :default-height 260)
           (t
-           :default-family "Iosevka Term"
+           :default-family "Aporetic Sans Mono"
            :default-weight regular
            :default-slant normal
            :default-width normal
            :default-height 100
 
-           :fixed-pitch-family "Iosevka Term"
+           :fixed-pitch-family "Aporetic Sans Mono"
            :fixed-pitch-weight nil
            :fixed-pitch-slant nil
            :fixed-pitch-width nil
@@ -155,7 +159,7 @@
            :fixed-pitch-serif-width nil
            :fixed-pitch-serif-height 1.0
 
-           :variable-pitch-family "MonoLisaText"
+           :variable-pitch-family "Aporetic Serif"
            :variable-pitch-weight nil
            :variable-pitch-slant nil
            :variable-pitch-width nil

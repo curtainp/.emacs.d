@@ -142,13 +142,13 @@
            :inherit medium
            :default-height 260)
           (t
-           :default-family "Aporetic Sans Mono"
+           :default-family "Iosevka Term"
            :default-weight regular
            :default-slant normal
            :default-width normal
            :default-height 100
 
-           :fixed-pitch-family "Aporetic Sans Mono"
+           :fixed-pitch-family "Iosevka Term"
            :fixed-pitch-weight nil
            :fixed-pitch-slant nil
            :fixed-pitch-width nil

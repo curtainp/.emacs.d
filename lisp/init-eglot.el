@@ -25,7 +25,7 @@
   :bind
   (:map eglot-mode-map
         ("C-c e i" . eglot-find-implementation)
-        ("C-c e a" . eglot-code-actions)
+        ("C-c e a" . refactor)
         ("C-c e r" . eglot-rename))
   :config
   (setq eglot-autoshutdown t
@@ -35,6 +35,7 @@
         ;; Keep the server closer to the live buffer so completion
         ;; doesn't lag behind fast typing.
         eglot-send-changes-idle-time 0.05
+        eglot-documentation-renderer 'markdown-ts-view-mode
         eglot-code-action-indications nil ;; disable automatic code action indicators to reduce background polling
         ;; format with `apheleia-format-buffer' instead.
         eglot-ignored-server-capabilities '(:documentFormattingProvider

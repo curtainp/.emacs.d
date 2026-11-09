@@ -44,6 +44,12 @@
         (agent-shell-google-make-authentication :login t))
   )
 
+(use-package kitty-graphics
+  :straight (:host github :repo "cashmeredev/kitty-graphics.el")
+  :hook (tty-setup . kitty-graphics-setup)
+  :init
+  (setq kitty-graphics-enable-video t))
+
 (use-package apheleia
   :straight t
   :commands (apheleia-format-buffer)

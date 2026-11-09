@@ -105,11 +105,29 @@
                         ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
   )
 
+(defun my/org-latex-preview-mode-setup ()
+  "Enable automatic LaTeX previews on graphical displays."
+  (when (display-graphic-p)
+    (org-latex-preview-mode 1)))
+
+(defun my/kitty-graphics-org-latex-preview-compat (advice preview &rest args)
+  "Use kitty-graphics ADVICE only when Org's legacy preview API exists.
+Otherwise call PREVIEW with ARGS; Org 10 skips previews on a TTY."
+  (if (fboundp 'org--latex-preview-region)
+      (apply advice preview args)
+    (apply preview args)))
+
+(with-eval-after-load 'kitty-graphics
+  ;; kitty-graphics 1.4.0's LaTeX integration still requires Org 9's API.
+  ;; Guard the advice itself so mode toggles can reinstall it safely.
+  (advice-add 'kitty-graphics--org-latex-preview-advice :around
+              #'my/kitty-graphics-org-latex-preview-compat))
+
 ;; Use Org 10's built-in asynchronous preview pipeline.
 (use-package org-latex-preview
   :straight nil
   :after org
-  :hook (org-mode . org-latex-preview-mode)
+  :hook (org-mode . my/org-latex-preview-mode-setup)
   :config
   (setq org-latex-preview-process-default 'dvisvgm
         ;; Precompile the default pdfLaTeX preamble for faster previews.

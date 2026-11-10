@@ -248,26 +248,18 @@
   :straight (:host github :repo "dakra/ghostel"
                    :files (:defaults "etc" "src" "vendor" "build.zig" "build.zig.zon" "symbols.map"))
   :commands (ghostel ghostel-compile-global-mode)
-  :hook (emacs-startup . ghostel-compile-global-mode)
+  :hook ((emacs-startup . ghostel-compile-global-mode)
+         (after-init . ghostel-status-indicator-mode))
+  :bind (("C-x m" . ghostel)
+         :map ghostel-semi-char-mode-map
+         ("C-s" . consult-line)
+         ("M-o" . ace-window))
   :custom
   (ghostel-compile-global-mode-excluded-modes '(grep-mode rg-mode))
+  (ghostel-module-directory
+   (expand-file-name "var/ghostel/" user-emacs-directory))
   :config
   (setq ghostel-enable-file-detection nil)
-  ;; (defun cw/ghostel-buffer ()
-  ;;   "Return the active ghostel buffer, or nil if none exists."
-  ;;   (setq-find (lambda (buf)
-  ;;                (string-match-p "\\*ghostel:" (buffer-name buf)))
-  ;;              (buffer-list)))
-  ;; (defun cw/ghostel-toggle ()
-  ;;   (interactive)
-  ;;   (let ((buf (cw/ghostel-buffer)))
-  ;;     (cond
-  ;;      ((not buf)
-  ;;       (ghostel))
-  ;;      ((eq (current-buffer) buf)
-  ;;       (bury-buffer))
-  ;;      (t
-  ;;       (switch-to-buffer buf)))))
   )
 
 (use-package mermaid-mode

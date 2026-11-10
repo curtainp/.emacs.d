@@ -518,7 +518,7 @@
       (+compilation--strip-extra-escape-sequences compilation-filter-start (point))
       (ansi-color-compilation-filter)))
 
-  (add-to-list 'compilation-environment "TERM=xterm-256color")
+  ;; (add-to-list 'compilation-environment "TERM=xterm-256color")
   ;; Integration of `compile' with `savehist'
   (with-eval-after-load 'savehist
     (add-to-list 'savehist-additional-variables 'compile-history)))

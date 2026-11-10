@@ -15,7 +15,9 @@
 (setq text-mode-ispell-word-completion nil) ;; disable ispell-completion
 
 ;;;; Completion styles
-(setq completion-styles '(basic substring initials partial-completion flex orderless)) ; from tight to loose
+;; Category styles also fall back to this list.  `initials' can return an
+;; expanded base beyond the original input for quoted paths like ~/draft~.
+(setq completion-styles '(basic substring partial-completion flex orderless)) ; from tight to loose
 (setq completion-flex-nospace t)
 (setq completion-pcm-leading-wildcard t) ; Emacs 31: make `partial-completion' behave like `substring'
 
@@ -29,9 +31,8 @@
                                   (eager-update . t)))
        (eager-update-properties-no-sort (append eager-update-properties (list (cons 'display-sort-function #'identity)))))
   (setq completion-category-overrides
-        `((file ((styles . (partial-completion))
-                 (eager-display . nil)
-                 (eager-update . t)))
+        `((file (styles . (partial-completion))
+                ,@eager-update-properties)
           (bookmark (,@eager-update-properties))
           (project-file . (,@eager-update-properties))
           (symbol-help . (,@eager-update-properties))

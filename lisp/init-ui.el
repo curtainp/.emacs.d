@@ -130,9 +130,6 @@
            :default-height 80)
           (regular)
           (medium
-           :default-family "Aporetic Serif Mono"
-           :fixed-pitch-family "Aporetic Serif Mono"
-           :variable-pitch-family "Aporetic Sans"
            :default-height 115)
           (large
            :default-height 150)
@@ -160,7 +157,7 @@
            :fixed-pitch-serif-width nil
            :fixed-pitch-serif-height 1.0
 
-           :variable-pitch-family "Aporetic Serif"
+           :variable-pitch-family "IBM Plex Serif"
            :variable-pitch-weight nil
            :variable-pitch-slant nil
            :variable-pitch-width nil
